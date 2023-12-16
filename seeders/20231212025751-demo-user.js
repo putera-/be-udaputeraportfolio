@@ -5,7 +5,7 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     // creat 100 dummy users
     const users = [];
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 56; i++) {
       users.push({
         firstName: 'John ' + (i + 1),
         lastName: 'Doe',
