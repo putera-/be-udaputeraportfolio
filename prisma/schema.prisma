@@ -11,10 +11,26 @@ datasource db {
 }
 
 model User {
-  email String @id @db.VarChar(100)
-  password String @db.VarChar(100)
-  name String @db.VarChar(100)
-  token String? @db.VarChar(100)
+  email    String  @id @db.VarChar(100)
+  password String  @db.VarChar(100)
+  name     String  @db.VarChar(100)
+  token    String? @db.VarChar(100)
 
   @@map("user")
+}
+
+model Profile {
+  firstname String  @db.VarChar(100)
+  lastname  String  @db.VarChar(100)
+  email     String  @id @db.VarChar(100)
+  bio       String? @db.Text
+  web       String? @db.Text
+  github    String? @db.Text
+  gitlab    String? @db.Text
+  linkedin  String? @db.Text
+  instagram String? @db.Text
+  facebook  String? @db.Text
+  twitter   String? @db.Text
+
+  @@map("profile")
 }
