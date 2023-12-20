@@ -13,11 +13,12 @@ email (VARCHAR(255), UNIQUE)
 password (VARCHAR(255))
 
 
--- user_detail
+-- profile
 firstname (VARCHAR(255), NOT NULL)
 lastname (VARCHAR(255), NOT NULL)
 email (VARCHAR(255), NOT NULL)
 bio (TEXT)
+web (VARCHAR(255))
 github (VARCHAR(255))
 gitlab (VARCHAR(255))
 linkedin (VARCHAR(255))

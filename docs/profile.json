@@ -1,0 +1,235 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Profile API",
+        "version": "1.0",
+        "contact": {
+            "name": "Rizjami Putera",
+            "email": "rizjamiputera@gmail.com",
+            "url": "https://udaputera.com"
+        }
+    },
+    "servers": [
+        {
+            "description": "Profile API",
+            "url": "{url}:5000/v1",
+            "variables": {
+                "url": {
+                    "default": "http://localhost:5000",
+                    "enum": [
+                        "http://localhost:5000",
+                        "https://api.udaputera.com"
+                    ]
+                }
+            }
+        }
+    ],
+    "externalDocs": {
+        "description": "Dokumentasi Youtube",
+        "url": "https://www.youtube.com/watch?v=o5b6TYSNK5c&t=5s"
+    },
+    "paths": {
+        "/profile": {
+            "get": {
+                "tags": ["Profile"],
+                "summary": "Get Profile Detail",
+                "description": "Get profile detail of udaputera portfolio",
+                "responses": {
+                    "200": {
+                        "description": "Successfull",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/profile"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Profile"],
+                "security": [
+                    {
+                        "updateProile": []
+                    }
+                ],
+                "summary": "Update Profile Detail",
+                "description": "Update profile detail of udaputera portfolio",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/profile_body"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfull",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/profile"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        },
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "updateProile": {
+                "type": "apiKey",
+                "name": "token",
+                "in": "cookie",
+                "description": "Token for authentication"
+            }
+        },
+        "schemas": {
+            "profile_body": {
+                "type": "object",
+                "required": [
+                    "firstname",
+                    "lastname",
+                    "email"
+                ],
+                "properties": {
+                    "firstname": {
+                        "type": "string",
+                        "minLength": 3,
+                        "example": "John"
+                    },
+                    "lastname": {
+                        "type": "string",
+                        "minLength": 3,
+                        "example": "Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "minLength": 3,
+                        "example": "johndoe@example.com"
+                    },
+                    "bio": {
+                        "type": "string"
+                    },
+                    "web": {
+                        "type": "string",
+                        "format": "url"
+                    },
+                    "github": {
+                        "type": "string",
+                        "format": "url"
+                    },
+                    "gitlab": {
+                        "type": "string",
+                        "format": "url"
+                    },
+                    "linkedin": {
+                        "type": "string",
+                        "format": "url"
+                    },
+                    "instagram": {
+                        "type": "string",
+                        "format": "url"
+                    },
+                    "facebook": {
+                        "type": "string",
+                        "format": "url"
+                    },
+                    "twitter": {
+                        "type": "string",
+                        "format": "url"
+                    }
+                }
+            },
+            "profile": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "Success"
+                    },
+                    "success": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "firstname": {
+                                "type": "string",
+                                "example": "John"
+                            },
+                            "lastname": {
+                                "type": "string",
+                                "example": "Doe"
+                            },
+                            "email": {
+                                "type": "string",
+                                "format": "email",
+                                "example": "johndoe@example.com"
+                            },
+                            "bio": {
+                                "type": "string"
+                            },
+                            "web": {
+                                "type": "string",
+                                "format": "url"
+                            },
+                            "github": {
+                                "type": "string",
+                                "format": "url"
+                            },
+                            "gitlab": {
+                                "type": "string",
+                                "format": "url"
+                            },
+                            "linkedin": {
+                                "type": "string",
+                                "format": "url"
+                            },
+                            "instagram": {
+                                "type": "string",
+                                "format": "url"
+                            },
+                            "facebook": {
+                                "type": "string",
+                                "format": "url"
+                            },
+                            "twitter": {
+                                "type": "string",
+                                "format": "url"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
