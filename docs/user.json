@@ -1,0 +1,284 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "User API",
+        "version": "1.0",
+        "contact": {
+            "name": "Rizjami Putera",
+            "email": "rizjamiputera@gmail.com",
+            "url": "https://udaputera.com"
+        }
+    },
+    "servers": [
+        {
+            "description": "User API",
+            "url": "{url}:5000/v1",
+            "variables": {
+                "url": {
+                    "default": "http://localhost:5000",
+                    "enum": [
+                        "http://localhost:5000",
+                        "https://api.udaputera.com"
+                    ]
+                }
+            }
+        }
+    ],
+    "externalDocs": {
+        "description": "Dokumentasi Youtube",
+        "url": "https://www.youtube.com/watch?v=o5b6TYSNK5c&t=5s"
+    },
+    "paths": {
+        "/user": {
+            "get": {
+                "tags": ["User"],
+                "summary": "Get user Detail",
+                "description": "Get user detail",
+                "responses": {
+                    "200": {
+                        "description": "Successfull",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/user"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["User"],
+                "security": [
+                    {
+                        "auth": []
+                    }
+                ],
+                "summary": "Update User Detail",
+                "description": "Update user detail",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/user_body"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfull",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/user"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        },
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": ["auth"],
+                "summary": "Login",
+                "description": "Auth for login",
+                "responses": {
+                    "200": {
+                        "description": "Successfull",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/user_auth"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid Credential"
+                                        },
+                                        "errors": {
+                                            "type": "string",
+                                            "example": "Invalid email or password"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["auth"],
+                "summary": "Logout",
+                "description": "Auth for logout",
+                "security": [
+                    {
+                        "auth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfull",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "auth": {
+                "type": "apiKey",
+                "name": "token",
+                "in": "cookie",
+                "description": "Token for authentication"
+            }
+        },
+        "schemas": {
+            "user_body": {
+                "type": "object",
+                "required": [
+                    "name",
+                    "email"
+                ],
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "minLength": 3,
+                        "example": "johndoe@example.com"
+                    },
+                    "name": {
+                        "type": "string",
+                        "minLength": 3,
+                        "example": "John"
+                    }
+                }
+            },
+            "user": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "Success"
+                    },
+                    "success": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "email": {
+                                "type": "string",
+                                "format": "email",
+                                "example": "johndoe@example.com"
+                            },
+                            "name": {
+                                "type": "string",
+                                "example": "John Doe"
+                            }
+                        }
+                    }
+                }
+            },
+            "user_auth": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "Success"
+                    },
+                    "success": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "email": {
+                                "type": "string",
+                                "format": "email",
+                                "example": "johndoe@example.com"
+                            },
+                            "name": {
+                                "type": "string",
+                                "example": "John Doe"
+                            },
+                            "token": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
