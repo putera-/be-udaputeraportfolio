@@ -28,7 +28,9 @@ const login = async (request) => {
         throw new ResponseError(401, "Invalid Credential")
     }
 
+    // TODO use jwt
     const token = uuid().toString();
+
     return prismaClinet.user.update({
         data: {
             token: token
@@ -44,4 +46,17 @@ const login = async (request) => {
     })
 }
 
-export default { login }
+const set_cookie = (res, token) => {
+    // save token to cookie
+    // expire 1 day
+    const maxAge = 24 * 60 * 60 * 1000;
+    res.cookie('token', token, {
+        httpOnly: true,
+        maxAge: maxAge
+    });
+}
+
+export default {
+    login,
+    set_cookie
+}

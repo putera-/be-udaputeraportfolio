@@ -1,4 +1,6 @@
 import { prismaClinet } from "../application/database.js";
+import authService from "../service/auth-service.js"
+
 
 export const authMiddleware = async (req, res, next) => {
     const token = req.cookies.token;
@@ -20,6 +22,10 @@ export const authMiddleware = async (req, res, next) => {
             }).end();
         } else {
             req.user = user;
+
+            // update cookie token
+            authService.set_cookie(res, token);
+
             next();
         }
     }
