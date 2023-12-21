@@ -1,6 +1,6 @@
 {
   "name": "portfolio-udaputera",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Backend of Uda Putera portfolio",
   "main": "app.js",
   "type": "module",
