@@ -1,6 +1,7 @@
 import { prismaClinet } from "../application/database.js";
 import { ResponseError } from "../error/response-error.js";
 import { authValidation } from "../validation/auth-validation.js";
+import { emailValidation } from "../validation/user-validation.js";
 import { validate } from "../validation/validation.js"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -39,6 +40,32 @@ const login = async (request, res) => {
 
     // this will return user data
     return save_token(loginRequest.email, token);
+}
+
+const logout = async (email) => {
+    email = validate(emailValidation, email);
+
+    const user = await prismaClinet.user.findUnique({
+        where: {
+            email: email
+        }
+    });
+
+    if (!user) {
+        throw new ResponseError(404, 'User not found');
+    }
+
+    return prismaClinet.user.update({
+        where: {
+            email: email
+        },
+        data: {
+            token: null
+        },
+        select: {
+            email: true
+        }
+    })
 }
 
 const create_token = (email) => {
@@ -94,6 +121,7 @@ const set_cookie = (res, token) => {
 
 export default {
     login,
+    logout,
     set_cookie,
     verify_token
 }
