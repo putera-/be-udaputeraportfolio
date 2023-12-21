@@ -21,10 +21,11 @@ export const authMiddleware = async (req, res, next) => {
                 errors: 'Unauthorized'
             }).end();
         } else {
-            req.user = user;
+            // validate token & save token
+            authService.verify_token(res, token);
 
-            // update cookie token
-            authService.set_cookie(res, token);
+            // add user to request
+            req.user = user;
 
             next();
         }

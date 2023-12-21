@@ -3,9 +3,12 @@ import { ResponseError } from "../error/response-error.js";
 import { authValidation } from "../validation/auth-validation.js";
 import { validate } from "../validation/validation.js"
 import bcrypt from "bcrypt";
-import { v4 as uuid } from "uuid";
+import jwt from "jsonwebtoken";
 
-const login = async (request) => {
+const jwtSecret = process.env.JWT_SECRET;
+const maxAge = 24 * 60 * 60;
+
+const login = async (request, res) => {
     const loginRequest = validate(authValidation, request);
 
     const user = await prismaClinet.user.findUnique({
@@ -28,35 +31,69 @@ const login = async (request) => {
         throw new ResponseError(401, "Invalid Credential")
     }
 
-    // TODO use jwt
-    const token = uuid().toString();
+    // creat token
+    const token = create_token(user.email);
 
-    return prismaClinet.user.update({
+    // save token to cookie
+    set_cookie(res, token);
+
+    // this will return user data
+    return save_token(loginRequest.email, token);
+}
+
+const create_token = (email) => {
+    const token = jwt.sign({ email: email },
+        jwtSecret,
+        { expiresIn: maxAge });
+
+    return token;
+}
+
+const verify_token = (res, token) => {
+    try {
+        const { email } = jwt.verify(token, jwtSecret);
+
+        // generate new token
+        const newToken = create_token(email);
+
+        // update token to database
+        save_token(email, newToken);
+        // update token to cookie
+        set_cookie(res, newToken);
+
+        return newToken;
+    } catch (error) {
+        return false;
+    }
+}
+
+const save_token = async (email, token) => {
+    return await prismaClinet.user.update({
         data: {
             token: token
         },
         where: {
-            email: loginRequest.email
+            email: email
         },
         select: {
             name: true,
             email: true,
             token: true
         }
-    })
+    });
 }
 
 const set_cookie = (res, token) => {
     // save token to cookie
     // expire 1 day
-    const maxAge = 24 * 60 * 60 * 1000;
     res.cookie('token', token, {
         httpOnly: true,
-        maxAge: maxAge
+        maxAge: maxAge * 1000
     });
 }
 
 export default {
     login,
-    set_cookie
+    set_cookie,
+    verify_token
 }
