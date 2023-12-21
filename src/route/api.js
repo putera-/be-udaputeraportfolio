@@ -15,9 +15,11 @@ apiRouter.get('/user', userController.get);
 apiRouter.patch('/user', userController.update);
 
 // skill
+apiRouter.get('/skills', skillController.getAll)
 apiRouter.get('/skill/:id', skillController.get)
 apiRouter.post('/skill', skillController.create)
 apiRouter.put('/skill/:id', skillController.update)
+apiRouter.delete('/skill/:id', skillController.remove)
 
 export {
     apiRouter
