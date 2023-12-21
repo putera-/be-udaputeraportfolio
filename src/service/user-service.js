@@ -24,12 +24,12 @@ const get = async (email) => {
     return user;
 }
 
-const update = async (request) => {
+const update = async (email, request) => {
     const user = validate(updateUserValidation, request);
 
     const countUser = await prismaClinet.user.count({
         where: {
-            email: user.email
+            email: email
         }
     });
 
@@ -46,6 +46,9 @@ const update = async (request) => {
     }
 
     return prismaClinet.user.update({
+        where: {
+            email: email
+        },
         data: data_update,
         select: {
             name: true,

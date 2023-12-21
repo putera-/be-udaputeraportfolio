@@ -26,7 +26,7 @@ const login = async (request, res) => {
         throw new ResponseError(401, "Invalid Credential")
     }
 
-    const isPasswordValid = bcrypt.compare(loginRequest.password, user.password);
+    const isPasswordValid = await bcrypt.compare(loginRequest.password, user.password);
     if (!isPasswordValid) {
         throw new ResponseError(401, "Invalid Credential")
     }
