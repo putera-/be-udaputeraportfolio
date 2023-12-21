@@ -17,6 +17,7 @@ apiRouter.patch('/user', userController.update);
 // skill
 apiRouter.get('/skill/:id', skillController.get)
 apiRouter.post('/skill', skillController.create)
+apiRouter.put('/skill/:id', skillController.update)
 
 export {
     apiRouter
