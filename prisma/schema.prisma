@@ -34,3 +34,20 @@ model Profile {
 
   @@map("profile")
 }
+
+model SkillCategory {
+  id     Int     @id @default(autoincrement())
+  title  String  @unique @db.VarChar(100)
+  skills Skill[]
+
+  @@map("skill_category")
+}
+
+model Skill {
+  id          Int           @id @default(autoincrement())
+  title       String        @db.VarChar(100)
+  category_id Int           @db.Int
+  category    SkillCategory @relation(fields: [category_id], references: [id])
+
+  @@map("skill")
+}
