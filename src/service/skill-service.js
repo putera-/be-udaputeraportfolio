@@ -91,9 +91,7 @@ const remove = async (id) => {
     if (!skill) throw new ResponseError(404, "Skill not found!");
 
     return prismaClient.skill.delete({
-        where: {
-            id: id
-        }
+        where: { id }
     });
 }
 

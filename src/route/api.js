@@ -5,6 +5,7 @@ import authController from "../controller/auth-controller.js";
 import skillController from "../controller/skill-controller.js";
 import educationController from "../controller/education-controller.js";
 import profileController from "../controller/profile-controller.js";
+import projectController from "../controller/project-controller.js";
 
 const apiRouter = new express.Router();
 apiRouter.use(authMiddleware);
@@ -32,6 +33,11 @@ apiRouter.get('/education/:id', educationController.get);
 apiRouter.post('/education', educationController.create);
 apiRouter.put('/education/:id', educationController.update);
 apiRouter.delete('/education/:id', educationController.remove);
+
+// PROJECT
+apiRouter.post('/project', projectController.create);
+apiRouter.put('/project/:id', projectController.update);
+apiRouter.delete('/project/:id', projectController.remove);
 
 export {
     apiRouter

@@ -1,8 +1,12 @@
+import moment from "moment"
 import { prismaClient } from "../application/database.js"
+import { isID } from "../validation/all-validation.js"
 import { projectValidation } from "../validation/project-validation.js"
 import { validate } from "../validation/validation.js"
+import dateService from "./date-service.js"
+import { ResponseError } from "../error/response-error.js"
 
-const _select = {
+const select = {
     id: true,
     title: true,
     description: true,
@@ -15,28 +19,95 @@ const _select = {
 }
 
 const getAll = async () => {
+    let projects = await prismaClient.project.findMany();
 
+    for (let i = 0; i < projects.length; i++) {
+        projects[i] = formatData(projects[i]);
+    }
+
+    return projects;
 }
 
-const get = async () => {
+const get = async (id) => {
+    id = validate(isID, id);
 
+    const project = await prismaClient.project.findUnique({
+        where: { id },
+        select
+    });
+
+    if (!project) throw new ResponseError(404, "Project not found!");
+
+    return formatData(project);
 }
 
 const create = async (data) => {
     data = validate(projectValidation, data);
 
-    return prismaClient.project.create({
+    data.startDate = dateService.toLocaleDate(data.startDate);
+    if (data.endDate) data.endDate = dateService.toLocaleDate(data.endDate);
+
+    let project = await prismaClient.project.create({
         data,
-        select: _select
+        select
+    });
+
+    return formatData(project);
+}
+
+const update = async (id, data) => {
+    id = validate(isID, id);
+    data = validate(projectValidation, data);
+
+    data.startDate = dateService.toLocaleDate(data.startDate);
+    if (data.endDate) data.endDate = dateService.toLocaleDate(data.endDate);
+
+    const findProject = await prismaClient.project.findUnique({
+        where: { id },
+        select: { id: true }
+    });
+
+    if (!findProject) throw new ResponseError(404, "Project not found!");
+
+    const project = await prismaClient.project.update({
+        where: { id },
+        data,
+        select
+    });
+
+    return formatData(project);
+}
+
+const remove = async (id) => {
+    id = validate(isID, id);
+
+    const project = await prismaClient.project.findUnique({
+        where: { id },
+        select: { id: true }
+    });
+
+    if (!project) throw new ResponseError(404, "Project not found!");
+
+    return prismaClient.project.delete({
+        where: { id }
     });
 }
-const update = async () => {
 
-}
-const remove = async () => {
+const formatData = (project) => {
+    // format date
+    project.startDate = moment(project.startDate).format('YYYY-MM-DD');
+    if (project.endDate) project.endDate = moment(project.endDate).format('YYYY-MM-DD');
 
+    // status
+    project.status = project.status.replace('_', ' ');
+
+    return project;
 }
 
 export default {
-    create
+    getAll,
+    get,
+    create,
+    update,
+    remove
 }

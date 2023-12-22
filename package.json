@@ -1,6 +1,6 @@
 {
   "name": "portfolio-udaputera",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Backend of Uda Putera portfolio",
   "main": "app.js",
   "type": "module",
@@ -26,6 +26,7 @@
     "fs": "^0.0.1-security",
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
+    "moment": "^2.29.4",
     "mysql2": "^3.6.5",
     "path": "^0.12.7",
     "winston": "^3.11.0",

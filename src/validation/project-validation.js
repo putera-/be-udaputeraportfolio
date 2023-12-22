@@ -9,7 +9,7 @@ const projectValidation = Joi.object({
     gitlab: isURL,
     startDate: Joi.date().required(),
     endDate: Joi.date().greater(Joi.ref('startDate')),
-    status: Joi.string().uppercase().required()
+    status: Joi.string().uppercase()
 });
 
 export {

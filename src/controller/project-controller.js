@@ -1,8 +1,29 @@
-import projectService from "../service/project-service";
+import projectService from "../service/project-service.js";
+
+const getAll = async (req, res, next) => {
+    try {
+        const data = await projectService.getAll();
+
+        res.status(200).json({
+            message: "Success",
+            success: true,
+            data
+        })
+    } catch (error) {
+        next(error);
+    }
+}
 
 const get = async (req, res, next) => {
     try {
+        const id = req.params.id;
+        const data = await projectService.get(id);
 
+        res.status(200).json({
+            message: "Success",
+            success: true,
+            data
+        })
     } catch (error) {
         next(error);
     }
@@ -24,7 +45,14 @@ const create = async (req, res, next) => {
 
 const update = async (req, res, next) => {
     try {
+        const id = req.params.id;
+        const data = await projectService.update(id, req.body);
 
+        res.status(200).json({
+            message: "Success",
+            success: true,
+            data
+        });
     } catch (error) {
         next(error);
     }
@@ -32,6 +60,13 @@ const update = async (req, res, next) => {
 
 const remove = async (req, res, next) => {
     try {
+        const id = req.params.id;
+        await projectService.remove(id);
+
+        res.status(200).json({
+            message: "Success",
+            success: true,
+        });
 
     } catch (error) {
         next(error);
@@ -39,5 +74,9 @@ const remove = async (req, res, next) => {
 }
 
 export default {
-    create
+    getAll,
+    get,
+    create,
+    update,
+    remove
 }
