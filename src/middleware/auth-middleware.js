@@ -1,4 +1,4 @@
-import { prismaClinet } from "../application/database.js";
+import { prismaClient } from "../application/database.js";
 import authService from "../service/auth-service.js"
 
 
@@ -10,7 +10,7 @@ export const authMiddleware = async (req, res, next) => {
             errors: 'Unauthorized'
         }).end();
     } else {
-        const user = await prismaClinet.user.findFirst({
+        const user = await prismaClient.user.findFirst({
             where: {
                 token: token
             }

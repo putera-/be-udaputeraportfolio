@@ -1,4 +1,4 @@
-import { prismaClinet } from "../application/database.js";
+import { prismaClient } from "../application/database.js";
 import { ResponseError } from "../error/response-error.js";
 import { isEmail } from "../validation/all-validation.js";
 import { updateUserValidation } from "../validation/user-validation.js"
@@ -8,7 +8,7 @@ import bcrypt from 'bcrypt'
 const get = async (email) => {
     const checkEmail = validate(isEmail, email);
 
-    const user = await prismaClinet.user.findUnique({
+    const user = await prismaClient.user.findUnique({
         where: {
             email: checkEmail
         },
@@ -28,7 +28,7 @@ const get = async (email) => {
 const update = async (email, request) => {
     const user = validate(updateUserValidation, request);
 
-    const countUser = await prismaClinet.user.count({
+    const countUser = await prismaClient.user.count({
         where: {
             email: email
         }
@@ -46,7 +46,7 @@ const update = async (email, request) => {
         data_update.password = await bcrypt.hash(user.password, 10);
     }
 
-    return prismaClinet.user.update({
+    return prismaClient.user.update({
         where: {
             email: email
         },

@@ -1,4 +1,4 @@
-import { prismaClinet } from "../application/database.js";
+import { prismaClient } from "../application/database.js";
 import { ResponseError } from "../error/response-error.js";
 import { isEmail } from "../validation/all-validation.js";
 import { authValidation } from "../validation/auth-validation.js";
@@ -12,7 +12,7 @@ const maxAge = 24 * 60 * 60;
 const login = async (request, res) => {
     const loginRequest = validate(authValidation, request);
 
-    const user = await prismaClinet.user.findUnique({
+    const user = await prismaClient.user.findUnique({
         where: {
             email: loginRequest.email
         },
@@ -45,7 +45,7 @@ const login = async (request, res) => {
 const logout = async (email) => {
     email = validate(isEmail, email);
 
-    const user = await prismaClinet.user.findUnique({
+    const user = await prismaClient.user.findUnique({
         where: {
             email: email
         }
@@ -55,7 +55,7 @@ const logout = async (email) => {
         throw new ResponseError(404, 'User not found');
     }
 
-    return prismaClinet.user.update({
+    return prismaClient.user.update({
         where: {
             email: email
         },
@@ -95,7 +95,7 @@ const verify_token = (res, token) => {
 }
 
 const save_token = async (email, token) => {
-    return await prismaClinet.user.update({
+    return await prismaClient.user.update({
         data: {
             token: token
         },

@@ -1,4 +1,4 @@
-import { prismaClinet } from "../application/database.js";
+import { prismaClient } from "../application/database.js";
 import { validate } from "../validation/validation.js";
 import { profileValidate } from "../validation/profile-validation.js";
 
@@ -16,7 +16,7 @@ const _select = {
 }
 
 const get = async (request) => {
-    return prismaClinet.profile.findFirst({
+    return prismaClient.profile.findFirst({
         select: _select
     });
 }
@@ -30,16 +30,16 @@ const update = async (data) => {
 }
 
 const create_or_update_profile = async (data) => {
-    let profile = await prismaClinet.profile.findFirst();
+    let profile = await prismaClient.profile.findFirst();
 
     if (profile) {
-        profile = await prismaClinet.profile.update({
+        profile = await prismaClient.profile.update({
             where: { email: profile.email },
             data,
             select: _select
         });
     } else {
-        profile = await prismaClinet.profile.create({
+        profile = await prismaClient.profile.create({
             data,
             select: _select
         });
