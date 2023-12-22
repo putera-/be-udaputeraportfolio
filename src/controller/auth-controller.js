@@ -2,12 +2,12 @@ import authService from "../service/auth-service.js"
 
 const login = async (req, res, next) => {
     try {
-        const result = await authService.login(req.body, res);
+        const data = await authService.login(req.body, res);
 
         res.status(200).json({
             message: "Success",
             success: true,
-            data: result
+            data
         });
     } catch (error) {
         next(error)
@@ -16,7 +16,7 @@ const login = async (req, res, next) => {
 
 const logout = async (req, res, next) => {
     try {
-        const result = await authService.logout(req.user.email);
+        await authService.logout(req.user.email);
 
         res.status(200).json({
             message: "Success",

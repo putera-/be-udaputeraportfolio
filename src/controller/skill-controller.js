@@ -6,7 +6,7 @@ const getAll = async (req, res, next) => {
         res.status(200).json({
             message: "Success",
             success: true,
-            data: data
+            data
         });
     } catch (error) {
         next(error);
@@ -19,7 +19,7 @@ const get = async (req, res, next) => {
         res.status(200).json({
             message: "Success",
             success: true,
-            data: data
+            data
         });
     } catch (error) {
         next(error);
@@ -46,7 +46,7 @@ const update = async (req, res, next) => {
         res.status(200).json({
             message: "Success",
             success: true,
-            data: data
+            data
         });
     } catch (error) {
         next(error);
