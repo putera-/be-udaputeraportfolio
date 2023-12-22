@@ -1,7 +1,7 @@
 import { prismaClinet } from "../application/database.js";
 import { ResponseError } from "../error/response-error.js";
+import { isEmail } from "../validation/all-validation.js";
 import { authValidation } from "../validation/auth-validation.js";
-import { emailValidation } from "../validation/user-validation.js";
 import { validate } from "../validation/validation.js"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -43,7 +43,7 @@ const login = async (request, res) => {
 }
 
 const logout = async (email) => {
-    email = validate(emailValidation, email);
+    email = validate(isEmail, email);
 
     const user = await prismaClinet.user.findUnique({
         where: {

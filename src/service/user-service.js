@@ -1,11 +1,12 @@
 import { prismaClinet } from "../application/database.js";
 import { ResponseError } from "../error/response-error.js";
-import { emailValidation, updateUserValidation } from "../validation/user-validation.js"
+import { isEmail } from "../validation/all-validation.js";
+import { updateUserValidation } from "../validation/user-validation.js"
 import { validate } from "../validation/validation.js"
 import bcrypt from 'bcrypt'
 
 const get = async (email) => {
-    const checkEmail = validate(emailValidation, email);
+    const checkEmail = validate(isEmail, email);
 
     const user = await prismaClinet.user.findUnique({
         where: {

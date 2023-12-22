@@ -4,6 +4,7 @@ import { authMiddleware } from "../middleware/auth-middleware.js";
 import authController from "../controller/auth-controller.js";
 import skillController from "../controller/skill-controller.js";
 import educationController from "../controller/education-controller.js";
+import profileController from "../controller/profile-controller.js";
 
 const apiRouter = new express.Router();
 apiRouter.use(authMiddleware);
@@ -14,6 +15,9 @@ apiRouter.delete('/logout', authController.logout);
 // USER
 apiRouter.get('/user', userController.get);
 apiRouter.patch('/user', userController.update);
+
+// PROFILE
+apiRouter.put('/profile', profileController.update);
 
 // SKILL
 apiRouter.get('/skills', skillController.getAll);

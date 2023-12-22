@@ -4,7 +4,7 @@ import authController from "../controller/auth-controller.js";
 
 const publicRouter = new express.Router();
 
-publicRouter.get('/profile', profileController.getProfile);
+publicRouter.get('/profile', profileController.get);
 publicRouter.post('/login', authController.login);
 
 export {

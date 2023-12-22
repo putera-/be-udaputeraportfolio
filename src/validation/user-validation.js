@@ -1,7 +1,5 @@
 import Joi from "joi";
 
-const emailValidation = Joi.string().email().max(100).trim().required();
-
 const updateUserValidation = Joi.object({
     name: Joi.string().min(3).max(100).trim().required(),
     password: Joi.string().min(6).max(100).trim().optional(),
@@ -17,6 +15,5 @@ const updateUserValidation = Joi.object({
 });
 
 export {
-    emailValidation,
     updateUserValidation
 }
