@@ -35,11 +35,11 @@ const create = async (request) => {
     category_title = validate(skillCategoryValidation, category_title);
 
     // find or create category
-    const { id: category_id } = await find_or_create_category(category_title);
+    const { id: categoryId } = await find_or_create_category(category_title);
 
     const data_skill = {
         title,
-        category_id
+        categoryId
     }
     return prismaClinet.skill.create({
         data: data_skill,
@@ -62,11 +62,11 @@ const update = async (id, data) => {
     if (!current_skill) throw new ResponseError(404, "Skill not found!");
 
     // find or create category
-    const { id: category_id } = await find_or_create_category(category_title);
+    const { id: categoryId } = await find_or_create_category(category_title);
 
     const data_skill = {
         title,
-        category_id
+        categoryId
     };
 
     return prismaClinet.skill.update({

@@ -44,10 +44,10 @@ model SkillCategory {
 }
 
 model Skill {
-  id          Int           @id @default(autoincrement())
-  title       String        @db.VarChar(100)
-  category_id Int           @db.Int
-  category    SkillCategory @relation(fields: [category_id], references: [id])
+  id         Int           @id @default(autoincrement())
+  title      String        @db.VarChar(100)
+  categoryId Int           @db.Int
+  category   SkillCategory @relation(fields: [categoryId], references: [id])
 
   @@map("skill")
 }
