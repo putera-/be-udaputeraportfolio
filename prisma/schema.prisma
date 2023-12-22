@@ -51,3 +51,16 @@ model Skill {
 
   @@map("skill")
 }
+
+model Education {
+  id              Int      @id @default(autoincrement())
+  institutionName String   @db.VarChar(100)
+  startYear       Int      @db.Year
+  endYear         Int?     @db.Year
+  major           String?  @db.VarChar(100)
+  degree          String?  @db.VarChar(100)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("education")
+}
