@@ -12,6 +12,7 @@ const getAll = async (req, res, next) => {
         next(error);
     }
 }
+
 const get = async (req, res, next) => {
     try {
         const data = await skillService.get(req.params.id)
@@ -40,8 +41,8 @@ const create = async (req, res, next) => {
 
 const update = async (req, res, next) => {
     try {
-        req.body.id = req.params.id;
-        const data = await skillService.update(req.body)
+        const id = req.params.id;
+        const data = await skillService.update(id, req.body)
         res.status(200).json({
             message: "Success",
             success: true,

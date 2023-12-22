@@ -20,7 +20,17 @@ const getAll = async () => {
 const get = async (id) => {
     id = validate(isID, id);
 
-    const education = await prismaClinet.education.findUnique({ where: { id } })
+    const education = await prismaClinet.education.findUnique({
+        where: { id },
+        select: {
+            id: true,
+            institutionName: true,
+            startYear: true,
+            endYear: true,
+            major: true,
+            degree: true,
+        }
+    })
 
     if (!education) throw new ResponseError(404, "Education not found!");
 
@@ -47,14 +57,15 @@ const update = async (id, data) => {
     id = validate(isID, id);
     data = validate(educationValidation, data);
 
-    const education = await prismaClinet.education.findUnique({ where: { id } });
+    const education = await prismaClinet.education.findUnique({
+        where: { id },
+        select: { id: true }
+    });
 
     if (!education) throw new ResponseError(404, "Education not found!");
 
     return prismaClinet.education.update({
-        where: {
-            id: id
-        },
+        where: { id },
         data: data,
         select: {
             id: true,
@@ -71,7 +82,10 @@ const update = async (id, data) => {
 const remove = async (id) => {
     id = validate(isID, id);
 
-    const education = await prismaClinet.education.findUnique({ where: { id } })
+    const education = await prismaClinet.education.findUnique({
+        where: { id },
+        select: { id: true }
+    })
 
     if (!education) throw new ResponseError(404, "Education not found!");
 

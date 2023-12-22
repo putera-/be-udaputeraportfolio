@@ -1,26 +1,22 @@
 import { prismaClinet } from "../application/database.js"
 import { ResponseError } from "../error/response-error.js";
-import { istruthy } from "../validation/all-validation.js";
-import { skillCategoryValidation, skillIdValidation, skillTitleValidation, skillValidation } from "../validation/skill-validation.js"
+import { isID, istruthy } from "../validation/all-validation.js";
+import { skillCategoryValidation, skillTitleValidation, skillValidation } from "../validation/skill-validation.js"
 import { validate } from "../validation/validation.js";
 
 const getAll = async (req) => {
     const category = validate(istruthy, req.query.category);
 
     return prismaClinet.skill.findMany({
-        include: {
-            category: category
-        }
+        include: { category }
     });
 }
 
 const get = async (id) => {
-    id = validate(skillIdValidation, id);
+    id = validate(isID, id);
 
     const skill = await prismaClinet.skill.findUnique({
-        where: {
-            id: id
-        },
+        where: { id },
         select: {
             id: true,
             title: true,
@@ -28,24 +24,22 @@ const get = async (id) => {
         }
     });
 
-    if (!skill) {
-        throw new ResponseError(404, "Skill not found!")
-    }
+    if (!skill) throw new ResponseError(404, "Skill not found!");
 
     return skill;
 }
 
 const create = async (request) => {
-    let { title: skill, category: category_title } = request;
-    skill = validate(skillTitleValidation, skill);
+    let { title, category: category_title } = request;
+    title = validate(skillTitleValidation, title);
     category_title = validate(skillCategoryValidation, category_title);
 
     // find or create category
-    const category = await find_or_create_category(category_title);
+    const { id: category_id } = await find_or_create_category(category_title);
 
     const data_skill = {
-        title: skill,
-        category_id: category.id
+        title,
+        category_id
     }
     return prismaClinet.skill.create({
         data: data_skill,
@@ -57,33 +51,26 @@ const create = async (request) => {
     });
 }
 
-const update = async (request) => {
-    let { id, title: skill, category: category_title } = validate(skillValidation, request);
+const update = async (id, data) => {
+    id = validate(isID, id);
+    let { title, category: category_title } = validate(skillValidation, data);
 
     const current_skill = await prismaClinet.skill.findUnique({
-        where: {
-            id: id
-        },
-        select: {
-            id: true
-        }
+        where: { id },
+        select: { id: true }
     })
-    if (!current_skill) {
-        throw new ResponseError(404, "Skill not found!")
-    }
+    if (!current_skill) throw new ResponseError(404, "Skill not found!");
 
     // find or create category
-    const category = await find_or_create_category(category_title);
+    const { id: category_id } = await find_or_create_category(category_title);
 
     const data_skill = {
-        title: skill,
-        category_id: category.id
+        title,
+        category_id
     };
 
     return prismaClinet.skill.update({
-        where: {
-            id: id
-        },
+        where: { id },
         data: data_skill,
         select: {
             id: true,
@@ -94,20 +81,14 @@ const update = async (request) => {
 }
 
 const remove = async (id) => {
-    id = validate(skillIdValidation, id);
+    id = validate(isID, id);
 
     const skill = await prismaClinet.skill.findUnique({
-        where: {
-            id: id
-        },
-        select: {
-            id: true
-        }
+        where: { id },
+        select: { id: true }
     });
 
-    if (!skill) {
-        throw new ResponseError(404, "Skill not found!")
-    }
+    if (!skill) throw new ResponseError(404, "Skill not found!");
 
     return prismaClinet.skill.delete({
         where: {
@@ -118,22 +99,14 @@ const remove = async (id) => {
 
 const find_or_create_category = async (title) => {
     let category = await prismaClinet.skillCategory.findUnique({
-        where: {
-            title: title
-        },
-        select: {
-            id: true
-        }
+        where: { title },
+        select: { id: true }
     });
 
     if (!category) {
         category = await prismaClinet.skillCategory.create({
-            data: {
-                title: title
-            },
-            select: {
-                id: true
-            }
+            data: { title },
+            select: { id: true }
         });
     }
 
