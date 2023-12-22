@@ -32,7 +32,7 @@ const create = async (req, res, next) => {
         res.status(200).json({
             message: "Success",
             success: true,
-            data: data
+            data
         });
     } catch (error) {
         next(error);
