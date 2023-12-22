@@ -11,34 +11,40 @@ datasource db {
 }
 
 model User {
-  email    String  @id @db.VarChar(100)
-  password String  @db.VarChar(100)
-  name     String  @db.VarChar(100)
-  token    String? @db.VarChar(200)
+  email     String   @id @db.VarChar(100)
+  password  String   @db.VarChar(100)
+  name      String   @db.VarChar(100)
+  token     String?  @db.VarChar(200)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@map("user")
 }
 
 model Profile {
-  firstname String  @db.VarChar(100)
-  lastname  String  @db.VarChar(100)
-  email     String  @id @db.VarChar(100)
-  bio       String? @db.Text
-  web       String? @db.Text
-  github    String? @db.Text
-  gitlab    String? @db.Text
-  linkedin  String? @db.Text
-  instagram String? @db.Text
-  facebook  String? @db.Text
-  twitter   String? @db.Text
+  firstname String   @db.VarChar(100)
+  lastname  String   @db.VarChar(100)
+  email     String   @id @db.VarChar(100)
+  bio       String?  @db.Text
+  web       String?  @db.VarChar(100)
+  github    String?  @db.VarChar(100)
+  gitlab    String?  @db.VarChar(100)
+  linkedin  String?  @db.VarChar(100)
+  instagram String?  @db.VarChar(100)
+  facebook  String?  @db.VarChar(100)
+  twitter   String?  @db.VarChar(100)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@map("profile")
 }
 
 model SkillCategory {
-  id     Int     @id @default(autoincrement())
-  title  String  @unique @db.VarChar(100)
-  skills Skill[]
+  id        Int      @id @default(autoincrement())
+  title     String   @unique @db.VarChar(100)
+  skills    Skill[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@map("skill_category")
 }
@@ -48,6 +54,8 @@ model Skill {
   title      String        @db.VarChar(100)
   categoryId Int           @db.Int
   category   SkillCategory @relation(fields: [categoryId], references: [id])
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @default(now()) @updatedAt
 
   @@map("skill")
 }
