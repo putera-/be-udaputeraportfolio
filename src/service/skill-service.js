@@ -1,7 +1,7 @@
 import { prismaClinet } from "../application/database.js"
 import { ResponseError } from "../error/response-error.js";
-import { isID, istruthy } from "../validation/all-validation.js";
-import { skillCategoryValidation, skillTitleValidation, skillValidation } from "../validation/skill-validation.js"
+import { isID, isString, istruthy } from "../validation/all-validation.js";
+import { skillCategoryValidation, skillValidation } from "../validation/skill-validation.js"
 import { validate } from "../validation/validation.js";
 
 const getAll = async (req) => {
@@ -31,7 +31,7 @@ const get = async (id) => {
 
 const create = async (request) => {
     let { title, category: category_title } = request;
-    title = validate(skillTitleValidation, title);
+    title = validate(isString, title);
     category_title = validate(skillCategoryValidation, category_title);
 
     // find or create category

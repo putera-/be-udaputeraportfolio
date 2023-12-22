@@ -1,9 +1,10 @@
 import Joi from "joi";
+import { isPassword, isString } from "./all-validation.js";
 
 const updateUserValidation = Joi.object({
-    name: Joi.string().min(3).max(100).trim().required(),
-    password: Joi.string().min(6).max(100).trim().optional(),
-    password_confirm: Joi.string().min(6).max(100).trim().optional()
+    name: isString,
+    password: isPassword,
+    password_confirm: isPassword
 }).custom((value, helpers) => {
     if (value.password !== value.password_confirm) {
         return helpers.error("register.password.different")

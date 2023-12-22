@@ -1,5 +1,3 @@
-// require('dotenv').config();
-
 import { app } from "./application/app.js";
 // import { logger } from "./application/logging";
 
