@@ -14,30 +14,35 @@ apiRouter.use(authMiddleware);
 apiRouter.delete('/logout', authController.logout);
 
 // USER
-apiRouter.get('/user', userController.get);
-apiRouter.patch('/user', userController.update);
+apiRouter.route('/user')
+    .get(userController.get)
+    .patch(userController.update);
 
 // PROFILE
 apiRouter.put('/profile', profileController.update);
 
 // SKILL
 apiRouter.get('/skills', skillController.getAll);
-apiRouter.get('/skill/:id', skillController.get);
 apiRouter.post('/skill', skillController.create);
-apiRouter.put('/skill/:id', skillController.update);
-apiRouter.delete('/skill/:id', skillController.remove);
+apiRouter.route('/skill/:id')
+    .get(skillController.get)
+    .put(skillController.update)
+    .delete(skillController.remove);
+
 
 // EDUCATION
 apiRouter.get('/educations', educationController.getAll);
-apiRouter.get('/education/:id', educationController.get);
 apiRouter.post('/education', educationController.create);
-apiRouter.put('/education/:id', educationController.update);
-apiRouter.delete('/education/:id', educationController.remove);
+apiRouter.route('/education/:id')
+    .get(educationController.get)
+    .put(educationController.update)
+    .delete(educationController.remove);
 
 // PROJECT
 apiRouter.post('/project', projectController.create);
-apiRouter.put('/project/:id', projectController.update);
-apiRouter.delete('/project/:id', projectController.remove);
+apiRouter.route('/project/:id')
+    .put(projectController.update)
+    .delete(projectController.remove);
 
 export {
     apiRouter
