@@ -40,7 +40,7 @@ title (VARCHAR(255), NOT NULL)
 
 -- educations -> riwayat pendidikan
 id (INT, PRIMARY KEY AUTO_INCREMENT)
-name (VARCHAR(255), NOT NULL)
+institutionName (VARCHAR(255), NOT NULL)
 major (VARCHAR(255), NOT NULL)
 degree (VARCHAR(255))
 graduation_year (INT)
