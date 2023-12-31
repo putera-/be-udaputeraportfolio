@@ -17,11 +17,7 @@ const get = async (id) => {
 
     const skill = await prismaClient.skill.findUnique({
         where: { id },
-        select: {
-            id: true,
-            title: true,
-            category: true
-        }
+        include: { category: true }
     });
 
     if (!skill) throw new ResponseError(404, "Skill not found!");
@@ -43,11 +39,7 @@ const create = async (request) => {
     }
     return prismaClient.skill.create({
         data: data_skill,
-        select: {
-            id: true,
-            title: true,
-            category: true
-        }
+        include: { category: true }
     });
 }
 
@@ -72,11 +64,7 @@ const update = async (id, data) => {
     return prismaClient.skill.update({
         where: { id },
         data: data_skill,
-        select: {
-            id: true,
-            title: true,
-            category: true
-        }
+        include: { category: true }
     })
 }
 
