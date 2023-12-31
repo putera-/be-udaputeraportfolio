@@ -13,6 +13,7 @@ const get = async (req, res, next) => {
 
 const update = async (req, res, next) => {
     try {
+        // got email from middleware
         const email = req.user.email;
         const data = await userService.update(email, req.body);
 

@@ -6,12 +6,10 @@ import { validate } from "../validation/validation.js"
 import bcrypt from 'bcrypt'
 
 const get = async (email) => {
-    const checkEmail = validate(isEmail, email);
+    email = validate(isEmail, email);
 
     const user = await prismaClient.user.findUnique({
-        where: {
-            email: checkEmail
-        },
+        where: { email },
         select: {
             name: true,
             email: true
@@ -26,31 +24,24 @@ const get = async (email) => {
 }
 
 const update = async (email, request) => {
-    const user = validate(updateUserValidation, request);
+    const { name, password } = validate(updateUserValidation, request);
 
     const countUser = await prismaClient.user.count({
-        where: {
-            email: email
-        }
+        where: { email }
     });
 
     if (!countUser) {
         throw new ResponseError(404, "User nor found")
     }
 
-    let data_update = {
-        name: user.name
-    };
-
-    if (user.password) {
-        data_update.password = await bcrypt.hash(user.password, 10);
+    let data = { name };
+    if (password) {
+        data.password = await bcrypt.hash(password, 10);
     }
 
     return prismaClient.user.update({
-        where: {
-            email: email
-        },
-        data: data_update,
+        where: { email },
+        data,
         select: {
             name: true,
             email: true
