@@ -6,18 +6,6 @@ import { validate } from "../validation/validation.js"
 import dateService from "./date-service.js"
 import { ResponseError } from "../error/response-error.js"
 
-const select = {
-    id: true,
-    title: true,
-    description: true,
-    url: true,
-    github: true,
-    gitlab: true,
-    startDate: true,
-    endDate: true,
-    status: true
-}
-
 const getAll = async () => {
     let projects = await prismaClient.project.findMany();
 
@@ -32,8 +20,7 @@ const get = async (id) => {
     id = validate(isID, id);
 
     const project = await prismaClient.project.findUnique({
-        where: { id },
-        select
+        where: { id }
     });
 
     if (!project) throw new ResponseError(404, "Project not found!");
@@ -47,10 +34,7 @@ const create = async (data) => {
     data.startDate = dateService.toLocaleDate(data.startDate);
     if (data.endDate) data.endDate = dateService.toLocaleDate(data.endDate);
 
-    let project = await prismaClient.project.create({
-        data,
-        select
-    });
+    let project = await prismaClient.project.create({ data });
 
     return formatData(project);
 }
@@ -71,8 +55,7 @@ const update = async (id, data) => {
 
     const project = await prismaClient.project.update({
         where: { id },
-        data,
-        select
+        data
     });
 
     return formatData(project);
