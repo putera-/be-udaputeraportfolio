@@ -10,12 +10,10 @@ const jwtSecret = process.env.JWT_SECRET;
 const maxAge = 24 * 60 * 60;
 
 const login = async (request, res) => {
-    const loginRequest = validate(authValidation, request);
+    const { email, password } = validate(authValidation, request);
 
     const user = await prismaClient.user.findUnique({
-        where: {
-            email: loginRequest.email
-        },
+        where: { email },
         select: {
             name: true,
             email: true,
@@ -27,28 +25,26 @@ const login = async (request, res) => {
         throw new ResponseError(401, "Invalid Credential")
     }
 
-    const isPasswordValid = await bcrypt.compare(loginRequest.password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
         throw new ResponseError(401, "Invalid Credential")
     }
 
     // creat token
-    const token = create_token(user.email);
+    const token = create_token(email);
 
     // save token to cookie
     set_cookie(res, token);
 
     // this will return user data
-    return save_token(loginRequest.email, token);
+    return save_token(email, token);
 }
 
 const logout = async (email) => {
     email = validate(isEmail, email);
 
     const user = await prismaClient.user.findUnique({
-        where: {
-            email: email
-        }
+        where: { email }
     });
 
     if (!user) {
@@ -56,9 +52,7 @@ const logout = async (email) => {
     }
 
     return prismaClient.user.update({
-        where: {
-            email: email
-        },
+        where: { email },
         data: {
             token: null
         },
@@ -96,12 +90,8 @@ const verify_token = (res, token) => {
 
 const save_token = async (email, token) => {
     return await prismaClient.user.update({
-        data: {
-            token: token
-        },
-        where: {
-            email: email
-        },
+        data: { token },
+        where: { email },
         select: {
             name: true,
             email: true,
