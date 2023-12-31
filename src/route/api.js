@@ -22,19 +22,15 @@ apiRouter.route('/user')
 apiRouter.put('/profile', profileController.update);
 
 // SKILL
-apiRouter.get('/skills', skillController.getAll);
 apiRouter.post('/skill', skillController.create);
 apiRouter.route('/skill/:id')
-    .get(skillController.get)
     .put(skillController.update)
     .delete(skillController.remove);
 
 
 // EDUCATION
-apiRouter.get('/educations', educationController.getAll);
 apiRouter.post('/education', educationController.create);
 apiRouter.route('/education/:id')
-    .get(educationController.get)
     .put(educationController.update)
     .delete(educationController.remove);
 

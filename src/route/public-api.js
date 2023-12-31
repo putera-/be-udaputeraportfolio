@@ -2,6 +2,8 @@ import express from "express"
 import profileController from "../controller/profile-controller.js";
 import authController from "../controller/auth-controller.js";
 import projectController from "../controller/project-controller.js";
+import skillController from "../controller/skill-controller.js";
+import educationController from "../controller/education-controller.js";
 
 const publicRouter = new express.Router();
 
@@ -14,6 +16,14 @@ publicRouter.get('/profile', profileController.get);
 // PROJECT
 publicRouter.get('/projects', projectController.getAll);
 publicRouter.get('/project/:id', projectController.get);
+
+// SKILL
+publicRouter.get('/skills', skillController.getAll);
+publicRouter.get('/skill/:id', skillController.get)
+
+// EDUCATION
+publicRouter.get('/educations', educationController.getAll);
+publicRouter.get('/education/:id', educationController.get)
 
 export {
     publicRouter
