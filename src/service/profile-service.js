@@ -15,10 +15,19 @@ const _select = {
     twitter: true,
 }
 
-const get = async (request) => {
-    return prismaClient.profile.findFirst({
-        select: _select
-    });
+const get = async () => {
+    const profile = await prismaClient.profile.findFirst();
+    if (!profile) {
+        return {
+            "firstname": "-",
+            "lastname": "-",
+            "email": "-",
+            'dob': '1900-01-01',
+            'address': '-'
+        }
+    }
+
+    return profile;
 }
 
 const update = async (data) => {
@@ -35,13 +44,11 @@ const create_or_update_profile = async (data) => {
     if (profile) {
         profile = await prismaClient.profile.update({
             where: { email: profile.email },
-            data,
-            select: _select
+            data
         });
     } else {
         profile = await prismaClient.profile.create({
-            data,
-            select: _select
+            data
         });
     }
     return profile;
