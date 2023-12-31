@@ -6,6 +6,7 @@ import skillController from "../controller/skill-controller.js";
 import educationController from "../controller/education-controller.js";
 import profileController from "../controller/profile-controller.js";
 import projectController from "../controller/project-controller.js";
+import blogController from "../controller/blog-controller.js";
 
 const apiRouter = new express.Router();
 apiRouter.use(authMiddleware);
@@ -39,6 +40,12 @@ apiRouter.post('/project', projectController.create);
 apiRouter.route('/project/:id')
     .put(projectController.update)
     .delete(projectController.remove);
+
+// BLOG
+apiRouter.post('/blog', blogController.create);
+apiRouter.route('/blog/:id')
+    .put(blogController.update)
+    .delete(blogController.remove);
 
 export {
     apiRouter

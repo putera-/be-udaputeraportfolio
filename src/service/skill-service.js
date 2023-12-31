@@ -65,7 +65,7 @@ const update = async (id, data) => {
         where: { id },
         data: data_skill,
         include: { category: true }
-    })
+    });
 }
 
 const remove = async (id) => {
