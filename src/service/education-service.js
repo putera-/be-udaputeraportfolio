@@ -6,14 +6,9 @@ import { validate } from "../validation/validation.js"
 
 const getAll = async () => {
     return prismaClient.education.findMany({
-        select: {
-            id: true,
-            institutionName: true,
-            startYear: true,
-            endYear: true,
-            major: true,
-            degree: true,
-        }
+        orderBy: [{
+            startYear: 'desc'
+        }]
     });
 }
 
@@ -22,14 +17,6 @@ const get = async (id) => {
 
     const education = await prismaClient.education.findUnique({
         where: { id },
-        select: {
-            id: true,
-            institutionName: true,
-            startYear: true,
-            endYear: true,
-            major: true,
-            degree: true,
-        }
     })
 
     if (!education) throw new ResponseError(404, "Education not found!");
@@ -38,19 +25,9 @@ const get = async (id) => {
 }
 
 const create = async (data) => {
-    const education = validate(educationValidation, data);
+    data = validate(educationValidation, data);
 
-    return prismaClient.education.create({
-        data: education,
-        select: {
-            id: true,
-            institutionName: true,
-            startYear: true,
-            endYear: true,
-            major: true,
-            degree: true,
-        }
-    });
+    return prismaClient.education.create({ data });
 }
 
 const update = async (id, data) => {
@@ -66,15 +43,7 @@ const update = async (id, data) => {
 
     return prismaClient.education.update({
         where: { id },
-        data: data,
-        select: {
-            id: true,
-            institutionName: true,
-            startYear: true,
-            endYear: true,
-            major: true,
-            degree: true
-        }
+        data: data
     })
 
 }
