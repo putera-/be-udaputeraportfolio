@@ -6,11 +6,11 @@ describe("POST /blog", () => {
     let authCookie;
     let id;
 
-    beforeAll(async () => {
+    beforeEach(async () => {
         authCookie = await doLogin();
     });
 
-    afterAll(async () => {
+    afterEach(async () => {
         await doLogout(authCookie)
         authCookie = undefined;
     });
@@ -213,6 +213,29 @@ describe("POST /blog", () => {
         expect(result.status).toBe(200);
         expect(result.body.errors).toBeUndefined();
     });
+
+    it("should fail get blog: not found", async () => {
+        const result = await supertest(app)
+            .get('/blog/' + id)
+            .set('Cookie', authCookie);
+
+        expect(result.status).toBe(404);
+        expect(result.body.errors).toBeDefined();
+    });
+
+    it("should fail put blog: not found", async () => {
+        const result = await supertest(app)
+            .put('/blog/' + id)
+            .set('Cookie', authCookie)
+            .send({
+                title: "Test Updated",
+                content: "Test Updated"
+            });
+
+        expect(result.status).toBe(404);
+        expect(result.body.errors).toBeDefined();
+    });
+
     it("should fail delete blog: not found", async () => {
         const result = await supertest(app)
             .delete('/blog/' + id)

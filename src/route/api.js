@@ -28,7 +28,6 @@ apiRouter.route('/skill/:id')
     .put(skillController.update)
     .delete(skillController.remove);
 
-
 // EDUCATION
 apiRouter.post('/education', educationController.create);
 apiRouter.route('/education/:id')
