@@ -3,12 +3,14 @@ import supertest from "supertest";
 import { createTestUser, removeTestUser } from "./test-util.js"
 
 describe("POST /login", () => {
+    let authCookie;
     beforeAll(async () => {
         await createTestUser();
     });
 
     afterAll(async () => {
         await removeTestUser();
+        authCookie = undefined;
     });
 
     it("should can login", async () => {
@@ -18,6 +20,8 @@ describe("POST /login", () => {
                 email: "test@example.com",
                 password: "rahasia"
             });
+
+        authCookie = result.headers['set-cookie'];
 
         expect(result.status).toBe(200);
         expect(result.body.data).toBeDefined();
@@ -54,12 +58,24 @@ describe("POST /login", () => {
         expect(result.body.data).toBeUndefined();
     });
 
-    // FIXME how to send credential
-    // it("should logout", async () => {
-    //     const result = await supertest(app)
-    //         .delete('/logout');
-    //     console.log(result.body);
-    //     expect(result.status).toBe(200);
-    //     expect(result.body.success).toBe(true);
-    // });
+    it("should logout", async () => {
+        const result = await supertest(app)
+            .delete('/logout')
+            .set('Cookie', authCookie);
+
+        expect(result.status).toBe(200);
+        expect(result.body.success).toBeDefined();
+        expect(result.body.success).toBe(true);
+    });
+
+    it("should failed to logout", async () => {
+        const result = await supertest(app)
+            .delete('/logout')
+            .set('Cookie', 'wrong');
+
+        expect(result.status).toBe(401);
+        expect(result.body.errors).toBeDefined();
+        expect(result.body.errors).toBe("Unauthorized");
+        expect(result.body.data).toBeUndefined();
+    });
 });
