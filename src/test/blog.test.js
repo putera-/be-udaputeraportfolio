@@ -149,6 +149,60 @@ describe("POST /blog", () => {
             expect(result.body.errors).toBeDefined();
             expect(result.body.data).toBeUndefined();
         });
+
+        it("should fail update blog: no title", async () => {
+            const result = await supertest(app)
+                .put('/blog/' + id)
+                .set('Cookie', authCookie)
+                .send({
+                    content: "Test"
+                });
+
+            expect(result.status).toBe(400);
+            expect(result.body.errors).toBeDefined();
+            expect(result.body.data).toBeUndefined();
+        });
+
+        it("should fail update blog: no content", async () => {
+            const result = await supertest(app)
+                .put('/blog/' + id)
+                .set('Cookie', authCookie)
+                .send({
+                    title: "Test"
+                });
+
+            expect(result.status).toBe(400);
+            expect(result.body.errors).toBeDefined();
+            expect(result.body.data).toBeUndefined();
+        });
+
+        it("should fail update blog: title length", async () => {
+            const result = await supertest(app)
+                .put('/blog/' + id)
+                .set('Cookie', authCookie)
+                .send({
+                    title: "aa",
+                    content: "Test"
+                });
+
+            expect(result.status).toBe(400);
+            expect(result.body.errors).toBeDefined();
+            expect(result.body.data).toBeUndefined();
+        });
+
+        it("should fail update blog: content length", async () => {
+            const result = await supertest(app)
+                .put('/blog/' + id)
+                .set('Cookie', authCookie)
+                .send({
+                    title: "Test",
+                    content: "aa"
+                });
+
+            expect(result.status).toBe(400);
+            expect(result.body.errors).toBeDefined();
+            expect(result.body.data).toBeUndefined();
+        });
     });
 
     it("should delete blog", async () => {
@@ -176,7 +230,6 @@ describe("POST /blog", () => {
                 title: "Test Updated",
                 content: "Test Updated"
             });
-        console.log(result.body)
 
         expect(result.status).toBe(404);
         expect(result.body.errors).toBeDefined();
