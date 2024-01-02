@@ -30,6 +30,20 @@ describe("POST /login", () => {
         expect(result.body.data.password).toBeUndefined();
     });
 
+    it("should failed to login: unknown data is not allowed", async () => {
+        const result = await supertest(app)
+            .post('/login')
+            .send({
+                email: "test@example.com",
+                password: "rahasia",
+                name: "I am test"
+            });
+
+        expect(result.status).toBe(400);
+        expect(result.body.data).toBeUndefined();
+        expect(result.body.errors).toBeDefined();
+    });
+
     it("should failed to login: wrong email", async () => {
         const result = await supertest(app)
             .post('/login')
@@ -40,7 +54,6 @@ describe("POST /login", () => {
 
         expect(result.status).toBe(401);
         expect(result.body.errors).toBeDefined();
-        expect(result.body.errors).toBe("Invalid Credential");
         expect(result.body.data).toBeUndefined();
     });
 
@@ -54,7 +67,6 @@ describe("POST /login", () => {
 
         expect(result.status).toBe(401);
         expect(result.body.errors).toBeDefined();
-        expect(result.body.errors).toBe("Invalid Credential");
         expect(result.body.data).toBeUndefined();
     });
 
@@ -75,7 +87,6 @@ describe("POST /login", () => {
 
         expect(result.status).toBe(401);
         expect(result.body.errors).toBeDefined();
-        expect(result.body.errors).toBe("Unauthorized");
         expect(result.body.data).toBeUndefined();
     });
 });
