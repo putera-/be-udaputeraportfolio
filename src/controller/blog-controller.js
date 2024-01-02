@@ -2,7 +2,7 @@ import blogService from "../service/blog-service.js"
 
 const getAll = async (req, res, next) => {
     try {
-        const data = await blogService.getAll(req)
+        const data = await blogService.getAll()
         res.status(200).json({ data });
     } catch (error) {
         next(error);

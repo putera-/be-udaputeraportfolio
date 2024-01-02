@@ -2,7 +2,7 @@ import supertest from "supertest";
 import { app } from "../application/app.js";
 import { doLogin, doLogout } from "./test-util.js";
 
-describe("POST /blog", () => {
+describe("/blog path", () => {
     let authCookie;
     let id;
 

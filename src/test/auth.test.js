@@ -2,7 +2,7 @@ import { app } from "../application/app.js";
 import supertest from "supertest";
 import { createTestUser, removeTestUser } from "./test-util.js"
 
-describe("POST /login", () => {
+describe("/login path", () => {
     let authCookie;
     beforeAll(async () => {
         await createTestUser();

@@ -8,7 +8,7 @@
     "dev": "nodemon src/main.js",
     "migrate-create": "npx prisma migrate dev --create-only",
     "migrate": "npx prisma migrate dev",
-    "test": "jest -i"
+    "test": "jest -i --coverage"
   },
   "jest": {
     "transform": {
