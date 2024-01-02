@@ -20,8 +20,10 @@ describe("POST /login", () => {
             });
 
         expect(result.status).toBe(200);
+        expect(result.body.data).toBeDefined();
         expect(result.body.data.name).toBe("Test User");
-        expect(result.body.data.email).toBe("test@example.com")
+        expect(result.body.data.email).toBe("test@example.com");
+        expect(result.body.data.password).toBeUndefined();
     });
 
     it("should failed to login: wrong email", async () => {
@@ -33,7 +35,9 @@ describe("POST /login", () => {
             });
 
         expect(result.status).toBe(401);
+        expect(result.body.errors).toBeDefined();
         expect(result.body.errors).toBe("Invalid Credential");
+        expect(result.body.data).toBeUndefined();
     });
 
     it("should failed to login: wrong password", async () => {
@@ -45,7 +49,9 @@ describe("POST /login", () => {
             });
 
         expect(result.status).toBe(401);
+        expect(result.body.errors).toBeDefined();
         expect(result.body.errors).toBe("Invalid Credential");
+        expect(result.body.data).toBeUndefined();
     });
 
     // FIXME how to send credential
