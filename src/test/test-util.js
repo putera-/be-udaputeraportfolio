@@ -1,11 +1,11 @@
 import { prismaClient } from "../application/database.js"
+import bcrypt from "bcrypt";
 
 export const createTestUser = async () => {
     const data = {
         name: "Test User",
         email: "test@example.com",
-        password: "rahasia",
-        token: "test"
+        password: await bcrypt.hash("rahasia", 10)
     };
     await prismaClient.user.create({
         data
