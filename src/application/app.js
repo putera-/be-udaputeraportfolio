@@ -27,7 +27,7 @@ if (process.env.NODE_ENV == 'development') {
 
 app.use(publicRouter);
 app.use(apiRouter);
-app.use(notFound);
 
-// handle error
+// error middleware
+app.use(notFound);
 app.use(errorMiddleware);
