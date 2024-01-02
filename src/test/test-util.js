@@ -7,17 +7,31 @@ export const createTestUser = async () => {
         email: "test@example.com",
         password: await bcrypt.hash("rahasia", 10)
     };
-    await prismaClient.user.create({
-        data
-    });
+    await prismaClient.user.create({ data });
 }
-
-// export const loginTestUser = async() => {
-
-// }
 
 export const removeTestUser = async () => {
     await prismaClient.user.delete({
         where: { email: "test@example.com" }
     })
+}
+
+export const doLogin = async () => {
+    await createTestUser();
+    const result = await supertest(app)
+        .post('/login')
+        .send({
+            email: "test@example.com",
+            password: "rahasia"
+        });
+
+    return result.headers['set-cookie'];
+}
+
+export const doLogout = async (authCookie) => {
+    const result = await supertest(app)
+        .delete('/logout')
+        .set('Cookie', authCookie);
+
+    await removeTestUser();
 }

@@ -24,6 +24,7 @@ describe("POST /login", () => {
         authCookie = result.headers['set-cookie'];
 
         expect(result.status).toBe(200);
+        expect(result.body.errors).toBeUndefined();
         expect(result.body.data).toBeDefined();
         expect(result.body.data.name).toBe("Test User");
         expect(result.body.data.email).toBe("test@example.com");
@@ -76,6 +77,7 @@ describe("POST /login", () => {
             .set('Cookie', authCookie);
 
         expect(result.status).toBe(200);
+        expect(result.body.errors).toBeUndefined();
         expect(result.body.success).toBeDefined();
         expect(result.body.success).toBe(true);
     });

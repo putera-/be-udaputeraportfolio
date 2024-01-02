@@ -1,15 +1,16 @@
 import supertest from "supertest";
 import { app } from "../application/app.js";
-import { createTestUser, removeTestUser } from "./test-util.js";
+import { doLogin, doLogout } from "./test-util.js";
 
-// TODO undone
 describe("POST /blog", () => {
+    let authCookie
     beforeAll(async () => {
-        createTestUser();
+        authCookie = doLogin();
 
     })
     afterAll(async () => {
-        removeTestUser();
+        doLogout()
+        authCookie = undefined;
     });
 
     it("should create new blog", async () => {
@@ -21,7 +22,10 @@ describe("POST /blog", () => {
             });
 
         expect(result.status).toBe(200);
-        expect(result.body.title).toBe("Test Title");
-        expect(result.body.content).toBe("Test Content");
+        expect(result.body.errors).toBeUndefined();
+        expect(result.body.data).toBeDefined();
+        expect(result.body.data.title).toBe("Test Title");
+        expect(result.body.data.content).toBe("Test Content");
+
     });
 });
