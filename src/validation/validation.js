@@ -1,5 +1,3 @@
-import { ResponseError } from "../error/response-error.js";
-
 const validate = (schema, request) => {
     const result = schema.validate(request, {
         abortEarly: false,
@@ -7,7 +5,7 @@ const validate = (schema, request) => {
     });
 
     if (result.error) {
-        throw new ResponseError(400, result.error.message);
+        throw result.error;
     } else {
         return result.value;
     }
