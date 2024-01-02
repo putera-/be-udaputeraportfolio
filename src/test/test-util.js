@@ -1,5 +1,7 @@
+import supertest from "supertest";
 import { prismaClient } from "../application/database.js"
 import bcrypt from "bcrypt";
+import { app } from "../application/app.js";
 
 export const createTestUser = async () => {
     const data = {
@@ -29,7 +31,7 @@ export const doLogin = async () => {
 }
 
 export const doLogout = async (authCookie) => {
-    const result = await supertest(app)
+    await supertest(app)
         .delete('/logout')
         .set('Cookie', authCookie);
 
