@@ -13,27 +13,60 @@ describe("POST /blog", () => {
         authCookie = undefined;
     });
 
-    it("should create new blog then delete", async () => {
-        const createResult = await supertest(app)
-            .post('/blog')
-            .set('Cookie', authCookie)
-            .send({
-                title: "Test Title",
-                content: "Test Content"
-            });
+    describe("should create new blog then delete", () => {
+        let id;
+        it("should create new Blog", async () => {
+            const result = await supertest(app)
+                .post('/blog')
+                .set('Cookie', authCookie)
+                .send({
+                    title: "Test Title",
+                    content: "Test Content"
+                });
+            id = result.body.data.id;
 
-        const deleteResult = await supertest(app)
-            .delete('/blog/' + createResult.body.data.id)
-            .set('Cookie', authCookie);
+            expect(result.status).toBe(200);
+            expect(result.body.errors).toBeUndefined();
+            expect(result.body.data).toBeDefined();
+            expect(result.body.data.title).toBe("Test Title");
+            expect(result.body.data.content).toBe("Test Content");
+        });
 
-        expect(createResult.status).toBe(200);
-        expect(createResult.body.errors).toBeUndefined();
-        expect(createResult.body.data).toBeDefined();
-        expect(createResult.body.data.title).toBe("Test Title");
-        expect(createResult.body.data.content).toBe("Test Content");
+        it("should get blog", async () => {
+            const result = await supertest(app)
+                .get('/blog/' + id);
 
-        expect(deleteResult.status).toBe(200);
-        expect(deleteResult.body.errors).toBeUndefined();
+            expect(result.status).toBe(200);
+            expect(result.body.errors).toBeUndefined();
+            expect(result.body.data).toBeDefined();
+            expect(result.body.data.title).toBe("Test Title");
+            expect(result.body.data.content).toBe("Test Content");
+        });
+
+        it("should update blog", async () => {
+            const result = await supertest(app)
+                .put('/blog/' + id)
+                .set('Cookie', authCookie)
+                .send({
+                    title: "Test Updated",
+                    content: "Test Updated",
+                });
+
+            expect(result.status).toBe(200);
+            expect(result.body.errors).toBeUndefined();
+            expect(result.body.data).toBeDefined();
+            expect(result.body.data.title).toBe("Test Updated");
+            expect(result.body.data.content).toBe("Test Updated");
+        });
+
+        it("should delete blog", async () => {
+            const result = await supertest(app)
+                .delete('/blog/' + id)
+                .set('Cookie', authCookie);
+
+            expect(result.status).toBe(200);
+            expect(result.body.errors).toBeUndefined();
+        });
     });
 
     it("should fail create new blog: no data", async () => {
