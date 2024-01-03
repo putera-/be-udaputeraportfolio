@@ -3,7 +3,7 @@ import { isString, isText, isURL } from "./all-validation.js";
 
 const projectValidation = Joi.object({
     title: isString,
-    description: isText,
+    description: isText.required(),
     url: isURL,
     github: isURL,
     gitlab: isURL,
