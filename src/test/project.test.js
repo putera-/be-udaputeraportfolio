@@ -33,7 +33,8 @@ describe("/project path", () => {
                 .send({
                     title: "Test Project",
                     description: "Test Project Description",
-                    startDate: startDate
+                    startDate: startDate,
+                    endDate: endDate
                 });
             id = result.body.data.id;
 
@@ -46,7 +47,7 @@ describe("/project path", () => {
             expect(result.body.data.github).toBe(null);
             expect(result.body.data.gitlab).toBe(null);
             expect(result.body.data.startDate).toBe(startDate);
-            expect(result.body.data.endDate).toBe(null);
+            expect(result.body.data.endDate).toBe(endDate);
             expect(result.body.data.status).toBe("ON PROGRESS");
             expect(result.body.data.company).toBe(null);
         });
@@ -64,7 +65,7 @@ describe("/project path", () => {
             expect(result.body.data.github).toBe(null);
             expect(result.body.data.gitlab).toBe(null);
             expect(result.body.data.startDate).toBe(startDate);
-            expect(result.body.data.endDate).toBe(null);
+            expect(result.body.data.endDate).toBe(endDate);
             expect(result.body.data.status).toBe("ON PROGRESS");
             expect(result.body.data.company).toBe(null);
         });
