@@ -1,6 +1,7 @@
 import { prismaClient } from "../application/database.js";
 import { validate } from "../validation/validation.js";
 import { profileValidate } from "../validation/profile-validation.js";
+import moment from "moment";
 
 const _select = {
     firstname: true,
@@ -16,9 +17,9 @@ const _select = {
 }
 
 const get = async () => {
-    const profile = await prismaClient.profile.findFirst();
+    let profile = await prismaClient.profile.findFirst();
     if (!profile) {
-        return {
+        profile = {
             "firstname": "-",
             "lastname": "-",
             "email": "-",
@@ -26,6 +27,8 @@ const get = async () => {
             'address': '-'
         }
     }
+
+    profile = formatData(profile);
 
     return profile;
 }
@@ -51,6 +54,16 @@ const create_or_update_profile = async (data) => {
             data
         });
     }
+
+    profile = formatData(profile);
+
+    return profile;
+}
+
+const formatData = (profile) => {
+    profile.dob = moment(profile.dob).format('YYYY-MM-DD');
+    profile.readDob = moment(profile.dob).format('D MMM YYYY');
+
     return profile;
 }
 
