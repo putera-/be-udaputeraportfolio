@@ -72,6 +72,19 @@ describe("/blog path", () => {
     });
 
     describe("Fail Create Blog", () => {
+        it("should fail create new blog: no auth", async () => {
+            const result = await supertest(app)
+                .post('/blog')
+                .send({
+                    title: "Test Title",
+                    content: "Test Content"
+                });
+
+            expect(result.status).toBe(401);
+            expect(result.body.errors).toBeDefined();
+            expect(result.body.data).toBeUndefined();
+        });
+
         it("should fail create new blog: no data", async () => {
             const result = await supertest(app)
                 .post('/blog')
@@ -139,6 +152,19 @@ describe("/blog path", () => {
     });
 
     describe("Fail Update Blog", () => {
+        it("should fail update blog: no auth", async () => {
+            const result = await supertest(app)
+                .put('/blog/' + id)
+                .send({
+                    title: "Test Title",
+                    content: "Test Content"
+                });
+
+            expect(result.status).toBe(401);
+            expect(result.body.errors).toBeDefined();
+            expect(result.body.data).toBeUndefined();
+        });
+
         it("should fail update blog: no data", async () => {
             const result = await supertest(app)
                 .put('/blog/' + id)
@@ -203,6 +229,14 @@ describe("/blog path", () => {
             expect(result.body.errors).toBeDefined();
             expect(result.body.data).toBeUndefined();
         });
+    });
+
+    it("should fail delete blog: no auth", async () => {
+        const result = await supertest(app)
+            .delete('/blog/' + id);
+
+        expect(result.status).toBe(401);
+        expect(result.body.errors).toBeDefined();
     });
 
     it("should delete blog", async () => {
