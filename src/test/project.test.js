@@ -208,34 +208,68 @@ describe("/project path", () => {
             expect(result.body.data).toBeUndefined();
         });
 
-        //     it(`should fail create new ${page}: startYear error / next date`, async () => {
-        //         const result = await supertest(app)
-        //             .post(path)
-        //             .set('Cookie', authCookie)
-        //             .send({
-        //                 institutionName: "Test Education",
-        //                 startYear: new Date().getFullYear() + 1
-        //             });
+        it(`should fail create new ${page}: startYear error / next date`, async () => {
+            const result = await supertest(app)
+                .post(path)
+                .set('Cookie', authCookie)
+                .send({
+                    title: "Test Project",
+                    description: "Test Project Description",
+                    startDate: nextDate
+                });
 
-        //         expect(result.status).toBe(400);
-        //         expect(result.body.errors).toBeDefined();
-        //         expect(result.body.data).toBeUndefined();
-        //     });
+            expect(result.status).toBe(400);
+            expect(result.body.errors).toBeDefined();
+            expect(result.body.data).toBeUndefined();
+        });
 
-        //     it(`should fail create new ${page}: endYear error / next year`, async () => {
-        //         const result = await supertest(app)
-        //             .post(path)
-        //             .set('Cookie', authCookie)
-        //             .send({
-        //                 institutionName: "Test Education",
-        //                 startYear: new Date().getFullYear(),
-        //                 endYear: new Date().getFullYear() + 1
-        //             });
+        it(`should fail create new ${page}: endDate error / greater than startDate`, async () => {
+            const result = await supertest(app)
+                .post(path)
+                .set('Cookie', authCookie)
+                .send({
+                    title: "Test Project",
+                    description: "Test Project Description",
+                    startDate: startDate,
+                    endDate: nextDate
+                });
 
-        //         expect(result.status).toBe(400);
-        //         expect(result.body.errors).toBeDefined();
-        //         expect(result.body.data).toBeUndefined();
-        //     });
+            expect(result.status).toBe(400);
+            expect(result.body.errors).toBeDefined();
+            expect(result.body.data).toBeUndefined();
+        });
+
+        it(`should fail create new ${page}: status error / undefined enum`, async () => {
+            const result = await supertest(app)
+                .post(path)
+                .set('Cookie', authCookie)
+                .send({
+                    title: "Test Project",
+                    description: "Test Project Description",
+                    startDate: startDate,
+                    status: "WORKING"
+                });
+
+            expect(result.status).toBe(400);
+            expect(result.body.errors).toBeDefined();
+            expect(result.body.data).toBeUndefined();
+        });
+
+        it(`should fail create new ${page}: company length`, async () => {
+            const result = await supertest(app)
+                .post(path)
+                .set('Cookie', authCookie)
+                .send({
+                    title: "Test Project",
+                    description: "Test Project Description",
+                    startDate: startDate,
+                    company: 'aa'
+                });
+
+            expect(result.status).toBe(400);
+            expect(result.body.errors).toBeDefined();
+            expect(result.body.data).toBeUndefined();
+        });
     });
 
     describe("Fail Update Blog", () => {
@@ -336,35 +370,68 @@ describe("/project path", () => {
             expect(result.body.data).toBeUndefined();
         });
 
-        // it(`should fail update ${page}: startYear error / next date`, async () => {
-        //     const result = await supertest(app)
-        //         .put(`${path}/${id}`)
-        //         .set('Cookie', authCookie)
-        //         .send({
-        //             title: "Test Project",
-        //             description: "Test Project Description",
-        //             startDate: nextDate
-        //         });
+        it(`should fail update ${page}: startYear error / next date`, async () => {
+            const result = await supertest(app)
+                .put(`${path}/${id}`)
+                .set('Cookie', authCookie)
+                .send({
+                    title: "Test Project",
+                    description: "Test Project Description",
+                    startDate: nextDate
+                });
 
-        //     expect(result.status).toBe(400);
-        //     expect(result.body.errors).toBeDefined();
-        //     expect(result.body.data).toBeUndefined();
-        // });
+            expect(result.status).toBe(400);
+            expect(result.body.errors).toBeDefined();
+            expect(result.body.data).toBeUndefined();
+        });
 
-        //     it(`should fail update ${page}: endYear error / next year`, async () => {
-        //         const result = await supertest(app)
-        //             .put(`${path}/${id}`)
-        //             .set('Cookie', authCookie)
-        //             .send({
-        //                 institutionName: "Test Education",
-        //                 startYear: new Date().getFullYear(),
-        //                 endYear: new Date().getFullYear() + 1
-        //             });
+        it(`should fail update ${page}: endDate error / greater than startDate`, async () => {
+            const result = await supertest(app)
+                .put(`${path}/${id}`)
+                .set('Cookie', authCookie)
+                .send({
+                    title: "Test Project",
+                    description: "Test Project Description",
+                    startDate: startDate,
+                    endDate: nextDate
+                });
 
-        //         expect(result.status).toBe(400);
-        //         expect(result.body.errors).toBeDefined();
-        //         expect(result.body.data).toBeUndefined();
-        //     });
+            expect(result.status).toBe(400);
+            expect(result.body.errors).toBeDefined();
+            expect(result.body.data).toBeUndefined();
+        });
+
+        it(`should fail update ${page}: status error / undefined enum`, async () => {
+            const result = await supertest(app)
+                .put(`${path}/${id}`)
+                .set('Cookie', authCookie)
+                .send({
+                    title: "Test Project",
+                    description: "Test Project Description",
+                    startDate: startDate,
+                    status: "WORKING"
+                });
+
+            expect(result.status).toBe(400);
+            expect(result.body.errors).toBeDefined();
+            expect(result.body.data).toBeUndefined();
+        });
+
+        it(`should fail update ${page}: company length`, async () => {
+            const result = await supertest(app)
+                .put(`${path}/${id}`)
+                .set('Cookie', authCookie)
+                .send({
+                    title: "Test Project",
+                    description: "Test Project Description",
+                    startDate: startDate,
+                    company: 'aa'
+                });
+
+            expect(result.status).toBe(400);
+            expect(result.body.errors).toBeDefined();
+            expect(result.body.data).toBeUndefined();
+        });
     });
 
     it(`should fail delete ${page}: no auth`, async () => {
