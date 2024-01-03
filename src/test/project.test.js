@@ -11,8 +11,8 @@ describe("/project path", () => {
 
     const date = new Date();
     const startDate = moment(date).subtract(7, 'days').format('YYYY-MM-DD');
-    const endDate = moment(date).format('YYYY-MM-DD');
-    const updatestartDate = moment(date).format('YYYY-MM-DD');
+    const endDate = moment(date).subtract(1, 'days').format('YYYY-MM-DD');
+    const updatestartDate = moment(date).subtract(1, 'days').format('YYYY-MM-DD');
 
     const nextDate = moment(date).add(1, 'days').format('YYYY-MM-DD');
 
