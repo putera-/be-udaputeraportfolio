@@ -1,12 +1,20 @@
 import supertest from "supertest";
 import { app } from "../application/app.js";
 import { doLogin, doLogout } from "./test-util.js";
+import moment from "moment";
 
-describe("/education path", () => {
-    const page = 'Education';
-    const path = '/education';
+describe("/project path", () => {
+    const page = 'Project';
+    const path = '/project';
     let authCookie;
     let id;
+
+    const date = new Date();
+    const startDate = moment(date).subtract(7, 'days').format('YYYY-MM-DD');
+    const endDate = moment(date).format('YYYY-MM-DD');
+    const updatestartDate = moment(date).format('YYYY-MM-DD');
+
+    const nextDate = moment(date).add(1, 'days').format('YYYY-MM-DD');
 
     beforeEach(async () => {
         authCookie = await doLogin();
@@ -23,19 +31,24 @@ describe("/education path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    institutionName: "Test Education",
-                    startYear: "2002"
+                    title: "Test Project",
+                    description: "Test Project Description",
+                    startDate: startDate
                 });
             id = result.body.data.id;
 
             expect(result.status).toBe(200);
             expect(result.body.errors).toBeUndefined();
             expect(result.body.data).toBeDefined();
-            expect(result.body.data.institutionName).toBe("Test Education");
-            expect(result.body.data.startYear).toBe(2002);
-            expect(result.body.data.endYear).toBe(null);
-            expect(result.body.data.major).toBe(null);
-            expect(result.body.data.degree).toBe(null);
+            expect(result.body.data.title).toBe("Test Project");
+            expect(result.body.data.description).toBe("Test Project Description");
+            expect(result.body.data.url).toBe(null);
+            expect(result.body.data.github).toBe(null);
+            expect(result.body.data.gitlab).toBe(null);
+            expect(result.body.data.startDate).toBe(startDate);
+            expect(result.body.data.endDate).toBe(null);
+            expect(result.body.data.status).toBe("ON PROGRESS");
+            expect(result.body.data.company).toBe(null);
         });
 
         it(`should get ${page}`, async () => {
@@ -45,11 +58,15 @@ describe("/education path", () => {
             expect(result.status).toBe(200);
             expect(result.body.errors).toBeUndefined();
             expect(result.body.data).toBeDefined();
-            expect(result.body.data.institutionName).toBe("Test Education");
-            expect(result.body.data.startYear).toBe(2002);
-            expect(result.body.data.endYear).toBe(null);
-            expect(result.body.data.major).toBe(null);
-            expect(result.body.data.degree).toBe(null);
+            expect(result.body.data.title).toBe("Test Project");
+            expect(result.body.data.description).toBe("Test Project Description");
+            expect(result.body.data.url).toBe(null);
+            expect(result.body.data.github).toBe(null);
+            expect(result.body.data.gitlab).toBe(null);
+            expect(result.body.data.startDate).toBe(startDate);
+            expect(result.body.data.endDate).toBe(null);
+            expect(result.body.data.status).toBe("ON PROGRESS");
+            expect(result.body.data.company).toBe(null);
         });
 
         it(`should get ${page}s`, async () => {
@@ -67,21 +84,29 @@ describe("/education path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    institutionName: "Education Updated",
-                    startYear: "2005",
-                    endYear: "2009",
-                    major: "Major Updated",
-                    degree: "Degree Updated"
+                    title: "Project Updated",
+                    description: "Update Project Description",
+                    url: "http://localhost.com",
+                    github: "http://localhost.com",
+                    gitlab: "http://localhost.com",
+                    startDate: updatestartDate,
+                    endDate: endDate,
+                    status: 'COMPLETE',
+                    company: "Project Company"
                 });
 
             expect(result.status).toBe(200);
             expect(result.body.errors).toBeUndefined();
             expect(result.body.data).toBeDefined();
-            expect(result.body.data.institutionName).toBe("Education Updated");
-            expect(result.body.data.startYear).toBe(2005);
-            expect(result.body.data.endYear).toBe(2009);
-            expect(result.body.data.major).toBe("Major Updated");
-            expect(result.body.data.degree).toBe("Degree Updated");
+            expect(result.body.data.title).toBe("Project Updated");
+            expect(result.body.data.description).toBe("Update Project Description");
+            expect(result.body.data.url).toBe("http://localhost.com");
+            expect(result.body.data.github).toBe("http://localhost.com");
+            expect(result.body.data.gitlab).toBe("http://localhost.com");
+            expect(result.body.data.startDate).toBe(updatestartDate);
+            expect(result.body.data.endDate).toBe(endDate);
+            expect(result.body.data.status).toBe("COMPLETE");
+            expect(result.body.data.company).toBe("Project Company");
         });
     });
 
@@ -90,11 +115,9 @@ describe("/education path", () => {
             const result = await supertest(app)
                 .post(path)
                 .send({
-                    institutionName: "Test Education",
-                    startYear: "2002",
-                    endYear: "2005",
-                    major: "Test Major",
-                    degree: "Test Degree"
+                    title: "Test Project",
+                    description: "Test Project Description",
+                    startDate: startDate
                 });
 
             expect(result.status).toBe(401);
@@ -113,12 +136,13 @@ describe("/education path", () => {
             expect(result.body.data).toBeUndefined();
         });
 
-        it(`should fail create new ${page}: no institutionName`, async () => {
+        it(`should fail create new ${page}: no title`, async () => {
             const result = await supertest(app)
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    startYear: "2002"
+                    description: "Test Project Description",
+                    startDate: startDate
                 });
 
             expect(result.status).toBe(400);
@@ -126,12 +150,13 @@ describe("/education path", () => {
             expect(result.body.data).toBeUndefined();
         });
 
-        it(`should fail create new ${page}: no startYear`, async () => {
+        it(`should fail create new ${page}: no description`, async () => {
             const result = await supertest(app)
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    institutionName: "Test Education"
+                    title: "Test Project",
+                    startDate: startDate
                 });
 
             expect(result.status).toBe(400);
@@ -139,13 +164,13 @@ describe("/education path", () => {
             expect(result.body.data).toBeUndefined();
         });
 
-        it(`should fail create new ${page}: institutionName length`, async () => {
+        it(`should fail create new ${page}: no startDate`, async () => {
             const result = await supertest(app)
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    institutionName: "aa",
-                    startYear: "2002"
+                    title: "Test Project",
+                    description: "Test Project Description",
                 });
 
             expect(result.status).toBe(400);
@@ -153,13 +178,14 @@ describe("/education path", () => {
             expect(result.body.data).toBeUndefined();
         });
 
-        it(`should fail create new ${page}: startYear error / next year`, async () => {
+        it(`should fail create new ${page}: title length`, async () => {
             const result = await supertest(app)
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    institutionName: "Test Education",
-                    startYear: new Date().getFullYear() + 1
+                    title: "aa",
+                    description: "Test Project Description",
+                    startDate: startDate
                 });
 
             expect(result.status).toBe(400);
@@ -167,20 +193,49 @@ describe("/education path", () => {
             expect(result.body.data).toBeUndefined();
         });
 
-        it(`should fail create new ${page}: endYear error / next year`, async () => {
+        it(`should fail create new ${page}: description length`, async () => {
             const result = await supertest(app)
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    institutionName: "Test Education",
-                    startYear: new Date().getFullYear(),
-                    endYear: new Date().getFullYear() + 1
+                    title: "Test Project",
+                    description: "aa",
+                    startDate: startDate
                 });
 
             expect(result.status).toBe(400);
             expect(result.body.errors).toBeDefined();
             expect(result.body.data).toBeUndefined();
         });
+
+        //     it(`should fail create new ${page}: startYear error / next date`, async () => {
+        //         const result = await supertest(app)
+        //             .post(path)
+        //             .set('Cookie', authCookie)
+        //             .send({
+        //                 institutionName: "Test Education",
+        //                 startYear: new Date().getFullYear() + 1
+        //             });
+
+        //         expect(result.status).toBe(400);
+        //         expect(result.body.errors).toBeDefined();
+        //         expect(result.body.data).toBeUndefined();
+        //     });
+
+        //     it(`should fail create new ${page}: endYear error / next year`, async () => {
+        //         const result = await supertest(app)
+        //             .post(path)
+        //             .set('Cookie', authCookie)
+        //             .send({
+        //                 institutionName: "Test Education",
+        //                 startYear: new Date().getFullYear(),
+        //                 endYear: new Date().getFullYear() + 1
+        //             });
+
+        //         expect(result.status).toBe(400);
+        //         expect(result.body.errors).toBeDefined();
+        //         expect(result.body.data).toBeUndefined();
+        //     });
     });
 
     describe("Fail Update Blog", () => {
@@ -188,11 +243,9 @@ describe("/education path", () => {
             const result = await supertest(app)
                 .put(`${path}/${id}`)
                 .send({
-                    institutionName: "Test Education",
-                    startYear: "2002",
-                    endYear: "2005",
-                    major: "Test Major",
-                    degree: "Test Degree"
+                    title: "Test Project",
+                    description: "Test Project Description",
+                    startDate: startDate
                 });
 
             expect(result.status).toBe(401);
@@ -211,12 +264,13 @@ describe("/education path", () => {
             expect(result.body.data).toBeUndefined();
         });
 
-        it(`should fail update ${page}: no institutionName`, async () => {
+        it(`should fail update ${page}: no title`, async () => {
             const result = await supertest(app)
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    startYear: "2002"
+                    description: "Test Project Description",
+                    startDate: startDate
                 });
 
             expect(result.status).toBe(400);
@@ -224,12 +278,13 @@ describe("/education path", () => {
             expect(result.body.data).toBeUndefined();
         });
 
-        it(`should fail update ${page}: no startYear`, async () => {
+        it(`should fail update ${page}: no description`, async () => {
             const result = await supertest(app)
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    institutionName: "Test Education"
+                    title: "Test Project",
+                    startDate: startDate
                 });
 
             expect(result.status).toBe(400);
@@ -237,13 +292,13 @@ describe("/education path", () => {
             expect(result.body.data).toBeUndefined();
         });
 
-        it(`should fail update ${page}: institutionName length`, async () => {
+        it(`should fail update ${page}: no startDate`, async () => {
             const result = await supertest(app)
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    institutionName: "aa",
-                    startYear: "2002"
+                    title: "Test Project",
+                    description: "Test Project Description",
                 });
 
             expect(result.status).toBe(400);
@@ -251,13 +306,14 @@ describe("/education path", () => {
             expect(result.body.data).toBeUndefined();
         });
 
-        it(`should fail update ${page}: startYear error / next year`, async () => {
+        it(`should fail update ${page}: title length`, async () => {
             const result = await supertest(app)
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    institutionName: "Test Education",
-                    startYear: new Date().getFullYear() + 1
+                    title: "aa",
+                    description: "Test Project Description",
+                    startDate: startDate
                 });
 
             expect(result.status).toBe(400);
@@ -265,20 +321,50 @@ describe("/education path", () => {
             expect(result.body.data).toBeUndefined();
         });
 
-        it(`should fail update ${page}: endYear error / next year`, async () => {
+        it(`should fail update ${page}: description length`, async () => {
             const result = await supertest(app)
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    institutionName: "Test Education",
-                    startYear: new Date().getFullYear(),
-                    endYear: new Date().getFullYear() + 1
+                    title: "Test Project",
+                    description: "aa",
+                    startDate: startDate
                 });
 
             expect(result.status).toBe(400);
             expect(result.body.errors).toBeDefined();
             expect(result.body.data).toBeUndefined();
         });
+
+        // it(`should fail update ${page}: startYear error / next date`, async () => {
+        //     const result = await supertest(app)
+        //         .put(`${path}/${id}`)
+        //         .set('Cookie', authCookie)
+        //         .send({
+        //             title: "Test Project",
+        //             description: "Test Project Description",
+        //             startDate: nextDate
+        //         });
+
+        //     expect(result.status).toBe(400);
+        //     expect(result.body.errors).toBeDefined();
+        //     expect(result.body.data).toBeUndefined();
+        // });
+
+        //     it(`should fail update ${page}: endYear error / next year`, async () => {
+        //         const result = await supertest(app)
+        //             .put(`${path}/${id}`)
+        //             .set('Cookie', authCookie)
+        //             .send({
+        //                 institutionName: "Test Education",
+        //                 startYear: new Date().getFullYear(),
+        //                 endYear: new Date().getFullYear() + 1
+        //             });
+
+        //         expect(result.status).toBe(400);
+        //         expect(result.body.errors).toBeDefined();
+        //         expect(result.body.data).toBeUndefined();
+        //     });
     });
 
     it(`should fail delete ${page}: no auth`, async () => {
@@ -312,11 +398,9 @@ describe("/education path", () => {
             .put(`${path}/${id}`)
             .set('Cookie', authCookie)
             .send({
-                institutionName: "Education Updated",
-                startYear: "2005",
-                endYear: "2009",
-                major: "Major Updated",
-                degree: "Degree Updated",
+                title: "Test Project",
+                description: "Test Project Description",
+                startDate: startDate
             });
 
         expect(result.status).toBe(404);

@@ -7,8 +7,8 @@ const projectValidation = Joi.object({
     url: isURL,
     github: isURL,
     gitlab: isURL,
-    startDate: Joi.date().required(),
-    endDate: Joi.date().min(Joi.ref('startDate')),
+    startDate: Joi.date().max('now').required(),
+    endDate: Joi.date().min(Joi.ref('startDate')).max('now'),
     status: Joi.string().uppercase(),
     company: Joi.string().min(3).max(100).trim()
 });
