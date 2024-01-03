@@ -3,6 +3,8 @@ import { app } from "../application/app.js";
 import { doLogin, doLogout } from "./test-util.js";
 
 describe("/blog path", () => {
+    const page = 'Blog';
+    const path = '/blog';
     let authCookie;
     let id;
 
@@ -15,10 +17,10 @@ describe("/blog path", () => {
         authCookie = undefined;
     });
 
-    describe("should create new blog then delete", () => {
-        it("should create new Blog", async () => {
+    describe(`should create new ${page} then delete`, () => {
+        it(`should create new ${page}`, async () => {
             const result = await supertest(app)
-                .post('/blog')
+                .post(path)
                 .set('Cookie', authCookie)
                 .send({
                     title: "Test Title",
@@ -33,9 +35,9 @@ describe("/blog path", () => {
             expect(result.body.data.content).toBe("Test Content");
         });
 
-        it("should get blog", async () => {
+        it(`should get ${page}`, async () => {
             const result = await supertest(app)
-                .get('/blog/' + id);
+                .get(`${path}/${id}`);
 
             expect(result.status).toBe(200);
             expect(result.body.errors).toBeUndefined();
@@ -44,9 +46,9 @@ describe("/blog path", () => {
             expect(result.body.data.content).toBe("Test Content");
         });
 
-        it("should get blogs", async () => {
+        it(`should get ${page}s`, async () => {
             const result = await supertest(app)
-                .get('/blogs');
+                .get(`${path}s`);
 
             expect(result.status).toBe(200);
             expect(result.body.errors).toBeUndefined();
@@ -54,9 +56,9 @@ describe("/blog path", () => {
             expect(Array.isArray(result.body.data)).toBe(true);
         });
 
-        it("should update blog", async () => {
+        it(`should update ${page}`, async () => {
             const result = await supertest(app)
-                .put('/blog/' + id)
+                .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
                     title: "Test Updated",
@@ -71,10 +73,10 @@ describe("/blog path", () => {
         });
     });
 
-    describe("Fail Create Blog", () => {
-        it("should fail create new blog: no auth", async () => {
+    describe(`Fail Create ${page}`, () => {
+        it(`should fail create new ${page}: no auth`, async () => {
             const result = await supertest(app)
-                .post('/blog')
+                .post(path)
                 .send({
                     title: "Test Title",
                     content: "Test Content"
@@ -85,9 +87,9 @@ describe("/blog path", () => {
             expect(result.body.data).toBeUndefined();
         });
 
-        it("should fail create new blog: no data", async () => {
+        it(`should fail create new ${page}: no data`, async () => {
             const result = await supertest(app)
-                .post('/blog')
+                .post(path)
                 .set('Cookie', authCookie)
                 .send();
 
@@ -96,9 +98,9 @@ describe("/blog path", () => {
             expect(result.body.data).toBeUndefined();
         });
 
-        it("should fail create new blog: no title", async () => {
+        it(`should fail create new ${page}: no title`, async () => {
             const result = await supertest(app)
-                .post('/blog')
+                .post(path)
                 .set('Cookie', authCookie)
                 .send({
                     content: "Test"
@@ -109,9 +111,9 @@ describe("/blog path", () => {
             expect(result.body.data).toBeUndefined();
         });
 
-        it("should fail create new blog: no content", async () => {
+        it(`should fail create new ${page}: no content`, async () => {
             const result = await supertest(app)
-                .post('/blog')
+                .post(path)
                 .set('Cookie', authCookie)
                 .send({
                     title: "Test"
@@ -122,9 +124,9 @@ describe("/blog path", () => {
             expect(result.body.data).toBeUndefined();
         });
 
-        it("should fail create new blog: title length", async () => {
+        it(`should fail create new ${page}: title length`, async () => {
             const result = await supertest(app)
-                .post('/blog')
+                .post(path)
                 .set('Cookie', authCookie)
                 .send({
                     title: "aa",
@@ -136,9 +138,9 @@ describe("/blog path", () => {
             expect(result.body.data).toBeUndefined();
         });
 
-        it("should fail create new blog: content length", async () => {
+        it(`should fail create new ${page}: content length`, async () => {
             const result = await supertest(app)
-                .post('/blog')
+                .post(path)
                 .set('Cookie', authCookie)
                 .send({
                     title: "Test",
@@ -152,9 +154,9 @@ describe("/blog path", () => {
     });
 
     describe("Fail Update Blog", () => {
-        it("should fail update blog: no auth", async () => {
+        it(`should fail update ${page}: no auth`, async () => {
             const result = await supertest(app)
-                .put('/blog/' + id)
+                .put(`${path}/${id}`)
                 .send({
                     title: "Test Title",
                     content: "Test Content"
@@ -165,9 +167,9 @@ describe("/blog path", () => {
             expect(result.body.data).toBeUndefined();
         });
 
-        it("should fail update blog: no data", async () => {
+        it(`should fail update ${page}: no data`, async () => {
             const result = await supertest(app)
-                .put('/blog/' + id)
+                .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send();
 
@@ -176,9 +178,9 @@ describe("/blog path", () => {
             expect(result.body.data).toBeUndefined();
         });
 
-        it("should fail update blog: no title", async () => {
+        it(`should fail update ${page}: no title`, async () => {
             const result = await supertest(app)
-                .put('/blog/' + id)
+                .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
                     content: "Test"
@@ -189,9 +191,9 @@ describe("/blog path", () => {
             expect(result.body.data).toBeUndefined();
         });
 
-        it("should fail update blog: no content", async () => {
+        it(`should fail update ${page}: no content`, async () => {
             const result = await supertest(app)
-                .put('/blog/' + id)
+                .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
                     title: "Test"
@@ -202,9 +204,9 @@ describe("/blog path", () => {
             expect(result.body.data).toBeUndefined();
         });
 
-        it("should fail update blog: title length", async () => {
+        it(`should fail update ${page}: title length`, async () => {
             const result = await supertest(app)
-                .put('/blog/' + id)
+                .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
                     title: "aa",
@@ -216,9 +218,9 @@ describe("/blog path", () => {
             expect(result.body.data).toBeUndefined();
         });
 
-        it("should fail update blog: content length", async () => {
+        it(`should fail update ${page}: content length`, async () => {
             const result = await supertest(app)
-                .put('/blog/' + id)
+                .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
                     title: "Test",
@@ -231,57 +233,35 @@ describe("/blog path", () => {
         });
     });
 
-    it("should fail delete blog: no auth", async () => {
+    it(`should fail delete ${page}: no auth`, async () => {
         const result = await supertest(app)
-            .delete('/blog/' + id);
+            .delete(`${path}/${id}`);
 
         expect(result.status).toBe(401);
         expect(result.body.errors).toBeDefined();
     });
 
-    it("should delete blog", async () => {
+    it(`should delete ${page}`, async () => {
         const result = await supertest(app)
-            .delete('/blog/' + id)
+            .delete(`${path}/${id}`)
             .set('Cookie', authCookie);
 
         expect(result.status).toBe(200);
         expect(result.body.errors).toBeUndefined();
     });
 
-    it("should fail get blog: not found", async () => {
+    it(`should fail get ${page}: not found`, async () => {
         const result = await supertest(app)
-            .get('/blog/' + id)
+            .get(`${path}/${id}`)
             .set('Cookie', authCookie);
 
         expect(result.status).toBe(404);
         expect(result.body.errors).toBeDefined();
     });
 
-    it("should fail put blog: not found", async () => {
+    it(`should fail update ${page}: not found`, async () => {
         const result = await supertest(app)
-            .put('/blog/' + id)
-            .set('Cookie', authCookie)
-            .send({
-                title: "Test Updated",
-                content: "Test Updated"
-            });
-
-        expect(result.status).toBe(404);
-        expect(result.body.errors).toBeDefined();
-    });
-
-    it("should fail delete blog: not found", async () => {
-        const result = await supertest(app)
-            .delete('/blog/' + id)
-            .set('Cookie', authCookie);
-
-        expect(result.status).toBe(404);
-        expect(result.body.errors).toBeDefined();
-    });
-
-    it("should fail update blog: not found", async () => {
-        const result = await supertest(app)
-            .put('/blog/' + id)
+            .put(`${path}/${id}`)
             .set('Cookie', authCookie)
             .send({
                 title: "Test Updated",
@@ -291,5 +271,14 @@ describe("/blog path", () => {
         expect(result.status).toBe(404);
         expect(result.body.errors).toBeDefined();
         expect(result.body.data).toBeUndefined();
+    });
+
+    it(`should fail delete ${page}: not found`, async () => {
+        const result = await supertest(app)
+            .delete(`${path}/${id}`)
+            .set('Cookie', authCookie);
+
+        expect(result.status).toBe(404);
+        expect(result.body.errors).toBeDefined();
     });
 });
