@@ -49,7 +49,7 @@ const update = async (id, data) => {
 
     const current_skill = await prismaClient.skill.findUnique({
         where: { id },
-        select: { id: true }
+        include: { category: true }
     })
     if (!current_skill) throw new ResponseError(404, "Skill not found!");
 
@@ -61,11 +61,16 @@ const update = async (id, data) => {
         categoryId
     };
 
-    return prismaClient.skill.update({
+    const updatedData = await prismaClient.skill.update({
         where: { id },
         data: data_skill,
         include: { category: true }
     });
+
+    // remove previous skill cateory, if doesnt have skills
+    if (current_skill.category.id != updatedData.category.id) await removeSkillCategory(current_skill.category.id);
+
+    return updatedData;
 }
 
 const remove = async (id) => {
@@ -73,14 +78,21 @@ const remove = async (id) => {
 
     const skill = await prismaClient.skill.findUnique({
         where: { id },
-        select: { id: true }
+        include: {
+            category: true
+        }
     });
 
     if (!skill) throw new ResponseError(404, "Skill not found!");
 
-    return prismaClient.skill.delete({
+    await prismaClient.skill.delete({
         where: { id }
     });
+
+    // check skills count in the category
+    await removeSkillCategory(skill.category.id);
+
+    return;
 }
 
 const find_or_create_category = async (title) => {
@@ -97,6 +109,28 @@ const find_or_create_category = async (title) => {
     }
 
     return category;
+}
+
+const removeSkillCategory = async (id) => {
+    const category = await prismaClient.skillCategory.findUnique({
+        where: { id },
+        include: {
+            _count: {
+                select: {
+                    skills: true
+                }
+            }
+        }
+    });
+
+    // remove category
+    if (!category._count.skills) {
+        await prismaClient.skillCategory.delete({
+            where: { id: id }
+        });
+    }
+
+    return;
 }
 
 export default {
