@@ -14,7 +14,6 @@ describe("/profile path", () => {
         authCookie = undefined;
     });
 
-
     it("should can get profile", async () => {
         const result = await supertest(app)
             .get('/profile');

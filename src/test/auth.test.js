@@ -71,6 +71,16 @@ describe("/login path", () => {
         expect(result.body.data).toBeUndefined();
     });
 
+    it("auth failed: wrong cookie", async () => {
+        const result = await supertest(app)
+            .delete('/skill/1')
+            .set('Cookie', 'wrong');
+
+        expect(result.status).toBe(401);
+        expect(result.body.errors).toBeDefined();
+        expect(result.body.data).toBeUndefined();
+    });
+
     it("should logout", async () => {
         const result = await supertest(app)
             .delete('/logout')
