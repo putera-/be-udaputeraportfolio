@@ -14,7 +14,6 @@ const logout = async (req, res, next) => {
     try {
         await authService.logout(req.user.email);
 
-        // TODO check this, how about previous token, is it can be use again?
         // generate the token tobe 1 second expired
         authService.create_token(req.user.email, '1s');
 
