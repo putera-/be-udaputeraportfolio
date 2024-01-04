@@ -39,7 +39,8 @@ const getAll = async (filters) => {
     return {
         data: blogs,
         page,
-        total: totalBlogs,
+        total: blogs.length,
+        total_data: totalBlogs,
         total_page: Math.ceil(totalBlogs / perPage)
     };
 };
