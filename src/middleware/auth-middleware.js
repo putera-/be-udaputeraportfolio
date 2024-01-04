@@ -23,7 +23,14 @@ export const authMiddleware = async (req, res, next) => {
             }).end();
         } else {
             // validate token & save token
-            authService.verify_token(res, token);
+            const verified = authService.verify_token(res, token);
+            if (!verified) {
+                res.clearCookie('token');
+
+                return res.status(401).json({
+                    errors: 'Unauthorized'
+                });
+            }
 
             // add user to request
             req.user = user;
