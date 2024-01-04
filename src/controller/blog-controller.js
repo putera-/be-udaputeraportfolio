@@ -2,8 +2,15 @@ import blogService from "../service/blog-service.js"
 
 const getAll = async (req, res, next) => {
     try {
-        const data = await blogService.getAll()
-        res.status(200).json({ data });
+        const filters = {
+            title: req.query.search,
+            content: req.query.search,
+            page: req.query.page || 1,
+            perPage: 10
+        };
+
+        const data = await blogService.getAll(filters);
+        res.status(200).json(data);
     } catch (error) {
         next(error);
     }

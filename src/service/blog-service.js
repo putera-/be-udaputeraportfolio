@@ -1,11 +1,47 @@
 import { prismaClient } from "../application/database.js";
 import { ResponseError } from "../error/response-error.js";
 import { isID } from "../validation/all-validation.js";
-import { blogValidation } from "../validation/blog-validation.js";
+import { blogFilters, blogValidation } from "../validation/blog-validation.js";
 import { validate } from "../validation/validation.js";
 
-const getAll = async () => {
-    return prismaClient.blog.findMany();
+const getAll = async (filters) => {
+    filters = validate(blogFilters, filters);
+
+    // filters
+    const dbFilters = [];
+    if (filters.title) {
+        dbFilters.push({
+            title: { contains: filters.title }
+        });
+    }
+    if (filters.content) {
+        dbFilters.push({
+            content: { contains: filters.content }
+        })
+    }
+
+    // skip based on page & perPage
+    // (page - 1) * perPage
+    const page = filters.page;
+    const perPage = filters.perPage
+    const skip = (page - 1) * perPage;
+
+    const blogs = await prismaClient.blog.findMany({
+        where: { OR: dbFilters },
+        take: perPage,
+        skip: skip
+    });
+
+    const totalBlogs = await prismaClient.blog.count({
+        where: { OR: dbFilters }
+    });
+
+    return {
+        data: blogs,
+        page,
+        total: totalBlogs,
+        total_page: Math.ceil(totalBlogs / perPage)
+    };
 };
 const get = async (id) => {
     id = validate(isID, id);
