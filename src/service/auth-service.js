@@ -62,7 +62,11 @@ const logout = async (email) => {
     })
 }
 
-const create_token = (email) => {
+const create_token = (email, age) => {
+    // if age is undefined, then use default age
+    age = age ? age : maxAge;
+
+    // TODO make stronger token, example add timestamp
     const token = jwt.sign({ email: email },
         jwtSecret,
         { expiresIn: maxAge });
@@ -113,5 +117,6 @@ export default {
     login,
     logout,
     set_cookie,
-    verify_token
+    verify_token,
+    create_token
 }
