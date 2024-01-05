@@ -2,13 +2,12 @@ import { prismaClient } from "../application/database.js";
 import authService from "../service/auth-service.js"
 
 export const authMiddleware = async (req, res, next) => {
-    const token = req.cookies.token;
+    try {
+        const token = req.cookies.token;
 
-    if (!token) {
-        res.status(401).json({
-            errors: 'Unauthorized'
-        }).end();
-    } else {
+        // check token
+        if (!token) throw new Error();
+
         const user = await prismaClient.user.findFirst({
             where: { token },
             select: {
@@ -17,25 +16,20 @@ export const authMiddleware = async (req, res, next) => {
             }
         });
 
-        if (!user) {
-            res.status(401).json({
-                errors: 'Unauthorized'
-            }).end();
-        } else {
-            // validate token & save token
-            const verified = authService.verify_token(res, token);
-            if (!verified) {
-                res.clearCookie('token');
+        if (!user) throw new Error();
 
-                return res.status(401).json({
-                    errors: 'Unauthorized'
-                });
-            }
+        // validate token & save token
+        const verified = authService.verify_token(res, token);
+        if (!verified) throw new Error();
 
-            // add user to request
-            req.user = user;
+        // add user to request
+        req.user = user;
 
-            next();
-        }
+        next();
+    } catch (error) {
+        res.clearCookie('token');
+        return res.status(401).json({
+            errors: 'Unauthorized'
+        });
     }
 }
