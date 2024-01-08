@@ -113,10 +113,21 @@ const set_cookie = (res, token) => {
     });
 }
 
+const get_user_by_token = (req) => {
+    const token = req.cookies.token;
+    if (token) {
+        const { email } = jwt.verify(token, jwtSecret);
+        return email;
+    }
+
+    return '-';
+}
+
 export default {
     login,
     logout,
     set_cookie,
     verify_token,
-    create_token
+    create_token,
+    get_user_by_token
 }

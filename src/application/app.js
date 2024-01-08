@@ -4,6 +4,7 @@ import { publicRouter } from "../route/public-api.js";
 import { errorMiddleware } from "../middleware/error-middleware.js";
 import { apiRouter } from "../route/api.js";
 import { notFound } from "../middleware/notfound-middleware.js";
+import { accessLogger, errorLogger, setUserLog } from "../middleware/log-middleware.js";
 import cors from 'cors';
 
 export const app = express();
@@ -24,6 +25,11 @@ if (process.env.NODE_ENV == 'development') {
         credentials: true
     }));
 }
+
+// set morgan user
+app.use(setUserLog);
+app.use(errorLogger);
+app.use(accessLogger);
 
 app.use(publicRouter);
 app.use(apiRouter);
