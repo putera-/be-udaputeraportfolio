@@ -1,3 +1,4 @@
+import { logger } from "../application/logging.js";
 import { ResponseError } from "../error/response-error.js"
 import Joi from "joi";
 
@@ -6,6 +7,7 @@ const errorMiddleware = async (err, req, res, next) => {
         return next();
     }
 
+    logger.error(err);
     if (err instanceof ResponseError) {
         res.status(err.status).json({
             errors: err.message

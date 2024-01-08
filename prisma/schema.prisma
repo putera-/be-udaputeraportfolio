@@ -109,3 +109,13 @@ model Blog {
 
   @@map("blog")
 }
+
+model Log {
+  id        Int      @id @default(autoincrement())
+  level     String   @db.VarChar(16)
+  message   String   @db.Text
+  meta      String   @db.Text
+  timestamp DateTime @default(now())
+
+  @@map("sys_logs")
+}

@@ -26,11 +26,11 @@ prismaClient.$on('query', e => {
     // logger.info(e);
 });
 
-prismaClient.$on('error', e => {
+prismaClient.$on('error', async (e) => {
     logger.error(e);
 });
 
-prismaClient.$on('warn', e => {
+prismaClient.$on('warn', async (e) => {
     logger.warn(e);
 });
 
