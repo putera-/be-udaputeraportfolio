@@ -7,7 +7,7 @@ const updateUserValidation = Joi.object({
     password_confirm: isPassword
 }).custom((value, helpers) => {
     if (value.password !== value.password_confirm) {
-        return helpers.error("register.password.different")
+        return helpers.error("register.password.different");
     }
 
     return value;
@@ -17,4 +17,4 @@ const updateUserValidation = Joi.object({
 
 export {
     updateUserValidation
-}
+};

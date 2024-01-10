@@ -2,7 +2,7 @@ import { prismaClient } from "../application/database.js";
 import { ResponseError } from "../error/response-error.js";
 import { isEmail } from "../validation/all-validation.js";
 import { authValidation } from "../validation/auth-validation.js";
-import { validate } from "../validation/validation.js"
+import { validate } from "../validation/validation.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -22,12 +22,12 @@ const login = async (request, res) => {
     });
 
     if (!user) {
-        throw new ResponseError(401, "Invalid Credential")
+        throw new ResponseError(401, "Invalid Credential");
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-        throw new ResponseError(401, "Invalid Credential")
+        throw new ResponseError(401, "Invalid Credential");
     }
 
     // creat token
@@ -38,7 +38,7 @@ const login = async (request, res) => {
 
     // this will return user data
     return save_token(email, token);
-}
+};
 
 const logout = async (email) => {
     email = validate(isEmail, email);
@@ -59,8 +59,8 @@ const logout = async (email) => {
         select: {
             email: true
         }
-    })
-}
+    });
+};
 
 const create_token = (email, age) => {
     // if age is undefined, then use default age
@@ -72,7 +72,7 @@ const create_token = (email, age) => {
         { expiresIn: maxAge });
 
     return token;
-}
+};
 
 const verify_token = (res, token) => {
     try {
@@ -90,7 +90,7 @@ const verify_token = (res, token) => {
     } catch (error) {
         return false;
     }
-}
+};
 
 const save_token = async (email, token) => {
     return await prismaClient.user.update({
@@ -102,7 +102,7 @@ const save_token = async (email, token) => {
             token: true
         }
     });
-}
+};
 
 const set_cookie = (res, token) => {
     // save token to cookie
@@ -111,7 +111,7 @@ const set_cookie = (res, token) => {
         httpOnly: true,
         maxAge: maxAge * 1000
     });
-}
+};
 
 const get_user_by_token = (req) => {
     const token = req.cookies.token;
@@ -121,7 +121,7 @@ const get_user_by_token = (req) => {
     }
 
     return '-';
-}
+};
 
 export default {
     login,
@@ -130,4 +130,4 @@ export default {
     verify_token,
     create_token,
     get_user_by_token
-}
+};

@@ -1,14 +1,14 @@
-import educationService from "../service/education-service.js"
+import educationService from "../service/education-service.js";
 
 const getAll = async (req, res, next) => {
     try {
         const data = await educationService.getAll();
 
-        res.status(200).json({ data })
+        res.status(200).json({ data });
     } catch (error) {
         next(error);
     }
-}
+};
 
 const get = async (req, res, next) => {
     try {
@@ -16,32 +16,32 @@ const get = async (req, res, next) => {
 
         const data = await educationService.get(id);
 
-        res.status(200).json({ data })
+        res.status(200).json({ data });
     } catch (error) {
         next(error);
     }
-}
+};
 
 const create = async (req, res, next) => {
     try {
         const data = await educationService.create(req.body);
 
-        res.status(200).json({ data })
+        res.status(200).json({ data });
     } catch (error) {
-        next(error)
+        next(error);
     }
-}
+};
 
 const update = async (req, res, next) => {
     try {
         const id = req.params.id;
         const data = await educationService.update(id, req.body);
 
-        res.status(200).json({ data })
+        res.status(200).json({ data });
     } catch (error) {
         next(error);
     }
-}
+};
 
 const remove = async (req, res, next) => {
     try {
@@ -49,9 +49,9 @@ const remove = async (req, res, next) => {
 
         res.status(200).json({ success: true });
     } catch (error) {
-        next(error)
+        next(error);
     }
-}
+};
 
 export default {
     getAll,
@@ -59,4 +59,4 @@ export default {
     create,
     update,
     remove
-}
+};

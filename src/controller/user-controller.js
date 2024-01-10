@@ -1,4 +1,4 @@
-import userService from "../service/user-service.js"
+import userService from "../service/user-service.js";
 
 const get = async (req, res, next) => {
     try {
@@ -7,9 +7,9 @@ const get = async (req, res, next) => {
 
         res.status(200).json({ data });
     } catch (error) {
-        next(error)
+        next(error);
     }
-}
+};
 
 const update = async (req, res, next) => {
     try {
@@ -21,9 +21,9 @@ const update = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-}
+};
 
 export default {
     get,
     update
-}
+};

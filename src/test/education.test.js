@@ -13,7 +13,7 @@ describe("/education path", () => {
     });
 
     afterEach(async () => {
-        await doLogout(authCookie)
+        await doLogout(authCookie);
         authCookie = undefined;
     });
 

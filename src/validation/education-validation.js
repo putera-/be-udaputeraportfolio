@@ -11,4 +11,4 @@ const educationValidation = Joi.object({
 
 export {
     educationValidation
-}
+};

@@ -20,4 +20,4 @@ const profileValidate = Joi.object({
 
 export {
     profileValidate
-}
+};

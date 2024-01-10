@@ -8,4 +8,4 @@ const authValidation = Joi.object({
 
 export {
     authValidation
-}
+};

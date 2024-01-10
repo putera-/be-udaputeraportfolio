@@ -1,5 +1,5 @@
 import winston from "winston";
-import MySQLTransport from 'winston-mysql/lib/mysql_transport.js'
+import MySQLTransport from 'winston-mysql/lib/mysql_transport.js';
 
 const options_default = {
     host: process.env.DB_HOST,

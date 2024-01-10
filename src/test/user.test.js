@@ -9,7 +9,7 @@ describe('/user path', () => {
     });
 
     afterEach(async () => {
-        await doLogout(authCookie)
+        await doLogout(authCookie);
         authCookie = undefined;
     });
 
@@ -37,7 +37,7 @@ describe('/user path', () => {
         expect(result.body.errors).toBeUndefined();
         expect(result.body.data).toBeDefined();
         expect(result.body.data.name).toBe("Update User Name");
-    })
+    });
 
     it("should faile update user: no data", async () => {
         const result = await supertest(app)
@@ -47,7 +47,7 @@ describe('/user path', () => {
         expect(result.status).toBe(400);
         expect(result.body.errors).toBeDefined();
         expect(result.body.data).toBeUndefined();
-    })
+    });
 
     it("should faile update user: password not match", async () => {
         const result = await supertest(app)

@@ -14,7 +14,7 @@ const _select = {
     instagram: true,
     facebook: true,
     twitter: true,
-}
+};
 
 const get = async () => {
     let profile = await prismaClient.profile.findFirst();
@@ -25,13 +25,13 @@ const get = async () => {
             "email": "-",
             'dob': '1900-01-01',
             'address': '-'
-        }
+        };
     }
 
     profile = formatData(profile);
 
     return profile;
-}
+};
 
 const update = async (data) => {
     data = validate(profileValidate, data);
@@ -39,7 +39,7 @@ const update = async (data) => {
     const result = await create_or_update_profile(data);
 
     return result;
-}
+};
 
 const create_or_update_profile = async (data) => {
     let profile = await prismaClient.profile.findFirst();
@@ -58,16 +58,16 @@ const create_or_update_profile = async (data) => {
     profile = formatData(profile);
 
     return profile;
-}
+};
 
 const formatData = (profile) => {
     profile.dob = moment(profile.dob).format('YYYY-MM-DD');
     profile.readDob = moment(profile.dob).format('D MMM YYYY');
 
     return profile;
-}
+};
 
 export default {
     get,
     update
-}
+};

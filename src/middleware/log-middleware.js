@@ -40,10 +40,10 @@ const setUserLog = (req, res, next) => {
     morgan.token('user', () => authService.get_user_by_token(req));
     morgan.token('ip-addr', () => ip);
     next();
-}
+};
 
 export {
     accessLogger,
     errorLogger,
     setUserLog
-}
+};

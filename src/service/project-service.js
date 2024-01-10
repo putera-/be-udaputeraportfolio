@@ -1,10 +1,10 @@
-import moment from "moment"
-import { prismaClient } from "../application/database.js"
-import { isID } from "../validation/all-validation.js"
-import { projectValidation } from "../validation/project-validation.js"
-import { validate } from "../validation/validation.js"
-import dateService from "./date-service.js"
-import { ResponseError } from "../error/response-error.js"
+import moment from "moment";
+import { prismaClient } from "../application/database.js";
+import { isID } from "../validation/all-validation.js";
+import { projectValidation } from "../validation/project-validation.js";
+import { validate } from "../validation/validation.js";
+import dateService from "./date-service.js";
+import { ResponseError } from "../error/response-error.js";
 
 const getAll = async () => {
     let projects = await prismaClient.project.findMany();
@@ -14,7 +14,7 @@ const getAll = async () => {
     }
 
     return projects;
-}
+};
 
 const get = async (id) => {
     id = validate(isID, id);
@@ -26,7 +26,7 @@ const get = async (id) => {
     if (!project) throw new ResponseError(404, "Project not found!");
 
     return formatData(project);
-}
+};
 
 const create = async (data) => {
     data = validate(projectValidation, data);
@@ -37,7 +37,7 @@ const create = async (data) => {
     let project = await prismaClient.project.create({ data });
 
     return formatData(project);
-}
+};
 
 const update = async (id, data) => {
     id = validate(isID, id);
@@ -59,7 +59,7 @@ const update = async (id, data) => {
     });
 
     return formatData(project);
-}
+};
 
 const remove = async (id) => {
     id = validate(isID, id);
@@ -74,7 +74,7 @@ const remove = async (id) => {
     return prismaClient.project.delete({
         where: { id }
     });
-}
+};
 
 const formatData = (project) => {
     // format date
@@ -85,7 +85,7 @@ const formatData = (project) => {
     project.status = project.status.replace('_', ' ');
 
     return project;
-}
+};
 
 export default {
     getAll,
@@ -93,4 +93,4 @@ export default {
     create,
     update,
     remove
-}
+};

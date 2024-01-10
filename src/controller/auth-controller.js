@@ -1,4 +1,4 @@
-import authService from "../service/auth-service.js"
+import authService from "../service/auth-service.js";
 
 const login = async (req, res, next) => {
     try {
@@ -6,9 +6,9 @@ const login = async (req, res, next) => {
 
         res.status(200).json({ data });
     } catch (error) {
-        next(error)
+        next(error);
     }
-}
+};
 
 const logout = async (req, res, next) => {
     try {
@@ -22,11 +22,11 @@ const logout = async (req, res, next) => {
 
         res.status(200).json({ success: true });
     } catch (error) {
-        next(error)
+        next(error);
     }
-}
+};
 
 export default {
     login,
     logout
-}
+};

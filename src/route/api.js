@@ -1,4 +1,4 @@
-import express from "express"
+import express from "express";
 import userController from "../controller/user-controller.js";
 import { authMiddleware } from "../middleware/auth-middleware.js";
 import authController from "../controller/auth-controller.js";
@@ -52,4 +52,4 @@ apiRouter.get('/error_log', logController.getErrorLog);
 
 export {
     apiRouter
-}
+};

@@ -1,4 +1,4 @@
-import express from "express"
+import express from "express";
 import profileController from "../controller/profile-controller.js";
 import authController from "../controller/auth-controller.js";
 import projectController from "../controller/project-controller.js";
@@ -20,16 +20,16 @@ publicRouter.get('/project/:id', projectController.get);
 
 // SKILL
 publicRouter.get('/skills', skillController.getAll);
-publicRouter.get('/skill/:id', skillController.get)
+publicRouter.get('/skill/:id', skillController.get);
 
 // EDUCATION
 publicRouter.get('/educations', educationController.getAll);
-publicRouter.get('/education/:id', educationController.get)
+publicRouter.get('/education/:id', educationController.get);
 
 // EDUCATION
 publicRouter.get('/blogs', blogController.getAll);
-publicRouter.get('/blog/:id', blogController.get)
+publicRouter.get('/blog/:id', blogController.get);
 
 export {
     publicRouter
-}
+};

@@ -17,13 +17,13 @@ const getAll = async (filters) => {
     if (filters.content) {
         dbFilters.push({
             content: { contains: filters.content }
-        })
+        });
     }
 
     // skip based on page & perPage
     // (page - 1) * perPage
     const page = filters.page;
-    const perPage = filters.perPage
+    const perPage = filters.perPage;
     const skip = (page - 1) * perPage;
 
     const blogs = await prismaClient.blog.findMany({
@@ -54,14 +54,14 @@ const get = async (id) => {
     if (!blog) throw new ResponseError(404, "Blog not found!");
 
     return blog;
-}
+};
 const create = async (request) => {
     const data = validate(blogValidation, request);
 
     return prismaClient.blog.create({
         data
     });
-}
+};
 const update = async (id, data) => {
     id = validate(isID, id);
     data = validate(blogValidation, data);
@@ -69,14 +69,14 @@ const update = async (id, data) => {
     const current_blog = await prismaClient.blog.findUnique({
         where: { id },
         select: { id: true }
-    })
+    });
     if (!current_blog) throw new ResponseError(404, "Blog not found!");
 
     return prismaClient.blog.update({
         where: { id },
         data
     });
-}
+};
 const remove = async (id) => {
     id = validate(isID, id);
 
@@ -90,7 +90,7 @@ const remove = async (id) => {
     return prismaClient.blog.delete({
         where: { id }
     });
-}
+};
 
 export default {
     getAll,
@@ -98,4 +98,4 @@ export default {
     create,
     update,
     remove
-}
+};

@@ -15,4 +15,4 @@ const projectValidation = Joi.object({
 
 export {
     projectValidation
-}
+};

@@ -9,6 +9,6 @@ const validate = (schema, request) => {
     } else {
         return result.value;
     }
-}
+};
 
-export { validate }
+export { validate };

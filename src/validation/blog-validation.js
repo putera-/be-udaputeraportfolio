@@ -5,7 +5,7 @@ import { isString, isText } from "./all-validation.js";
 const blogValidation = Joi.object({
     title: isString,
     content: isText.required()
-})
+});
 
 const blogFilters = Joi.object({
     title: Joi.string().trim().lowercase().allow(null),
@@ -35,4 +35,4 @@ const blogFilters = Joi.object({
 export {
     blogValidation,
     blogFilters
-}
+};

@@ -1,5 +1,5 @@
 import { prismaClient } from "../application/database.js";
-import authService from "../service/auth-service.js"
+import authService from "../service/auth-service.js";
 
 export const authMiddleware = async (req, res, next) => {
     try {
@@ -32,4 +32,4 @@ export const authMiddleware = async (req, res, next) => {
             errors: 'Unauthorized'
         });
     }
-}
+};

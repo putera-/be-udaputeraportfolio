@@ -1,5 +1,5 @@
 import supertest from "supertest";
-import { prismaClient } from "../application/database.js"
+import { prismaClient } from "../application/database.js";
 import bcrypt from "bcrypt";
 import { app } from "../application/app.js";
 
@@ -10,13 +10,13 @@ export const createTestUser = async () => {
         password: await bcrypt.hash("rahasia", 10)
     };
     await prismaClient.user.create({ data });
-}
+};
 
 export const removeTestUser = async () => {
     await prismaClient.user.delete({
         where: { email: "test@example.com" }
-    })
-}
+    });
+};
 
 export const doLogin = async () => {
     await createTestUser();
@@ -28,7 +28,7 @@ export const doLogin = async () => {
         });
 
     return result.headers['set-cookie'];
-}
+};
 
 export const doLogout = async (authCookie) => {
     await supertest(app)
@@ -36,4 +36,4 @@ export const doLogout = async (authCookie) => {
         .set('Cookie', authCookie);
 
     await removeTestUser();
-}
+};

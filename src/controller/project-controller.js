@@ -4,22 +4,22 @@ const getAll = async (req, res, next) => {
     try {
         const data = await projectService.getAll();
 
-        res.status(200).json({ data })
+        res.status(200).json({ data });
     } catch (error) {
         next(error);
     }
-}
+};
 
 const get = async (req, res, next) => {
     try {
         const id = req.params.id;
         const data = await projectService.get(id);
 
-        res.status(200).json({ data })
+        res.status(200).json({ data });
     } catch (error) {
         next(error);
     }
-}
+};
 
 const create = async (req, res, next) => {
     try {
@@ -29,7 +29,7 @@ const create = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-}
+};
 
 const update = async (req, res, next) => {
     try {
@@ -40,7 +40,7 @@ const update = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-}
+};
 
 const remove = async (req, res, next) => {
     try {
@@ -52,7 +52,7 @@ const remove = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-}
+};
 
 export default {
     getAll,
@@ -60,4 +60,4 @@ export default {
     create,
     update,
     remove
-}
+};

@@ -5,4 +5,4 @@ class ResponseError extends Error {
     }
 }
 
-export { ResponseError }
+export { ResponseError };

@@ -31,4 +31,4 @@ const getErrorLog = () => {
 export default {
     getAccessLog,
     getErrorLog
-}
+};

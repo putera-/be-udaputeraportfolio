@@ -1,5 +1,5 @@
 import { logger } from "../application/logging.js";
-import { ResponseError } from "../error/response-error.js"
+import { ResponseError } from "../error/response-error.js";
 import Joi from "joi";
 
 const errorMiddleware = async (err, req, res, next) => {
@@ -22,8 +22,8 @@ const errorMiddleware = async (err, req, res, next) => {
             message: err.message
         });
     }
-}
+};
 
 export {
     errorMiddleware
-}
+};

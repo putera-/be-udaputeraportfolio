@@ -6,9 +6,9 @@ const skillCategoryValidation = Joi.string().min(3).max(100).trim().uppercase().
 const skillValidation = Joi.object({
     title: isString,
     category: skillCategoryValidation
-})
+});
 
 export {
     skillValidation,
     skillCategoryValidation
-}
+};

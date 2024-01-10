@@ -1,5 +1,5 @@
 // LOAD ENV
-import dotenv from 'dotenv'
+import dotenv from 'dotenv';
 dotenv.config();
 
 import { app } from "./application/app.js";

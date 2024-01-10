@@ -10,7 +10,7 @@ describe("/profile path", () => {
     });
 
     afterEach(async () => {
-        await doLogout(authCookie)
+        await doLogout(authCookie);
         authCookie = undefined;
     });
 
@@ -156,5 +156,5 @@ describe("/profile path", () => {
             expect(result.body.data).toBeUndefined();
         });
 
-    })
+    });
 });
