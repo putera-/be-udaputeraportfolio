@@ -34,7 +34,7 @@ const update = async (email, request) => {
         throw new ResponseError(404, "User nor found");
     }
 
-    let data = { name };
+    const data = { name };
     if (password) {
         data.password = await bcrypt.hash(password, 10);
     }

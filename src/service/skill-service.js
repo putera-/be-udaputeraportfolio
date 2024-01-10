@@ -45,7 +45,7 @@ const create = async (request) => {
 
 const update = async (id, data) => {
     id = validate(isID, id);
-    let { title, category: category_title } = validate(skillValidation, data);
+    const { title, category: category_title } = validate(skillValidation, data);
 
     const current_skill = await prismaClient.skill.findUnique({
         where: { id },

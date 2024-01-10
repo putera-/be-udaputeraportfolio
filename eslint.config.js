@@ -4,7 +4,8 @@ export default [
             "src/**/*.js"
         ],
         rules: {
-            semi: "error"
+            semi: "error",
+            "prefer-const": "error"
         }
     }
 ]

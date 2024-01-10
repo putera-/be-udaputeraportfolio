@@ -7,7 +7,7 @@ import dateService from "./date-service.js";
 import { ResponseError } from "../error/response-error.js";
 
 const getAll = async () => {
-    let projects = await prismaClient.project.findMany();
+    const projects = await prismaClient.project.findMany();
 
     for (let i = 0; i < projects.length; i++) {
         projects[i] = formatData(projects[i]);
@@ -34,7 +34,7 @@ const create = async (data) => {
     data.startDate = dateService.toLocaleDate(data.startDate);
     if (data.endDate) data.endDate = dateService.toLocaleDate(data.endDate);
 
-    let project = await prismaClient.project.create({ data });
+    const project = await prismaClient.project.create({ data });
 
     return formatData(project);
 };
