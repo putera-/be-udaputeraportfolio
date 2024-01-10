@@ -1,8 +1,8 @@
-import supertest from "supertest";
-import { app } from "../application/app.js";
-import { doLogin, doLogout } from "./test-util.js";
+import supertest from 'supertest';
+import { app } from '../application/app.js';
+import { doLogin, doLogout } from './test-util.js';
 
-describe("/skill path", () => {
+describe('/skill path', () => {
     const page = 'Skill';
     const path = '/skill';
     let authCookie;
@@ -24,8 +24,8 @@ describe("/skill path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test Title",
-                    category: "Test Category"
+                    title: 'Test Title',
+                    category: 'Test Category'
                 });
 
             id = result.body.data.id;
@@ -34,8 +34,8 @@ describe("/skill path", () => {
             expect(result.status).toBe(200);
             expect(result.body.errors).toBeUndefined();
             expect(result.body.data).toBeDefined();
-            expect(result.body.data.title).toBe("Test Title");
-            expect(result.body.data.category.title).toBe("TEST CATEGORY");
+            expect(result.body.data.title).toBe('Test Title');
+            expect(result.body.data.category.title).toBe('TEST CATEGORY');
         });
 
         it(`should get ${page}`, async () => {
@@ -45,8 +45,8 @@ describe("/skill path", () => {
             expect(result.status).toBe(200);
             expect(result.body.errors).toBeUndefined();
             expect(result.body.data).toBeDefined();
-            expect(result.body.data.title).toBe("Test Title");
-            expect(result.body.data.category.title).toBe("TEST CATEGORY");
+            expect(result.body.data.title).toBe('Test Title');
+            expect(result.body.data.category.title).toBe('TEST CATEGORY');
         });
 
         it(`should get ${page}s`, async () => {
@@ -64,15 +64,15 @@ describe("/skill path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test Updated",
-                    category: "Test Updated",
+                    title: 'Test Updated',
+                    category: 'Test Updated',
                 });
 
             expect(result.status).toBe(200);
             expect(result.body.errors).toBeUndefined();
             expect(result.body.data).toBeDefined();
-            expect(result.body.data.title).toBe("Test Updated");
-            expect(result.body.data.category.title).toBe("TEST UPDATED");
+            expect(result.body.data.title).toBe('Test Updated');
+            expect(result.body.data.category.title).toBe('TEST UPDATED');
         });
     });
 
@@ -81,8 +81,8 @@ describe("/skill path", () => {
             const result = await supertest(app)
                 .post(path)
                 .send({
-                    title: "Test Title",
-                    category: "Test Category"
+                    title: 'Test Title',
+                    category: 'Test Category'
                 });
 
             expect(result.status).toBe(401);
@@ -106,7 +106,7 @@ describe("/skill path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    category: "Test Category"
+                    category: 'Test Category'
                 });
 
             expect(result.status).toBe(400);
@@ -119,7 +119,7 @@ describe("/skill path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test Test"
+                    title: 'Test Test'
                 });
 
             expect(result.status).toBe(400);
@@ -132,8 +132,8 @@ describe("/skill path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "aa",
-                    category: "Test Category"
+                    title: 'aa',
+                    category: 'Test Category'
                 });
 
             expect(result.status).toBe(400);
@@ -146,8 +146,8 @@ describe("/skill path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test Title",
-                    category: "aa"
+                    title: 'Test Title',
+                    category: 'aa'
                 });
 
             expect(result.status).toBe(400);
@@ -156,13 +156,13 @@ describe("/skill path", () => {
         });
     });
 
-    describe("Fail Update Blog", () => {
+    describe('Fail Update Blog', () => {
         it(`should fail update ${page}: no auth`, async () => {
             const result = await supertest(app)
                 .put(`${path}/${id}`)
                 .send({
-                    title: "Test Title",
-                    category: "Test Category"
+                    title: 'Test Title',
+                    category: 'Test Category'
                 });
 
             expect(result.status).toBe(401);
@@ -186,7 +186,7 @@ describe("/skill path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    category: "Test Category"
+                    category: 'Test Category'
                 });
 
             expect(result.status).toBe(400);
@@ -199,7 +199,7 @@ describe("/skill path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test Title"
+                    title: 'Test Title'
                 });
 
             expect(result.status).toBe(400);
@@ -212,8 +212,8 @@ describe("/skill path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "aa",
-                    category: "Test Category"
+                    title: 'aa',
+                    category: 'Test Category'
                 });
 
             expect(result.status).toBe(400);
@@ -226,8 +226,8 @@ describe("/skill path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test",
-                    category: "aa"
+                    title: 'Test',
+                    category: 'aa'
                 });
 
             expect(result.status).toBe(400);
@@ -267,8 +267,8 @@ describe("/skill path", () => {
             .put(`${path}/${id}`)
             .set('Cookie', authCookie)
             .send({
-                title: "Test Updated",
-                category: "Test Updated"
+                title: 'Test Updated',
+                category: 'Test Updated'
             });
 
         expect(result.status).toBe(404);

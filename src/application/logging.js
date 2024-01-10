@@ -1,4 +1,4 @@
-import winston from "winston";
+import winston from 'winston';
 import MySQLTransport from 'winston-mysql/lib/mysql_transport.js';
 
 const options_default = {

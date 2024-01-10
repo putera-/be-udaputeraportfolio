@@ -1,8 +1,8 @@
-import supertest from "supertest";
-import { app } from "../application/app.js";
-import { doLogin, doLogout } from "./test-util.js";
+import supertest from 'supertest';
+import { app } from '../application/app.js';
+import { doLogin, doLogout } from './test-util.js';
 
-describe("/education path", () => {
+describe('/education path', () => {
     const page = 'Education';
     const path = '/education';
     let authCookie;
@@ -23,15 +23,15 @@ describe("/education path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    institutionName: "Test Education",
-                    startYear: "2002"
+                    institutionName: 'Test Education',
+                    startYear: '2002'
                 });
             id = result.body.data.id;
 
             expect(result.status).toBe(200);
             expect(result.body.errors).toBeUndefined();
             expect(result.body.data).toBeDefined();
-            expect(result.body.data.institutionName).toBe("Test Education");
+            expect(result.body.data.institutionName).toBe('Test Education');
             expect(result.body.data.startYear).toBe(2002);
             expect(result.body.data.endYear).toBe(null);
             expect(result.body.data.major).toBe(null);
@@ -45,7 +45,7 @@ describe("/education path", () => {
             expect(result.status).toBe(200);
             expect(result.body.errors).toBeUndefined();
             expect(result.body.data).toBeDefined();
-            expect(result.body.data.institutionName).toBe("Test Education");
+            expect(result.body.data.institutionName).toBe('Test Education');
             expect(result.body.data.startYear).toBe(2002);
             expect(result.body.data.endYear).toBe(null);
             expect(result.body.data.major).toBe(null);
@@ -67,21 +67,21 @@ describe("/education path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    institutionName: "Education Updated",
-                    startYear: "2005",
-                    endYear: "2009",
-                    major: "Major Updated",
-                    degree: "Degree Updated"
+                    institutionName: 'Education Updated',
+                    startYear: '2005',
+                    endYear: '2009',
+                    major: 'Major Updated',
+                    degree: 'Degree Updated'
                 });
 
             expect(result.status).toBe(200);
             expect(result.body.errors).toBeUndefined();
             expect(result.body.data).toBeDefined();
-            expect(result.body.data.institutionName).toBe("Education Updated");
+            expect(result.body.data.institutionName).toBe('Education Updated');
             expect(result.body.data.startYear).toBe(2005);
             expect(result.body.data.endYear).toBe(2009);
-            expect(result.body.data.major).toBe("Major Updated");
-            expect(result.body.data.degree).toBe("Degree Updated");
+            expect(result.body.data.major).toBe('Major Updated');
+            expect(result.body.data.degree).toBe('Degree Updated');
         });
     });
 
@@ -90,11 +90,11 @@ describe("/education path", () => {
             const result = await supertest(app)
                 .post(path)
                 .send({
-                    institutionName: "Test Education",
-                    startYear: "2002",
-                    endYear: "2005",
-                    major: "Test Major",
-                    degree: "Test Degree"
+                    institutionName: 'Test Education',
+                    startYear: '2002',
+                    endYear: '2005',
+                    major: 'Test Major',
+                    degree: 'Test Degree'
                 });
 
             expect(result.status).toBe(401);
@@ -118,7 +118,7 @@ describe("/education path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    startYear: "2002"
+                    startYear: '2002'
                 });
 
             expect(result.status).toBe(400);
@@ -131,7 +131,7 @@ describe("/education path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    institutionName: "Test Education"
+                    institutionName: 'Test Education'
                 });
 
             expect(result.status).toBe(400);
@@ -144,8 +144,8 @@ describe("/education path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    institutionName: "aa",
-                    startYear: "2002"
+                    institutionName: 'aa',
+                    startYear: '2002'
                 });
 
             expect(result.status).toBe(400);
@@ -158,7 +158,7 @@ describe("/education path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    institutionName: "Test Education",
+                    institutionName: 'Test Education',
                     startYear: new Date().getFullYear() + 1
                 });
 
@@ -172,7 +172,7 @@ describe("/education path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    institutionName: "Test Education",
+                    institutionName: 'Test Education',
                     startYear: new Date().getFullYear(),
                     endYear: new Date().getFullYear() + 1
                 });
@@ -183,16 +183,16 @@ describe("/education path", () => {
         });
     });
 
-    describe("Fail Update Blog", () => {
+    describe('Fail Update Blog', () => {
         it(`should fail update ${page}: no auth`, async () => {
             const result = await supertest(app)
                 .put(`${path}/${id}`)
                 .send({
-                    institutionName: "Test Education",
-                    startYear: "2002",
-                    endYear: "2005",
-                    major: "Test Major",
-                    degree: "Test Degree"
+                    institutionName: 'Test Education',
+                    startYear: '2002',
+                    endYear: '2005',
+                    major: 'Test Major',
+                    degree: 'Test Degree'
                 });
 
             expect(result.status).toBe(401);
@@ -216,7 +216,7 @@ describe("/education path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    startYear: "2002"
+                    startYear: '2002'
                 });
 
             expect(result.status).toBe(400);
@@ -229,7 +229,7 @@ describe("/education path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    institutionName: "Test Education"
+                    institutionName: 'Test Education'
                 });
 
             expect(result.status).toBe(400);
@@ -242,8 +242,8 @@ describe("/education path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    institutionName: "aa",
-                    startYear: "2002"
+                    institutionName: 'aa',
+                    startYear: '2002'
                 });
 
             expect(result.status).toBe(400);
@@ -256,7 +256,7 @@ describe("/education path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    institutionName: "Test Education",
+                    institutionName: 'Test Education',
                     startYear: new Date().getFullYear() + 1
                 });
 
@@ -270,7 +270,7 @@ describe("/education path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    institutionName: "Test Education",
+                    institutionName: 'Test Education',
                     startYear: new Date().getFullYear(),
                     endYear: new Date().getFullYear() + 1
                 });
@@ -312,11 +312,11 @@ describe("/education path", () => {
             .put(`${path}/${id}`)
             .set('Cookie', authCookie)
             .send({
-                institutionName: "Education Updated",
-                startYear: "2005",
-                endYear: "2009",
-                major: "Major Updated",
-                degree: "Degree Updated",
+                institutionName: 'Education Updated',
+                startYear: '2005',
+                endYear: '2009',
+                major: 'Major Updated',
+                degree: 'Degree Updated',
             });
 
         expect(result.status).toBe(404);

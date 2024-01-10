@@ -1,13 +1,13 @@
-import express from "express";
-import userController from "../controller/user-controller.js";
-import { authMiddleware } from "../middleware/auth-middleware.js";
-import authController from "../controller/auth-controller.js";
-import skillController from "../controller/skill-controller.js";
-import educationController from "../controller/education-controller.js";
-import profileController from "../controller/profile-controller.js";
-import projectController from "../controller/project-controller.js";
-import blogController from "../controller/blog-controller.js";
-import logController from "../controller/log-controller.js";
+import express from 'express';
+import userController from '../controller/user-controller.js';
+import { authMiddleware } from '../middleware/auth-middleware.js';
+import authController from '../controller/auth-controller.js';
+import skillController from '../controller/skill-controller.js';
+import educationController from '../controller/education-controller.js';
+import profileController from '../controller/profile-controller.js';
+import projectController from '../controller/project-controller.js';
+import blogController from '../controller/blog-controller.js';
+import logController from '../controller/log-controller.js';
 
 const apiRouter = new express.Router();
 apiRouter.use(authMiddleware);

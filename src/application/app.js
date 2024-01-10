@@ -1,10 +1,10 @@
-import express from "express";
-import cookieParser from "cookie-parser";
-import { publicRouter } from "../route/public-api.js";
-import { errorMiddleware } from "../middleware/error-middleware.js";
-import { apiRouter } from "../route/api.js";
-import { notFound } from "../middleware/notfound-middleware.js";
-import { accessLogger, errorLogger, setUserLog } from "../middleware/log-middleware.js";
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import { publicRouter } from '../route/public-api.js';
+import { errorMiddleware } from '../middleware/error-middleware.js';
+import { apiRouter } from '../route/api.js';
+import { notFound } from '../middleware/notfound-middleware.js';
+import { accessLogger, errorLogger, setUserLog } from '../middleware/log-middleware.js';
 import cors from 'cors';
 
 export const app = express();

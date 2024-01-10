@@ -1,4 +1,4 @@
-import Joi from "joi";
+import Joi from 'joi';
 
 const maxYear = new Date().getFullYear();
 const educationValidation = Joi.object({

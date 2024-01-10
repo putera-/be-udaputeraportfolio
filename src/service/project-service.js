@@ -1,10 +1,10 @@
-import moment from "moment";
-import { prismaClient } from "../application/database.js";
-import { isID } from "../validation/all-validation.js";
-import { projectValidation } from "../validation/project-validation.js";
-import { validate } from "../validation/validation.js";
-import dateService from "./date-service.js";
-import { ResponseError } from "../error/response-error.js";
+import moment from 'moment';
+import { prismaClient } from '../application/database.js';
+import { isID } from '../validation/all-validation.js';
+import { projectValidation } from '../validation/project-validation.js';
+import { validate } from '../validation/validation.js';
+import dateService from './date-service.js';
+import { ResponseError } from '../error/response-error.js';
 
 const getAll = async () => {
     const projects = await prismaClient.project.findMany();
@@ -23,7 +23,7 @@ const get = async (id) => {
         where: { id }
     });
 
-    if (!project) throw new ResponseError(404, "Project not found!");
+    if (!project) throw new ResponseError(404, 'Project not found!');
 
     return formatData(project);
 };
@@ -51,7 +51,7 @@ const update = async (id, data) => {
         select: { id: true }
     });
 
-    if (!findProject) throw new ResponseError(404, "Project not found!");
+    if (!findProject) throw new ResponseError(404, 'Project not found!');
 
     const project = await prismaClient.project.update({
         where: { id },
@@ -69,7 +69,7 @@ const remove = async (id) => {
         select: { id: true }
     });
 
-    if (!project) throw new ResponseError(404, "Project not found!");
+    if (!project) throw new ResponseError(404, 'Project not found!');
 
     return prismaClient.project.delete({
         where: { id }

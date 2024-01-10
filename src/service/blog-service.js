@@ -1,8 +1,8 @@
-import { prismaClient } from "../application/database.js";
-import { ResponseError } from "../error/response-error.js";
-import { isID } from "../validation/all-validation.js";
-import { blogFilters, blogValidation } from "../validation/blog-validation.js";
-import { validate } from "../validation/validation.js";
+import { prismaClient } from '../application/database.js';
+import { ResponseError } from '../error/response-error.js';
+import { isID } from '../validation/all-validation.js';
+import { blogFilters, blogValidation } from '../validation/blog-validation.js';
+import { validate } from '../validation/validation.js';
 
 const getAll = async (filters) => {
     filters = validate(blogFilters, filters);
@@ -51,7 +51,7 @@ const get = async (id) => {
         where: { id }
     });
 
-    if (!blog) throw new ResponseError(404, "Blog not found!");
+    if (!blog) throw new ResponseError(404, 'Blog not found!');
 
     return blog;
 };
@@ -70,7 +70,7 @@ const update = async (id, data) => {
         where: { id },
         select: { id: true }
     });
-    if (!current_blog) throw new ResponseError(404, "Blog not found!");
+    if (!current_blog) throw new ResponseError(404, 'Blog not found!');
 
     return prismaClient.blog.update({
         where: { id },
@@ -85,7 +85,7 @@ const remove = async (id) => {
         select: { id: true }
     });
 
-    if (!blog) throw new ResponseError(404, "Blog not found!");
+    if (!blog) throw new ResponseError(404, 'Blog not found!');
 
     return prismaClient.blog.delete({
         where: { id }

@@ -1,5 +1,5 @@
-import Joi from "joi";
-import { isPassword, isString } from "./all-validation.js";
+import Joi from 'joi';
+import { isPassword, isString } from './all-validation.js';
 
 const updateUserValidation = Joi.object({
     name: isString,
@@ -7,12 +7,12 @@ const updateUserValidation = Joi.object({
     password_confirm: isPassword
 }).custom((value, helpers) => {
     if (value.password !== value.password_confirm) {
-        return helpers.error("register.password.different");
+        return helpers.error('register.password.different');
     }
 
     return value;
 }).message({
-    'register.password.different': "Password and Password Confirm is not match"
+    'register.password.different': 'Password and Password Confirm is not match'
 });
 
 export {

@@ -1,10 +1,10 @@
-import express from "express";
-import profileController from "../controller/profile-controller.js";
-import authController from "../controller/auth-controller.js";
-import projectController from "../controller/project-controller.js";
-import skillController from "../controller/skill-controller.js";
-import educationController from "../controller/education-controller.js";
-import blogController from "../controller/blog-controller.js";
+import express from 'express';
+import profileController from '../controller/profile-controller.js';
+import authController from '../controller/auth-controller.js';
+import projectController from '../controller/project-controller.js';
+import skillController from '../controller/skill-controller.js';
+import educationController from '../controller/education-controller.js';
+import blogController from '../controller/blog-controller.js';
 
 const publicRouter = new express.Router();
 

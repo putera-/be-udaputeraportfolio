@@ -1,4 +1,4 @@
-import profileService from "../service/profile-service.js";
+import profileService from '../service/profile-service.js';
 
 const get = async (req, res, next) => {
     try {

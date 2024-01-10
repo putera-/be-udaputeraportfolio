@@ -1,4 +1,4 @@
-import skillService from "../service/skill-service.js";
+import skillService from '../service/skill-service.js';
 
 const getAll = async (req, res, next) => {
     try {

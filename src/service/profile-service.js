@@ -1,7 +1,7 @@
-import { prismaClient } from "../application/database.js";
-import { validate } from "../validation/validation.js";
-import { profileValidate } from "../validation/profile-validation.js";
-import moment from "moment";
+import { prismaClient } from '../application/database.js';
+import { validate } from '../validation/validation.js';
+import { profileValidate } from '../validation/profile-validation.js';
+import moment from 'moment';
 
 const _select = {
     firstname: true,
@@ -20,9 +20,9 @@ const get = async () => {
     let profile = await prismaClient.profile.findFirst();
     if (!profile) {
         profile = {
-            "firstname": "-",
-            "lastname": "-",
-            "email": "-",
+            'firstname': '-',
+            'lastname': '-',
+            'email': '-',
             'dob': '1900-01-01',
             'address': '-'
         };

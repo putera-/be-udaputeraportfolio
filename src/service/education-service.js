@@ -1,8 +1,8 @@
-import { prismaClient } from "../application/database.js";
-import { ResponseError } from "../error/response-error.js";
-import { isID } from "../validation/all-validation.js";
-import { educationValidation } from "../validation/education-validation.js";
-import { validate } from "../validation/validation.js";
+import { prismaClient } from '../application/database.js';
+import { ResponseError } from '../error/response-error.js';
+import { isID } from '../validation/all-validation.js';
+import { educationValidation } from '../validation/education-validation.js';
+import { validate } from '../validation/validation.js';
 
 const getAll = async () => {
     return prismaClient.education.findMany({
@@ -19,7 +19,7 @@ const get = async (id) => {
         where: { id },
     });
 
-    if (!education) throw new ResponseError(404, "Education not found!");
+    if (!education) throw new ResponseError(404, 'Education not found!');
 
     return education;
 };
@@ -39,7 +39,7 @@ const update = async (id, data) => {
         select: { id: true }
     });
 
-    if (!education) throw new ResponseError(404, "Education not found!");
+    if (!education) throw new ResponseError(404, 'Education not found!');
 
     return prismaClient.education.update({
         where: { id },
@@ -56,7 +56,7 @@ const remove = async (id) => {
         select: { id: true }
     });
 
-    if (!education) throw new ResponseError(404, "Education not found!");
+    if (!education) throw new ResponseError(404, 'Education not found!');
 
     return prismaClient.education.delete({ where: { id } });
 };

@@ -1,5 +1,5 @@
-import Joi from "joi";
-import { isString, isText } from "./all-validation.js";
+import Joi from 'joi';
+import { isString, isText } from './all-validation.js';
 
 
 const blogValidation = Joi.object({

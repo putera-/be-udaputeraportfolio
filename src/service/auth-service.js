@@ -1,10 +1,10 @@
-import { prismaClient } from "../application/database.js";
-import { ResponseError } from "../error/response-error.js";
-import { isEmail } from "../validation/all-validation.js";
-import { authValidation } from "../validation/auth-validation.js";
-import { validate } from "../validation/validation.js";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import { prismaClient } from '../application/database.js';
+import { ResponseError } from '../error/response-error.js';
+import { isEmail } from '../validation/all-validation.js';
+import { authValidation } from '../validation/auth-validation.js';
+import { validate } from '../validation/validation.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 const jwtSecret = process.env.JWT_SECRET;
 const maxAge = 24 * 60 * 60;
@@ -22,12 +22,12 @@ const login = async (request, res) => {
     });
 
     if (!user) {
-        throw new ResponseError(401, "Invalid Credential");
+        throw new ResponseError(401, 'Invalid Credential');
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-        throw new ResponseError(401, "Invalid Credential");
+        throw new ResponseError(401, 'Invalid Credential');
     }
 
     // creat token

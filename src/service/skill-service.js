@@ -1,8 +1,8 @@
-import { prismaClient } from "../application/database.js";
-import { ResponseError } from "../error/response-error.js";
-import { isID, isString, istruthy } from "../validation/all-validation.js";
-import { skillCategoryValidation, skillValidation } from "../validation/skill-validation.js";
-import { validate } from "../validation/validation.js";
+import { prismaClient } from '../application/database.js';
+import { ResponseError } from '../error/response-error.js';
+import { isID, isString, istruthy } from '../validation/all-validation.js';
+import { skillCategoryValidation, skillValidation } from '../validation/skill-validation.js';
+import { validate } from '../validation/validation.js';
 
 const getAll = async (req) => {
     const category = validate(istruthy, req.query.category);
@@ -20,7 +20,7 @@ const get = async (id) => {
         include: { category: true }
     });
 
-    if (!skill) throw new ResponseError(404, "Skill not found!");
+    if (!skill) throw new ResponseError(404, 'Skill not found!');
 
     return skill;
 };
@@ -51,7 +51,7 @@ const update = async (id, data) => {
         where: { id },
         include: { category: true }
     });
-    if (!current_skill) throw new ResponseError(404, "Skill not found!");
+    if (!current_skill) throw new ResponseError(404, 'Skill not found!');
 
     // find or create category
     const { id: categoryId } = await find_or_create_category(category_title);
@@ -83,7 +83,7 @@ const remove = async (id) => {
         }
     });
 
-    if (!skill) throw new ResponseError(404, "Skill not found!");
+    if (!skill) throw new ResponseError(404, 'Skill not found!');
 
     await prismaClient.skill.delete({
         where: { id }

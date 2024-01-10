@@ -1,4 +1,4 @@
-import projectService from "../service/project-service.js";
+import projectService from '../service/project-service.js';
 
 const getAll = async (req, res, next) => {
     try {

@@ -1,4 +1,4 @@
-import educationService from "../service/education-service.js";
+import educationService from '../service/education-service.js';
 
 const getAll = async (req, res, next) => {
     try {

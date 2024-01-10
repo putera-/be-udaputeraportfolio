@@ -1,8 +1,8 @@
-import supertest from "supertest";
-import { app } from "../application/app.js";
-import { doLogin, doLogout } from "./test-util.js";
+import supertest from 'supertest';
+import { app } from '../application/app.js';
+import { doLogin, doLogout } from './test-util.js';
 
-describe("/blog path", () => {
+describe('/blog path', () => {
     const page = 'Blog';
     const path = '/blog';
     let authCookie;
@@ -23,16 +23,16 @@ describe("/blog path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test Title",
-                    content: "Test Content"
+                    title: 'Test Title',
+                    content: 'Test Content'
                 });
             id = result.body.data.id;
 
             expect(result.status).toBe(200);
             expect(result.body.errors).toBeUndefined();
             expect(result.body.data).toBeDefined();
-            expect(result.body.data.title).toBe("Test Title");
-            expect(result.body.data.content).toBe("Test Content");
+            expect(result.body.data.title).toBe('Test Title');
+            expect(result.body.data.content).toBe('Test Content');
         });
 
         it(`should get ${page}`, async () => {
@@ -42,8 +42,8 @@ describe("/blog path", () => {
             expect(result.status).toBe(200);
             expect(result.body.errors).toBeUndefined();
             expect(result.body.data).toBeDefined();
-            expect(result.body.data.title).toBe("Test Title");
-            expect(result.body.data.content).toBe("Test Content");
+            expect(result.body.data.title).toBe('Test Title');
+            expect(result.body.data.content).toBe('Test Content');
         });
 
         it(`should get ${page}s`, async () => {
@@ -61,15 +61,15 @@ describe("/blog path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test Updated",
-                    content: "Test Updated",
+                    title: 'Test Updated',
+                    content: 'Test Updated',
                 });
 
             expect(result.status).toBe(200);
             expect(result.body.errors).toBeUndefined();
             expect(result.body.data).toBeDefined();
-            expect(result.body.data.title).toBe("Test Updated");
-            expect(result.body.data.content).toBe("Test Updated");
+            expect(result.body.data.title).toBe('Test Updated');
+            expect(result.body.data.content).toBe('Test Updated');
         });
     });
 
@@ -78,8 +78,8 @@ describe("/blog path", () => {
             const result = await supertest(app)
                 .post(path)
                 .send({
-                    title: "Test Title",
-                    content: "Test Content"
+                    title: 'Test Title',
+                    content: 'Test Content'
                 });
 
             expect(result.status).toBe(401);
@@ -103,7 +103,7 @@ describe("/blog path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    content: "Test"
+                    content: 'Test'
                 });
 
             expect(result.status).toBe(400);
@@ -116,7 +116,7 @@ describe("/blog path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test"
+                    title: 'Test'
                 });
 
             expect(result.status).toBe(400);
@@ -129,8 +129,8 @@ describe("/blog path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "aa",
-                    content: "Test"
+                    title: 'aa',
+                    content: 'Test'
                 });
 
             expect(result.status).toBe(400);
@@ -143,8 +143,8 @@ describe("/blog path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test",
-                    content: "aa"
+                    title: 'Test',
+                    content: 'aa'
                 });
 
             expect(result.status).toBe(400);
@@ -153,13 +153,13 @@ describe("/blog path", () => {
         });
     });
 
-    describe("Fail Update Blog", () => {
+    describe('Fail Update Blog', () => {
         it(`should fail update ${page}: no auth`, async () => {
             const result = await supertest(app)
                 .put(`${path}/${id}`)
                 .send({
-                    title: "Test Title",
-                    content: "Test Content"
+                    title: 'Test Title',
+                    content: 'Test Content'
                 });
 
             expect(result.status).toBe(401);
@@ -183,7 +183,7 @@ describe("/blog path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    content: "Test"
+                    content: 'Test'
                 });
 
             expect(result.status).toBe(400);
@@ -196,7 +196,7 @@ describe("/blog path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test"
+                    title: 'Test'
                 });
 
             expect(result.status).toBe(400);
@@ -209,8 +209,8 @@ describe("/blog path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "aa",
-                    content: "Test"
+                    title: 'aa',
+                    content: 'Test'
                 });
 
             expect(result.status).toBe(400);
@@ -223,8 +223,8 @@ describe("/blog path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test",
-                    content: "aa"
+                    title: 'Test',
+                    content: 'aa'
                 });
 
             expect(result.status).toBe(400);
@@ -264,8 +264,8 @@ describe("/blog path", () => {
             .put(`${path}/${id}`)
             .set('Cookie', authCookie)
             .send({
-                title: "Test Updated",
-                content: "Test Updated"
+                title: 'Test Updated',
+                content: 'Test Updated'
             });
 
         expect(result.status).toBe(404);

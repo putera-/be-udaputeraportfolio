@@ -1,8 +1,8 @@
-import { prismaClient } from "../application/database.js";
-import { ResponseError } from "../error/response-error.js";
-import { isEmail } from "../validation/all-validation.js";
-import { updateUserValidation } from "../validation/user-validation.js";
-import { validate } from "../validation/validation.js";
+import { prismaClient } from '../application/database.js';
+import { ResponseError } from '../error/response-error.js';
+import { isEmail } from '../validation/all-validation.js';
+import { updateUserValidation } from '../validation/user-validation.js';
+import { validate } from '../validation/validation.js';
 import bcrypt from 'bcrypt';
 
 const get = async (email) => {
@@ -17,7 +17,7 @@ const get = async (email) => {
     });
 
     if (!user) {
-        throw new ResponseError(404, "user is not found");
+        throw new ResponseError(404, 'user is not found');
     }
 
     return user;
@@ -31,7 +31,7 @@ const update = async (email, request) => {
     });
 
     if (!countUser) {
-        throw new ResponseError(404, "User nor found");
+        throw new ResponseError(404, 'User nor found');
     }
 
     const data = { name };

@@ -1,4 +1,4 @@
-import blogService from "../service/blog-service.js";
+import blogService from '../service/blog-service.js';
 
 const getAll = async (req, res, next) => {
     try {

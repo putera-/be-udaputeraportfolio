@@ -1,5 +1,5 @@
-import Joi from "joi";
-import { isEmail, isString, isText, isURL } from "./all-validation.js";
+import Joi from 'joi';
+import { isEmail, isString, isText, isURL } from './all-validation.js';
 
 const profileValidate = Joi.object({
     firstname: isString,

@@ -1,4 +1,4 @@
-import logService from "../service/log-service.js";
+import logService from '../service/log-service.js';
 
 const getAccessLog = (req, res, next) => {
     try {

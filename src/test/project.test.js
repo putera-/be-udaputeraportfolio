@@ -1,9 +1,9 @@
-import supertest from "supertest";
-import { app } from "../application/app.js";
-import { doLogin, doLogout } from "./test-util.js";
-import moment from "moment";
+import supertest from 'supertest';
+import { app } from '../application/app.js';
+import { doLogin, doLogout } from './test-util.js';
+import moment from 'moment';
 
-describe("/project path", () => {
+describe('/project path', () => {
     const page = 'Project';
     const path = '/project';
     let authCookie;
@@ -31,8 +31,8 @@ describe("/project path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test Project",
-                    description: "Test Project Description",
+                    title: 'Test Project',
+                    description: 'Test Project Description',
                     startDate: startDate,
                     endDate: endDate
                 });
@@ -41,14 +41,14 @@ describe("/project path", () => {
             expect(result.status).toBe(200);
             expect(result.body.errors).toBeUndefined();
             expect(result.body.data).toBeDefined();
-            expect(result.body.data.title).toBe("Test Project");
-            expect(result.body.data.description).toBe("Test Project Description");
+            expect(result.body.data.title).toBe('Test Project');
+            expect(result.body.data.description).toBe('Test Project Description');
             expect(result.body.data.url).toBe(null);
             expect(result.body.data.github).toBe(null);
             expect(result.body.data.gitlab).toBe(null);
             expect(result.body.data.startDate).toBe(startDate);
             expect(result.body.data.endDate).toBe(endDate);
-            expect(result.body.data.status).toBe("ON PROGRESS");
+            expect(result.body.data.status).toBe('ON PROGRESS');
             expect(result.body.data.company).toBe(null);
         });
 
@@ -59,14 +59,14 @@ describe("/project path", () => {
             expect(result.status).toBe(200);
             expect(result.body.errors).toBeUndefined();
             expect(result.body.data).toBeDefined();
-            expect(result.body.data.title).toBe("Test Project");
-            expect(result.body.data.description).toBe("Test Project Description");
+            expect(result.body.data.title).toBe('Test Project');
+            expect(result.body.data.description).toBe('Test Project Description');
             expect(result.body.data.url).toBe(null);
             expect(result.body.data.github).toBe(null);
             expect(result.body.data.gitlab).toBe(null);
             expect(result.body.data.startDate).toBe(startDate);
             expect(result.body.data.endDate).toBe(endDate);
-            expect(result.body.data.status).toBe("ON PROGRESS");
+            expect(result.body.data.status).toBe('ON PROGRESS');
             expect(result.body.data.company).toBe(null);
         });
 
@@ -85,29 +85,29 @@ describe("/project path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Project Updated",
-                    description: "Update Project Description",
-                    url: "http://localhost.com",
-                    github: "http://localhost.com",
-                    gitlab: "http://localhost.com",
+                    title: 'Project Updated',
+                    description: 'Update Project Description',
+                    url: 'http://localhost.com',
+                    github: 'http://localhost.com',
+                    gitlab: 'http://localhost.com',
                     startDate: updatestartDate,
                     endDate: endDate,
                     status: 'COMPLETE',
-                    company: "Project Company"
+                    company: 'Project Company'
                 });
 
             expect(result.status).toBe(200);
             expect(result.body.errors).toBeUndefined();
             expect(result.body.data).toBeDefined();
-            expect(result.body.data.title).toBe("Project Updated");
-            expect(result.body.data.description).toBe("Update Project Description");
-            expect(result.body.data.url).toBe("http://localhost.com");
-            expect(result.body.data.github).toBe("http://localhost.com");
-            expect(result.body.data.gitlab).toBe("http://localhost.com");
+            expect(result.body.data.title).toBe('Project Updated');
+            expect(result.body.data.description).toBe('Update Project Description');
+            expect(result.body.data.url).toBe('http://localhost.com');
+            expect(result.body.data.github).toBe('http://localhost.com');
+            expect(result.body.data.gitlab).toBe('http://localhost.com');
             expect(result.body.data.startDate).toBe(updatestartDate);
             expect(result.body.data.endDate).toBe(endDate);
-            expect(result.body.data.status).toBe("COMPLETE");
-            expect(result.body.data.company).toBe("Project Company");
+            expect(result.body.data.status).toBe('COMPLETE');
+            expect(result.body.data.company).toBe('Project Company');
         });
     });
 
@@ -116,8 +116,8 @@ describe("/project path", () => {
             const result = await supertest(app)
                 .post(path)
                 .send({
-                    title: "Test Project",
-                    description: "Test Project Description",
+                    title: 'Test Project',
+                    description: 'Test Project Description',
                     startDate: startDate
                 });
 
@@ -142,7 +142,7 @@ describe("/project path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    description: "Test Project Description",
+                    description: 'Test Project Description',
                     startDate: startDate
                 });
 
@@ -156,7 +156,7 @@ describe("/project path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test Project",
+                    title: 'Test Project',
                     startDate: startDate
                 });
 
@@ -170,8 +170,8 @@ describe("/project path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test Project",
-                    description: "Test Project Description",
+                    title: 'Test Project',
+                    description: 'Test Project Description',
                 });
 
             expect(result.status).toBe(400);
@@ -184,8 +184,8 @@ describe("/project path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "aa",
-                    description: "Test Project Description",
+                    title: 'aa',
+                    description: 'Test Project Description',
                     startDate: startDate
                 });
 
@@ -199,8 +199,8 @@ describe("/project path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test Project",
-                    description: "aa",
+                    title: 'Test Project',
+                    description: 'aa',
                     startDate: startDate
                 });
 
@@ -214,8 +214,8 @@ describe("/project path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test Project",
-                    description: "Test Project Description",
+                    title: 'Test Project',
+                    description: 'Test Project Description',
                     startDate: nextDate
                 });
 
@@ -229,8 +229,8 @@ describe("/project path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test Project",
-                    description: "Test Project Description",
+                    title: 'Test Project',
+                    description: 'Test Project Description',
                     startDate: startDate,
                     endDate: nextDate
                 });
@@ -245,10 +245,10 @@ describe("/project path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test Project",
-                    description: "Test Project Description",
+                    title: 'Test Project',
+                    description: 'Test Project Description',
                     startDate: startDate,
-                    status: "WORKING"
+                    status: 'WORKING'
                 });
 
             expect(result.status).toBe(400);
@@ -261,8 +261,8 @@ describe("/project path", () => {
                 .post(path)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test Project",
-                    description: "Test Project Description",
+                    title: 'Test Project',
+                    description: 'Test Project Description',
                     startDate: startDate,
                     company: 'aa'
                 });
@@ -273,13 +273,13 @@ describe("/project path", () => {
         });
     });
 
-    describe("Fail Update Blog", () => {
+    describe('Fail Update Blog', () => {
         it(`should fail update ${page}: no auth`, async () => {
             const result = await supertest(app)
                 .put(`${path}/${id}`)
                 .send({
-                    title: "Test Project",
-                    description: "Test Project Description",
+                    title: 'Test Project',
+                    description: 'Test Project Description',
                     startDate: startDate
                 });
 
@@ -304,7 +304,7 @@ describe("/project path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    description: "Test Project Description",
+                    description: 'Test Project Description',
                     startDate: startDate
                 });
 
@@ -318,7 +318,7 @@ describe("/project path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test Project",
+                    title: 'Test Project',
                     startDate: startDate
                 });
 
@@ -332,8 +332,8 @@ describe("/project path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test Project",
-                    description: "Test Project Description",
+                    title: 'Test Project',
+                    description: 'Test Project Description',
                 });
 
             expect(result.status).toBe(400);
@@ -346,8 +346,8 @@ describe("/project path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "aa",
-                    description: "Test Project Description",
+                    title: 'aa',
+                    description: 'Test Project Description',
                     startDate: startDate
                 });
 
@@ -361,8 +361,8 @@ describe("/project path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test Project",
-                    description: "aa",
+                    title: 'Test Project',
+                    description: 'aa',
                     startDate: startDate
                 });
 
@@ -376,8 +376,8 @@ describe("/project path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test Project",
-                    description: "Test Project Description",
+                    title: 'Test Project',
+                    description: 'Test Project Description',
                     startDate: nextDate
                 });
 
@@ -391,8 +391,8 @@ describe("/project path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test Project",
-                    description: "Test Project Description",
+                    title: 'Test Project',
+                    description: 'Test Project Description',
                     startDate: startDate,
                     endDate: nextDate
                 });
@@ -407,10 +407,10 @@ describe("/project path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test Project",
-                    description: "Test Project Description",
+                    title: 'Test Project',
+                    description: 'Test Project Description',
                     startDate: startDate,
-                    status: "WORKING"
+                    status: 'WORKING'
                 });
 
             expect(result.status).toBe(400);
@@ -423,8 +423,8 @@ describe("/project path", () => {
                 .put(`${path}/${id}`)
                 .set('Cookie', authCookie)
                 .send({
-                    title: "Test Project",
-                    description: "Test Project Description",
+                    title: 'Test Project',
+                    description: 'Test Project Description',
                     startDate: startDate,
                     company: 'aa'
                 });
@@ -466,8 +466,8 @@ describe("/project path", () => {
             .put(`${path}/${id}`)
             .set('Cookie', authCookie)
             .send({
-                title: "Test Project",
-                description: "Test Project Description",
+                title: 'Test Project',
+                description: 'Test Project Description',
                 startDate: startDate
             });
 

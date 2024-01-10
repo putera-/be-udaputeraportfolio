@@ -1,6 +1,6 @@
-import { logger } from "../application/logging.js";
-import { ResponseError } from "../error/response-error.js";
-import Joi from "joi";
+import { logger } from '../application/logging.js';
+import { ResponseError } from '../error/response-error.js';
+import Joi from 'joi';
 
 const errorMiddleware = async (err, req, res, next) => {
     if (!err) {
@@ -18,7 +18,7 @@ const errorMiddleware = async (err, req, res, next) => {
         }).end();
     } else {
         res.status(500).json({
-            errors: "Internal server Error",
+            errors: 'Internal server Error',
             message: err.message
         });
     }

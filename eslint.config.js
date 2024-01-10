@@ -5,7 +5,8 @@ export default [
         ],
         rules: {
             semi: "error",
-            "prefer-const": "error"
+            "prefer-const": "error",
+            "quotes": ["error", "single"]
         }
     }
 ]
