@@ -8,6 +8,15 @@ const createPath = async (path) => {
     }
 }
 
+const isFileExist = async (file) => {
+    try {
+        await fs.access(file)
+    } catch (error) {
+        throw (error);
+    }
+}
+
 export default {
-    createPath
+    createPath,
+    isFileExist
 }

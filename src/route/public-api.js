@@ -6,12 +6,14 @@ import skillController from '../controller/skill-controller.js';
 import educationController from '../controller/education-controller.js';
 import blogController from '../controller/blog-controller.js';
 import fileService from '../service/file-service.js';
+import { isFileExist } from '../middleware/file-middleware.js'
 
 const publicRouter = new express.Router();
 
 // create upload path
 fileService.createPath('./uploads');
 publicRouter.use('/uploads', express.static('./uploads'));
+publicRouter.use('/uploads', isFileExist);
 
 // AUTH
 publicRouter.post('/login', authController.login);

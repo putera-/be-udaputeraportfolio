@@ -29,6 +29,15 @@ const fileFilter = (req, file, cb) => {
 
 const uploadImage = multer({ storage: storage, fileFilter: fileFilter });
 
+const isFileExist = async (req, res) => {
+    try {
+        await fileService.isFileExist('./uploads' + req.url);
+    } catch (error) {
+        return res.status(404).json({ message: 'File Not found' });
+    }
+};
+
 export {
-    uploadImage
+    uploadImage,
+    isFileExist
 }

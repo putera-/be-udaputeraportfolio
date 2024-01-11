@@ -8,7 +8,7 @@ import profileController from '../controller/profile-controller.js';
 import projectController from '../controller/project-controller.js';
 import blogController from '../controller/blog-controller.js';
 import logController from '../controller/log-controller.js';
-import { uploadImage } from '../middleware/upload-middleware.js';
+import { uploadImage } from '../middleware/file-middleware.js';
 
 const apiRouter = new express.Router();
 apiRouter.use(authMiddleware);
