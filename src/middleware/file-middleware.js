@@ -6,12 +6,12 @@ const storage = multer.diskStorage({
     destination: async (req, file, cb) => {
         // create path
         const path = './uploads/' + file.fieldname;
-        await fileService.createPath(path)
+        await fileService.createPath(path);
 
         cb(null, path); // Specify the directory where uploaded images will be stored
     },
     filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
         const fileName = uniqueSuffix + '.' + file.originalname.split('.').pop();
         cb(null, fileName);
 
@@ -40,4 +40,4 @@ const isFileExist = async (req, res) => {
 export {
     uploadImage,
     isFileExist
-}
+};
