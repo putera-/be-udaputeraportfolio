@@ -7,6 +7,7 @@ const profileValidate = Joi.object({
     email: isEmail,
     dob: Joi.date().required(),
     address: isText,
+    avatar: Joi.string(),
     bio: isText,
     web: isURL,
     github: isURL,

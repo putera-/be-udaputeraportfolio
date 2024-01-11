@@ -16,7 +16,16 @@ const isFileExist = async (file) => {
     }
 }
 
+const removeFile = async (file) => {
+    try {
+        await fs.rm(file);
+    } catch (error) {
+        throw (error);
+    }
+}
+
 export default {
     createPath,
-    isFileExist
+    isFileExist,
+    removeFile
 }

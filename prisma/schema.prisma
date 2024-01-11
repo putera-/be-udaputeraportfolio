@@ -27,6 +27,7 @@ model Profile {
   email     String   @id @db.VarChar(100)
   dob       DateTime @db.Date
   address   String   @db.Text
+  avatar    String?  @db.VarChar(255)
   bio       String?  @db.Text
   web       String?  @db.VarChar(100)
   github    String?  @db.VarChar(100)

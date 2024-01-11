@@ -2,6 +2,7 @@ import { prismaClient } from '../application/database.js';
 import { validate } from '../validation/validation.js';
 import { profileValidate } from '../validation/profile-validation.js';
 import moment from 'moment';
+import fileService from './file-service.js';
 
 const _select = {
     firstname: true,
@@ -45,10 +46,19 @@ const create_or_update_profile = async (data) => {
     let profile = await prismaClient.profile.findFirst();
 
     if (profile) {
+        const prevAvatar = profile.avatar;
         profile = await prismaClient.profile.update({
             where: { email: profile.email },
             data
         });
+
+        // check avatar change
+        if (prevAvatar && data.avatar) {
+            if (prevAvatar != data.avatar) {
+                // remove prevAvatar
+                fileService.removeFile('./' + prevAvatar);
+            }
+        }
     } else {
         profile = await prismaClient.profile.create({
             data
