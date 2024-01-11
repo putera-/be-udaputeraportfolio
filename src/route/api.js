@@ -8,6 +8,7 @@ import profileController from '../controller/profile-controller.js';
 import projectController from '../controller/project-controller.js';
 import blogController from '../controller/blog-controller.js';
 import logController from '../controller/log-controller.js';
+import { uploadImage } from '../middleware/upload-middleware.js';
 
 const apiRouter = new express.Router();
 apiRouter.use(authMiddleware);
@@ -21,7 +22,7 @@ apiRouter.route('/user')
     .patch(userController.update);
 
 // PROFILE
-apiRouter.put('/profile', profileController.update);
+apiRouter.put('/profile', uploadImage.single('avatar'), profileController.update);
 
 // SKILL
 apiRouter.post('/skill', skillController.create);
