@@ -1,3 +1,4 @@
+import fileService from '../service/file-service.js';
 import profileService from '../service/profile-service.js';
 
 const get = async (req, res, next) => {
@@ -20,6 +21,9 @@ const update = async (req, res, next) => {
         res.status(200).json({ data });
     } catch (error) {
         // remove avatar if failed
+        if (req.file) {
+            fileService.removeFile(req.body.avatar);
+        }
         next(error);
     }
 };
