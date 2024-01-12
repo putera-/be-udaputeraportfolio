@@ -19,6 +19,7 @@ publicRouter.use('/uploads', isFileExist);
 publicRouter.post('/login', authController.login);
 
 // PROFILE
+publicRouter.get('/portfolio', profileController.getPortFolio);
 publicRouter.get('/profile', profileController.get);
 
 // PROJECT

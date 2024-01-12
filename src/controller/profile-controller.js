@@ -1,5 +1,6 @@
 import fileService from '../service/file-service.js';
 import profileService from '../service/profile-service.js';
+import skillService from '../service/skill-service.js';
 
 const get = async (req, res, next) => {
     try {
@@ -28,7 +29,24 @@ const update = async (req, res, next) => {
     }
 };
 
+const getPortFolio = async (req, res, next) => {
+    try {
+        const profile = await profileService.get();
+        const skills = await skillService.getByCategory(req)
+
+        return res.status(200).json({
+            data: {
+                profile,
+                skills
+            }
+        })
+    } catch (error) {
+        next(error);
+    }
+}
+
 export default {
     get,
-    update
+    update,
+    getPortFolio
 };

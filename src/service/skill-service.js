@@ -12,6 +12,21 @@ const getAll = async (req) => {
     });
 };
 
+const getByCategory = () => {
+    return prismaClient.skillCategory.findMany({
+        include: {
+            skills: {
+                orderBy: {
+                    title: 'asc'
+                }
+            }
+        },
+        orderBy: {
+            title: 'asc'
+        }
+    })
+}
+
 const get = async (id) => {
     id = validate(isID, id);
 
@@ -122,6 +137,7 @@ const removeSkillCategory = async (id) => {
 
 export default {
     getAll,
+    getByCategory,
     get,
     create,
     update,
