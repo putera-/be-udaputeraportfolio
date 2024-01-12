@@ -56,7 +56,7 @@ const create_or_update_profile = async (data) => {
         if (prevAvatar && data.avatar) {
             if (prevAvatar != data.avatar) {
                 // remove prevAvatar
-                fileService.removeFile('./' + prevAvatar);
+                fileService.removeFile(prevAvatar);
             }
         }
     } else {

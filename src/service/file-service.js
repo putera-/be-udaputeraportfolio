@@ -18,7 +18,7 @@ const isFileExist = async (file) => {
 
 const removeFile = async (file) => {
     try {
-        await fs.rm(file);
+        await fs.rm('.' + file);
     } catch (error) {
         throw (error);
     }
