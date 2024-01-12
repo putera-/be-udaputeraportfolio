@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE `profile` ADD COLUMN `city` VARCHAR(100) NOT NULL DEFAULT '-' AFTER `address`,
+    ADD COLUMN `country` VARCHAR(100) NOT NULL DEFAULT '-' AFTER `city`,
+    ADD COLUMN `phone` VARCHAR(100) NOT NULL DEFAULT '-' AFTER `email`;

@@ -32,7 +32,10 @@ describe('/profile path', () => {
                 lastname: 'Doe',
                 email: 'test@example.com',
                 dob: '1900-01-01',
-                address: 'Jhon Address'
+                address: 'Jhon Address',
+                phone: '+62 811-1111-1111',
+                city: 'Jakarta',
+                country: 'Indonesia'
             });
 
         expect(result.status).toBe(200);
@@ -55,6 +58,9 @@ describe('/profile path', () => {
                     lastname: 'Doe',
                     email: 'test@example.com',
                     dob: '1900-01-01',
+                    phone: '+62 811-1111-1111',
+                    city: 'Jakarta',
+                    country: 'Indonesia'
                 });
 
             expect(result.status).toBe(401);
@@ -70,6 +76,9 @@ describe('/profile path', () => {
                     lastname: 'Doe',
                     email: 'test@example.com',
                     dob: '1900-01-01',
+                    phone: '+62 811-1111-1111',
+                    city: 'Jakarta',
+                    country: 'Indonesia'
                 });
 
             expect(result.status).toBe(400);
@@ -85,6 +94,9 @@ describe('/profile path', () => {
                     firstname: 'John',
                     email: 'test@example.com',
                     dob: '1900-01-01',
+                    phone: '+62 811-1111-1111',
+                    city: 'Jakarta',
+                    country: 'Indonesia'
                 });
 
             expect(result.status).toBe(400);
@@ -100,6 +112,9 @@ describe('/profile path', () => {
                     firstname: 'John',
                     lastname: 'Doe',
                     email: 'test@example.com',
+                    phone: '+62 811-1111-1111',
+                    city: 'Jakarta',
+                    country: 'Indonesia'
                 });
 
             expect(result.status).toBe(400);
@@ -116,6 +131,9 @@ describe('/profile path', () => {
                     lastname: 'Doe',
                     email: 'test@example.com',
                     dob: '1900-01-01',
+                    phone: '+62 811-1111-1111',
+                    city: 'Jakarta',
+                    country: 'Indonesia'
                 });
 
             expect(result.status).toBe(400);
@@ -132,6 +150,9 @@ describe('/profile path', () => {
                     lastname: 'Do',
                     email: 'test@example.com',
                     dob: '1900-01-01',
+                    phone: '+62 811-1111-1111',
+                    city: 'Jakarta',
+                    country: 'Indonesia'
                 });
 
             expect(result.status).toBe(400);
@@ -148,6 +169,9 @@ describe('/profile path', () => {
                     lastname: 'Doe',
                     email: 'test@example.com',
                     dob: '-',
+                    phone: '+62 811-1111-1111',
+                    city: 'Jakarta',
+                    country: 'Indonesia'
 
                 });
 
