@@ -1,16 +1,12 @@
 import morgan from 'morgan';
 import rfs from 'rotating-file-stream';
-import path, { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import path from 'path';
 import requestIp from 'request-ip';
 import authService from '../service/auth-service.js';
 
 // log format
 const log_format = '{"user":":user", "ip-addr":":ip-addr","method":":method","url":":url","date":":date","http-version":"HTTP/:http-version","status": ":status","response-time":":response-time ms","content-length":":res[content-length]","referer":":referrer","user-agent":":user-agent"}';
-const filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(filename);
-
-const log_path = path.join(__dirname, '../../log');
+const log_path = path.join('./log');
 
 // create a rotating write stream
 var accessLogStream = rfs.createStream('access.log', {

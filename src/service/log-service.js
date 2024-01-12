@@ -1,14 +1,8 @@
 import fs from 'fs';
-import readline from 'readline';
-import path, { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import path from 'path';
 
-
-const filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(filename);
-const accessLogFile = path.join(__dirname, '../../log/access.log');
-const errorLogFile = path.join(__dirname, '../../log/error.log');
-
+const accessLogFile = path.join('./log/access.log');
+const errorLogFile = path.join('./log/error.log');
 
 const getAccessLog = () => {
     const logFileContent = fs.readFileSync(accessLogFile, { encoding: 'utf-8' });
