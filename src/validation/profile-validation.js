@@ -5,6 +5,7 @@ const phoneRegex = /^(\+62|62)?[\s-]?0?8[1-9]{1}\d{1}[\s-]?\d{4}[\s-]?\d{2,5}$/;
 const profileValidate = Joi.object({
     firstname: isString,
     lastname: isString,
+    job: isString,
     email: isEmail,
     phone: Joi.string().regex(phoneRegex).required().label('Phone Number'),
     dob: Joi.date().required(),
