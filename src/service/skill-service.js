@@ -57,7 +57,8 @@ const update = async (id, data) => {
 
     const updatedData = await prismaClient.skill.update({
         where: { id },
-        data
+        data,
+        include: { category: true }
     });
 
     // remove previous skill cateory, if doesnt have skills
