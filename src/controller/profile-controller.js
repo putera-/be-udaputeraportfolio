@@ -2,6 +2,7 @@ import fileService from '../service/file-service.js';
 import profileService from '../service/profile-service.js';
 import skillService from '../service/skill-service.js';
 import educationService from '../service/education-service.js';
+import projectService from '../service/project-service.js';
 
 const get = async (req, res, next) => {
     try {
@@ -34,13 +35,15 @@ const getPortFolio = async (req, res, next) => {
     try {
         const profile = await profileService.get();
         const skills = await skillService.getByCategory(req);
-        const educations = await educationService.getAll()
+        const educations = await educationService.getAll();
+        const projects = await projectService.getAll();
 
         return res.status(200).json({
             data: {
                 profile,
                 skills,
-                educations
+                educations,
+                projects
             }
         })
     } catch (error) {
