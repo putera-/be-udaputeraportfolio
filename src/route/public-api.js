@@ -7,6 +7,7 @@ import educationController from '../controller/education-controller.js';
 import blogController from '../controller/blog-controller.js';
 import fileService from '../service/file-service.js';
 import { isFileExist } from '../middleware/file-middleware.js';
+import experienceController from '../controller/experience-controller.js';
 
 const publicRouter = new express.Router();
 
@@ -37,6 +38,10 @@ publicRouter.get('/education/:id', educationController.get);
 // EDUCATION
 publicRouter.get('/blogs', blogController.getAll);
 publicRouter.get('/blog/:id', blogController.get);
+
+// EXPERIENCE
+publicRouter.get('/experiences', experienceController.getAll);
+publicRouter.get('/experience/:id', experienceController.get);
 
 export {
     publicRouter

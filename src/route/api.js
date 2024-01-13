@@ -8,6 +8,7 @@ import profileController from '../controller/profile-controller.js';
 import projectController from '../controller/project-controller.js';
 import blogController from '../controller/blog-controller.js';
 import logController from '../controller/log-controller.js';
+import experienceController from '../controller/experience-controller.js';
 import { uploadImage } from '../middleware/file-middleware.js';
 
 const apiRouter = new express.Router();
@@ -35,6 +36,12 @@ apiRouter.post('/education', educationController.create);
 apiRouter.route('/education/:id')
     .put(educationController.update)
     .delete(educationController.remove);
+
+// EXPERIENCE
+apiRouter.post('/experience', experienceController.create);
+apiRouter.route('/experience/:id')
+    .put(experienceController.update)
+    .delete(experienceController.remove);
 
 // PROJECT
 apiRouter.post('/project', projectController.create);

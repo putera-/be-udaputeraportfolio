@@ -82,6 +82,20 @@ model Education {
   @@map("education")
 }
 
+model Experience {
+  id          Int       @id @default(autoincrement())
+  company     String    @db.VarChar(100)
+  location    String    @db.VarChar(100)
+  title       String    @db.VarChar(100)
+  description String    @db.Text
+  startDate   DateTime  @db.Date
+  endDate     DateTime? @db.Date
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
+
+  @@map("experience")
+}
+
 model Project {
   id          Int            @id @default(autoincrement())
   title       String         @db.VarChar(100)
