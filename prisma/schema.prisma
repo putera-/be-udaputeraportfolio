@@ -24,6 +24,7 @@ model User {
 model Profile {
   firstname String   @db.VarChar(100)
   lastname  String   @db.VarChar(100)
+  avatar    String?  @db.VarChar(255)
   job       String   @db.VarChar(100)
   email     String   @id @db.VarChar(100)
   phone     String   @db.VarChar(100)
@@ -31,7 +32,6 @@ model Profile {
   address   String   @db.Text
   city      String   @db.VarChar(100)
   country   String   @db.VarChar(100)
-  avatar    String?  @db.VarChar(255)
   bio       String?  @db.Text
   web       String?  @db.VarChar(100)
   github    String?  @db.VarChar(100)
