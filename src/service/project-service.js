@@ -1,19 +1,61 @@
 import moment from 'moment';
 import { prismaClient } from '../application/database.js';
 import { isID } from '../validation/all-validation.js';
-import { projectValidation } from '../validation/project-validation.js';
+import { projectFilters, projectValidation } from '../validation/project-validation.js';
 import { validate } from '../validation/validation.js';
 import dateService from './date-service.js';
 import { ResponseError } from '../error/response-error.js';
 
-const getAll = async () => {
-    const projects = await prismaClient.project.findMany();
+const getAll = async (filters) => {
+    filters = validate(projectFilters, filters);
 
-    for (let i = 0; i < projects.length; i++) {
-        projects[i] = formatData(projects[i]);
+    // filters
+    const dbFilters = [];
+    if (filters.title) {
+        dbFilters.push({
+            title: { contains: filters.title }
+        });
+    }
+    if (filters.description) {
+        dbFilters.push({
+            description: { contains: filters.description }
+        });
+    }
+    if (filters.company) {
+        dbFilters.push({
+            company: { contains: filters.company }
+        });
     }
 
-    return projects;
+    // skip based on page & perPage
+    // (page - 1) * perPage
+    const page = filters.page;
+    const perPage = filters.perPage;
+    const skip = (page - 1) * perPage;
+
+    const params = {
+        take: perPage,
+        skip: skip
+    }
+    if (dbFilters.length) params.where = dbFilters;
+
+    const projects = await prismaClient.project.findMany(params);
+
+    const params2 = {}
+    if (dbFilters.length) params2.where = dbFilters;
+    const totalProjects = await prismaClient.project.count(params2);
+
+    for (let project of projects) {
+        project = formatData(project);
+    }
+
+    return {
+        data: projects,
+        page,
+        total: projects.length,
+        total_data: totalProjects,
+        total_page: Math.ceil(totalProjects / perPage)
+    };
 };
 
 const get = async (id) => {
@@ -79,7 +121,11 @@ const remove = async (id) => {
 const formatData = (project) => {
     // format date
     project.startDate = moment(project.startDate).format('YYYY-MM-DD');
-    if (project.endDate) project.endDate = moment(project.endDate).format('YYYY-MM-DD');
+    project.readStartDate = moment(project.startDate).format('D MMM YYYY');
+    if (project.endDate) {
+        project.endDate = moment(project.endDate).format('YYYY-MM-DD');
+        project.readEndDate = moment(project.endDate).format('D MMM YYYY');
+    }
 
     // status
     project.status = project.status.replace('_', ' ');

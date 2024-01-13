@@ -2,9 +2,17 @@ import projectService from '../service/project-service.js';
 
 const getAll = async (req, res, next) => {
     try {
-        const data = await projectService.getAll();
+        const filters = {
+            title: req.query.search,
+            description: req.query.search,
+            company: req.query.search,
+            page: req.query.page || 1,
+            perPage: req.query.perpage || 10
+        };
 
-        res.status(200).json({ data });
+        const data = await projectService.getAll(filters);
+
+        res.status(200).json(data);
     } catch (error) {
         next(error);
     }
