@@ -3,6 +3,7 @@ import profileService from '../service/profile-service.js';
 import skillService from '../service/skill-service.js';
 import educationService from '../service/education-service.js';
 import projectService from '../service/project-service.js';
+import experienceService from '../service/experience-service.js';
 
 const get = async (req, res, next) => {
     try {
@@ -33,16 +34,24 @@ const update = async (req, res, next) => {
 
 const getPortFolio = async (req, res, next) => {
     try {
+        // limit 4 data
+        const filters = {
+            page: 1,
+            perPage: 4
+        }
+
         const profile = await profileService.get();
         const skills = await skillService.getByCategory(req);
-        const educations = await educationService.getAll();
-        const projects = await projectService.getAll();
+        const educations = await educationService.getAll(filters);
+        const { data: experiences } = await experienceService.getAll(filters);
+        const { data: projects } = await projectService.getAll(filters);
 
         return res.status(200).json({
             data: {
                 profile,
                 skills,
                 educations,
+                experiences,
                 projects
             }
         })

@@ -28,8 +28,8 @@ const get = async () => {
             'phone': '-',
             'dob': '1900-01-01',
             'address': '-',
-            'city': '1900-01-01',
-            'country': '1900-01-01',
+            'city': '-',
+            'country': '-',
         };
     }
 
