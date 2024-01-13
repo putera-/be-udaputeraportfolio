@@ -23,9 +23,13 @@ const get = async () => {
         profile = {
             'firstname': '-',
             'lastname': '-',
+            'job': '-',
             'email': '-',
+            'phone': '-',
             'dob': '1900-01-01',
-            'address': '-'
+            'address': '-',
+            'city': '1900-01-01',
+            'country': '1900-01-01',
         };
     }
 
