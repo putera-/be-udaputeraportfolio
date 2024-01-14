@@ -39,7 +39,18 @@ const getAll = async (filters) => {
     }
     if (dbFilters.length) params.where = dbFilters;
 
-    const projects = await prismaClient.project.findMany(params);
+    const projects = await prismaClient.project.findMany({
+        ...params,
+        include: {
+            ProjectSkills: {
+                include: {
+                    skill: {
+                        select: { title: true }
+                    }
+                }
+            }
+        }
+    });
 
     const params2 = {}
     if (dbFilters.length) params2.where = dbFilters;
@@ -62,10 +73,31 @@ const get = async (id) => {
     id = validate(isID, id);
 
     const project = await prismaClient.project.findUnique({
-        where: { id }
+        where: { id },
+        include: {
+            ProjectSkills: true
+        }
     });
 
     if (!project) throw new ResponseError(404, 'Project not found!');
+    const skills = project.ProjectSkills.map(s => s.skillId);
+    const skillCats = await prismaClient.skillCategory.findMany({
+        where: {
+            skills: {
+                some: {
+                    id: { in: skills }
+                }
+            }
+        },
+        include: {
+            skills: {
+                where: {
+                    id: { in: skills }
+                }
+            }
+        }
+    });
+    project.skills = skillCats;
 
     return formatData(project);
 };
@@ -76,7 +108,14 @@ const create = async (data) => {
     data.startDate = dateService.toLocaleDate(data.startDate);
     if (data.endDate) data.endDate = dateService.toLocaleDate(data.endDate);
 
+    // remove skills array
+    const skills = data.skills;
+    delete data.skills;
+
     const project = await prismaClient.project.create({ data });
+
+    // update skills relation
+    await addSkills(project.id, skills)
 
     return formatData(project);
 };
@@ -95,10 +134,17 @@ const update = async (id, data) => {
 
     if (!findProject) throw new ResponseError(404, 'Project not found!');
 
+    // remove skills array
+    const skills = data.skills
+    delete data.skills;
+
     const project = await prismaClient.project.update({
         where: { id },
         data
     });
+
+    // update skills relation
+    await addSkills(id, skills)
 
     return formatData(project);
 };
@@ -132,6 +178,26 @@ const formatData = (project) => {
 
     return project;
 };
+
+const addSkills = async (projectId, skills) => {
+    // remove current projectSkills
+    await prismaClient.projectSkills.deleteMany({
+        where: { projectId }
+    });
+
+    const projectSkills = [];
+    for (const skill of skills) {
+        projectSkills.push({
+            projectId: projectId,
+            skillId: skill
+        });
+    }
+    if (projectSkills.length) {
+        await prismaClient.projectSkills.createMany({
+            data: projectSkills
+        });
+    }
+}
 
 export default {
     getAll,

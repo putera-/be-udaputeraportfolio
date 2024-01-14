@@ -58,13 +58,14 @@ model SkillCategory {
 }
 
 model Skill {
-  id         Int           @id @default(autoincrement())
-  title      String        @db.VarChar(100)
-  svg        String?       @db.Text
-  categoryId Int           @db.Int
-  category   SkillCategory @relation(fields: [categoryId], references: [id])
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @default(now()) @updatedAt
+  id            Int             @id @default(autoincrement())
+  title         String          @db.VarChar(100)
+  svg           String?         @db.Text
+  categoryId    Int             @db.Int
+  category      SkillCategory   @relation(fields: [categoryId], references: [id])
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @default(now()) @updatedAt
+  ProjectSkills ProjectSkills[]
 
   @@map("skill")
 }
@@ -97,21 +98,32 @@ model Experience {
 }
 
 model Project {
-  id          Int            @id @default(autoincrement())
-  title       String         @db.VarChar(100)
-  description String         @db.Text
-  url         String?        @db.VarChar(100)
-  github      String?        @db.VarChar(100)
-  gitlab      String?        @db.VarChar(100)
-  startDate   DateTime       @db.Date
-  endDate     DateTime?      @db.Date
-  status      ProjectStatus? @default(ON_PROGRESS)
-  company     String?        @db.VarChar(100)
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @default(now()) @updatedAt
+  id            Int             @id @default(autoincrement())
+  title         String          @db.VarChar(100)
+  description   String          @db.Text
+  url           String?         @db.VarChar(100)
+  github        String?         @db.VarChar(100)
+  gitlab        String?         @db.VarChar(100)
+  startDate     DateTime        @db.Date
+  endDate       DateTime?       @db.Date
+  status        ProjectStatus?  @default(ON_PROGRESS)
+  company       String?         @db.VarChar(100)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @default(now()) @updatedAt
+  ProjectSkills ProjectSkills[]
 
   @@index([title])
   @@map("project")
+}
+
+model ProjectSkills {
+  projectId Int
+  project   Project @relation(fields: [projectId], references: [id])
+  skillId   Int
+  skill     Skill   @relation(fields: [skillId], references: [id])
+
+  @@id([projectId, skillId])
+  @@map("project_skills")
 }
 
 enum ProjectStatus {
