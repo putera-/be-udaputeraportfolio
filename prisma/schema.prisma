@@ -110,12 +110,32 @@ model Project {
   endDate       DateTime?       @db.Date
   status        ProjectStatus?  @default(ON_PROGRESS)
   company       String?         @db.VarChar(100)
+  photos        Photo[]
+  ProjectSkills ProjectSkills[]
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @default(now()) @updatedAt
-  ProjectSkills ProjectSkills[]
 
   @@index([title])
   @@map("project")
+}
+
+enum ProjectStatus {
+  ON_PROGRESS
+  COMPLETE
+  MAINTENANCE
+}
+
+model Photo {
+  id        Int      @id @default(autoincrement())
+  path      String   @db.VarChar(255)
+  path_md   String   @db.VarChar(255)
+  path_sm   String   @db.VarChar(255)
+  Project   Project? @relation(fields: [projectId], references: [id])
+  projectId Int?
+  Blog      Blog?    @relation(fields: [blogId], references: [id])
+  blogId    Int?
+
+  @@map("photo")
 }
 
 model ProjectSkills {
@@ -128,16 +148,11 @@ model ProjectSkills {
   @@map("project_skills")
 }
 
-enum ProjectStatus {
-  ON_PROGRESS
-  COMPLETE
-  MAINTENANCE
-}
-
 model Blog {
   id        Int      @id @default(autoincrement())
   title     String   @db.VarChar(255)
   content   String   @db.Text
+  photos    Photo[]
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 

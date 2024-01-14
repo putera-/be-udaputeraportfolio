@@ -44,7 +44,7 @@ apiRouter.route('/experience/:id')
     .delete(experienceController.remove);
 
 // PROJECT
-apiRouter.post('/project', projectController.create);
+apiRouter.post('/project', uploadImage.array('photos', 10), projectController.create);
 apiRouter.route('/project/:id')
     .put(projectController.update)
     .delete(projectController.remove);

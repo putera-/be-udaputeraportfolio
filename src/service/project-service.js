@@ -42,6 +42,7 @@ const getAll = async (filters) => {
     const projects = await prismaClient.project.findMany({
         ...params,
         include: {
+            photos: true,
             ProjectSkills: {
                 include: {
                     skill: {
@@ -75,7 +76,8 @@ const get = async (id) => {
     const project = await prismaClient.project.findUnique({
         where: { id },
         include: {
-            ProjectSkills: true
+            ProjectSkills: true,
+            photos: true
         }
     });
 
@@ -102,7 +104,7 @@ const get = async (id) => {
     return formatData(project);
 };
 
-const create = async (data) => {
+const create = async (data, photos) => {
     data = validate(projectValidation, data);
 
     data.startDate = dateService.toLocaleDate(data.startDate);
@@ -115,7 +117,9 @@ const create = async (data) => {
     const project = await prismaClient.project.create({ data });
 
     // update skills relation
-    await addSkills(project.id, skills)
+    await addSkills(project.id, skills);
+
+    await addPhotos(project.id, photos);
 
     return formatData(project);
 };
@@ -185,16 +189,30 @@ const addSkills = async (projectId, skills) => {
         where: { projectId }
     });
 
-    const projectSkills = [];
-    for (const skill of skills) {
-        projectSkills.push({
-            projectId: projectId,
-            skillId: skill
-        });
+    if (skills.length) {
+        const projectSkills = [];
+        for (const skill of skills) {
+            projectSkills.push({
+                projectId: projectId,
+                skillId: skill
+            });
+        }
+        if (projectSkills.length) {
+            await prismaClient.projectSkills.createMany({
+                data: projectSkills
+            });
+        }
     }
-    if (projectSkills.length) {
-        await prismaClient.projectSkills.createMany({
-            data: projectSkills
+}
+
+const addPhotos = async (projectId, photos) => {
+    if (photos.length) {
+        for (const photo of photos) {
+            photo.projectId = projectId
+        }
+
+        await prismaClient.photo.createMany({
+            data: photos
         });
     }
 }

@@ -13,6 +13,9 @@ const publicRouter = new express.Router();
 
 // create upload path
 fileService.createPath('./uploads');
+fileService.createPath('./uploads/avatar');
+fileService.createPath('./uploads/photos');
+
 publicRouter.use('/uploads', express.static('./uploads'));
 publicRouter.use('/uploads', isFileExist);
 

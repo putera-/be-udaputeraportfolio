@@ -36,7 +36,6 @@ const update = async (req, res, next) => {
                 })
             );
 
-            // req.body.avatar = '/uploads/avatar/' + fileName;
             req.body.avatar = `/uploads/avatar/${uniqueSuffix}_lg.${ext}`;
             req.body.avatar_md = `/uploads/avatar/${uniqueSuffix}_md.${ext}`;
             req.body.avatar_sm = `/uploads/avatar/${uniqueSuffix}_sm.${ext}`;
