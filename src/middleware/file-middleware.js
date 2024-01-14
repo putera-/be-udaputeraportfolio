@@ -19,7 +19,9 @@ const storage = multer.diskStorage({
     }
 });
 
-const fileFilter = (req, file, cb) => {
+const multerMemory = multer.memoryStorage();
+
+const imageFilter = (req, file, cb) => {
     // Check if the file is an image (you can customize this check)
     if (file.mimetype.startsWith('image/')) {
         cb(null, true);
@@ -28,7 +30,9 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
-const uploadImage = multer({ storage: storage, fileFilter: fileFilter });
+// use memory to be able to get buffer
+const uploadImage = multer({ storage: multerMemory, fileFilter: imageFilter });
+// const uploadImage = multer({ storage: storage, fileFilter: imageFilter });
 
 const isFileExist = async (req, res) => {
     try {

@@ -4,6 +4,7 @@ import skillService from '../service/skill-service.js';
 import educationService from '../service/education-service.js';
 import projectService from '../service/project-service.js';
 import experienceService from '../service/experience-service.js';
+import path from 'path';
 
 const get = async (req, res, next) => {
     try {
@@ -15,18 +16,41 @@ const get = async (req, res, next) => {
 };
 
 const update = async (req, res, next) => {
+    // let fileName = '';
+    let ext = req.file ? req.file.originalname.split('.').pop() : '';
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+
     try {
         if (req.file) {
-            req.body.avatar = '/' + req.file.path.replaceAll('\\', '/');
+            const avatarBuffer = req.file.buffer;
+
+            // resize images to 300, 600, 1200
+            const sizes = [{ key: 'sm', size: 300 }, { key: 'md', size: 600 }, { key: 'lg', size: 1200 }];
+            await Promise.all(
+                sizes.map(async (s) => {
+                    const { key, size } = s;
+                    const filename = `${uniqueSuffix}_${key}.${ext}`;
+                    const filepath = path.join('./uploads/avatar/' + filename);
+
+                    await fileService.imageResizeSave(size, avatarBuffer, filepath)
+                })
+            );
+
+            // req.body.avatar = '/uploads/avatar/' + fileName;
+            req.body.avatar = `/uploads/avatar/${uniqueSuffix}_lg.${ext}`;
+            req.body.avatar_md = `/uploads/avatar/${uniqueSuffix}_md.${ext}`;
+            req.body.avatar_sm = `/uploads/avatar/${uniqueSuffix}_sm.${ext}`;
         }
 
         const data = await profileService.update(req.body);
 
         res.status(200).json({ data });
     } catch (error) {
-        // remove avatar if failed
+        // trye remove avatar if failed
         if (req.file) {
-            fileService.removeFile(req.body.avatar);
+            fileService.removeFile(`/uploads/avatar/${uniqueSuffix}_lg.${ext}`);
+            fileService.removeFile(`/uploads/avatar/${uniqueSuffix}_md.${ext}`);
+            fileService.removeFile(`/uploads/avatar/${uniqueSuffix}_sm.${ext}`);
         }
         next(error);
     }

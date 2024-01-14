@@ -1,4 +1,5 @@
 import fs from 'fs/promises';
+import sharp from 'sharp';
 
 const createPath = async (path) => {
     try {
@@ -24,8 +25,18 @@ const removeFile = async (file) => {
     }
 };
 
+const imageResizeSave = async (size, buffer, filepath) => {
+    const resizedBuffer = await sharp(buffer)
+        .resize(size)
+        .toBuffer();
+
+    // Save the resized image to disk
+    fs.writeFile(filepath, resizedBuffer);
+}
+
 export default {
     createPath,
     isFileExist,
-    removeFile
+    removeFile,
+    imageResizeSave
 };

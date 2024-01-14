@@ -25,6 +25,8 @@ model Profile {
   firstname String   @db.VarChar(100)
   lastname  String   @db.VarChar(100)
   avatar    String?  @db.VarChar(255)
+  avatar_md String?  @db.VarChar(255)
+  avatar_sm String?  @db.VarChar(255)
   job       String   @db.VarChar(100)
   email     String   @id @db.VarChar(100)
   phone     String   @db.VarChar(100)

@@ -51,6 +51,8 @@ const create_or_update_profile = async (data) => {
 
     if (profile) {
         const prevAvatar = profile.avatar;
+        const prevAvatar_md = profile.avatar_md;
+        const prevAvatar_sm = profile.avatar_sm;
         profile = await prismaClient.profile.update({
             where: { email: profile.email },
             data
@@ -61,6 +63,8 @@ const create_or_update_profile = async (data) => {
             if (prevAvatar != data.avatar) {
                 // remove prevAvatar
                 fileService.removeFile(prevAvatar);
+                fileService.removeFile(prevAvatar_md);
+                fileService.removeFile(prevAvatar_sm);
             }
         }
     } else {

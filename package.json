@@ -34,6 +34,7 @@
     "path": "^0.12.7",
     "request-ip": "^3.3.0",
     "rotating-file-stream": "^3.2.1",
+    "sharp": "^0.33.2",
     "url": "^0.11.3",
     "winston": "^3.11.0",
     "winston-mysql": "^1.1.1"
