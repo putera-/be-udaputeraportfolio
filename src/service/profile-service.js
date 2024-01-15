@@ -50,9 +50,8 @@ const create_or_update_profile = async (data) => {
     let profile = await prismaClient.profile.findFirst();
 
     if (profile) {
-        const prevAvatar = profile.avatar;
-        const prevAvatar_md = profile.avatar_md;
-        const prevAvatar_sm = profile.avatar_sm;
+        const { avatar: prevAvatar, avatar_md: prevAvatar_md, avatar_sm: prevAvatar_sm } = profile;
+
         profile = await prismaClient.profile.update({
             where: { email: profile.email },
             data

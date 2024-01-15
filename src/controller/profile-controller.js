@@ -24,8 +24,8 @@ const update = async (req, res, next) => {
         if (req.file) {
             const avatarBuffer = req.file.buffer;
 
-            // resize images to 300, 600, 1200
-            const sizes = [{ key: 'sm', size: 300 }, { key: 'md', size: 600 }, { key: 'lg', size: 1200 }];
+            // resize images to 600, 900, 1200
+            const sizes = [{ key: 'sm', size: 600 }, { key: 'md', size: 900 }, { key: 'lg', size: 1200 }];
             await Promise.all(
                 sizes.map(async (s) => {
                     const { key, size } = s;
