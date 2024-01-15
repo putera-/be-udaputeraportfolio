@@ -130,9 +130,9 @@ model Photo {
   path      String   @db.VarChar(255)
   path_md   String   @db.VarChar(255)
   path_sm   String   @db.VarChar(255)
-  Project   Project? @relation(fields: [projectId], references: [id])
+  Project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId Int?
-  Blog      Blog?    @relation(fields: [blogId], references: [id])
+  Blog      Blog?    @relation(fields: [blogId], references: [id], onDelete: Cascade)
   blogId    Int?
 
   @@map("photo")
@@ -140,7 +140,7 @@ model Photo {
 
 model ProjectSkills {
   projectId Int
-  project   Project @relation(fields: [projectId], references: [id])
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
   skillId   Int
   skill     Skill   @relation(fields: [skillId], references: [id])
 
