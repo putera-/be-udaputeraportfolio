@@ -130,6 +130,7 @@ model Photo {
   path      String   @db.VarChar(255)
   path_md   String   @db.VarChar(255)
   path_sm   String   @db.VarChar(255)
+  index     Int      @default(0) @db.Int
   Project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId Int?
   Blog      Blog?    @relation(fields: [blogId], references: [id], onDelete: Cascade)

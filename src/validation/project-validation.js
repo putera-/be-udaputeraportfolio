@@ -11,7 +11,11 @@ const projectValidation = Joi.object({
     endDate: Joi.date().min(Joi.ref('startDate')).max('now'),
     status: Joi.string().uppercase().valid('ON_PROGRESS', 'COMPLETE', 'MAINTENANCE'),
     company: Joi.string().min(3).max(100).trim(),
-    skills: Joi.array().items(Joi.number().positive()).unique().label('Skills')
+    skills: Joi.array().items(Joi.number().positive()).unique().label('Skills'),
+    photos: Joi.array().items(Joi.object({
+        id: Joi.number(),
+        index: Joi.number()
+    })).label("Photos")
 });
 
 

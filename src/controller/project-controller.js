@@ -55,6 +55,7 @@ const create = async (req, res, next) => {
                 );
 
                 photos.push({
+                    index: i,
                     path: `/uploads/photos/${uniqueSuffix}${i}_lg.${ext}`,
                     path_md: `/uploads/photos/${uniqueSuffix}${i}_md.${ext}`,
                     path_sm: `/uploads/photos/${uniqueSuffix}${i}_sm.${ext}`
@@ -84,7 +85,7 @@ const create = async (req, res, next) => {
 };
 
 const update = async (req, res, next) => {
-    // TODO handle photo update
+    // TODO handle new photo update
     try {
         const id = req.params.id;
         const data = await projectService.update(id, req.body);

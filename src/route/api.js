@@ -45,9 +45,8 @@ apiRouter.route('/experience/:id')
 
 // PROJECT
 apiRouter.post('/project', uploadImage.array('photos', 10), projectController.create);
-apiRouter.route('/project/:id')
-    .put(projectController.update)
-    .delete(projectController.remove);
+apiRouter.put('/project/:id', uploadImage.array('new_photos', 10), projectController.update);
+apiRouter.delete('/project/:id', projectController.remove);
 
 // BLOG
 apiRouter.post('/blog', blogController.create);

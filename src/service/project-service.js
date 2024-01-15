@@ -5,6 +5,7 @@ import { projectFilters, projectValidation } from '../validation/project-validat
 import { validate } from '../validation/validation.js';
 import dateService from './date-service.js';
 import { ResponseError } from '../error/response-error.js';
+import fileService from './file-service.js';
 
 const getAll = async (filters) => {
     filters = validate(projectFilters, filters);
@@ -42,7 +43,9 @@ const getAll = async (filters) => {
     const projects = await prismaClient.project.findMany({
         ...params,
         include: {
-            photos: true,
+            photos: {
+                orderBy: { index: 'asc' }
+            },
             ProjectSkills: {
                 include: {
                     skill: {
@@ -77,7 +80,11 @@ const get = async (id) => {
         where: { id },
         include: {
             ProjectSkills: true,
-            photos: true
+            photos: {
+                orderBy: {
+                    index: 'asc'
+                }
+            }
         }
     });
 
@@ -120,6 +127,14 @@ const create = async (data, photos) => {
             photos: {
                 create: photos
             }
+        },
+        include: {
+            ProjectSkills: true,
+            photos: {
+                orderBy: {
+                    index: 'asc'
+                }
+            }
         }
     });
 
@@ -149,10 +164,53 @@ const update = async (id, data) => {
     const skills = data.skills
     delete data.skills;
 
+    // data photos
+    // create empty data if null
+    if (!data.photos) data.photos = [];
+    const photosUpdate = data.photos.map(p => ({
+        where: { id: p.id },
+        data: { index: p.index }
+    }));
+    const keepedIds = data.photos.map(p => p.id);
+    delete data.photos;
+
+    // const photos_update = {}
+    const currentPhotos = await prismaClient.photo.findMany({
+        where: { projectId: id }
+    });
+
     const project = await prismaClient.project.update({
         where: { id },
-        data
+        data: {
+            ...data,
+            photos: {
+                update: photosUpdate,
+                deleteMany: {
+                    id: {
+                        notIn: keepedIds
+                    }
+                }
+            },
+        },
+        include: {
+            ProjectSkills: true,
+            photos: {
+                orderBy: {
+                    index: 'asc'
+                }
+            }
+        }
     });
+
+    // collect unused photo
+    const photo_to_delete = currentPhotos.filter(p => !keepedIds.includes(p.id));
+
+    // deleted unused photo files
+    for (const ph of photo_to_delete) {
+        fileService.removeFile(ph.path);
+        fileService.removeFile(ph.path_md);
+        fileService.removeFile(ph.path_sm);
+    }
 
     // update skills relation
     await addSkills(id, skills)
