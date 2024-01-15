@@ -36,7 +36,7 @@ const create = async (req, res, next) => {
 
     try {
         const photos = []
-        if (req.files.length) {
+        if (req.files) {
             for (let i = 0; i < req.files.length; i++) {
                 const file = req.files[i];
                 const ext = file.originalname.split('.').pop();
@@ -47,7 +47,7 @@ const create = async (req, res, next) => {
                 await Promise.all(
                     sizes.map(async (s) => {
                         const { key, size } = s;
-                        const filename = `${uniqueSuffix}_${key}${i}.${ext}`;
+                        const filename = `${uniqueSuffix}${i}_${key}.${ext}`;
                         const filepath = path.join('./uploads/photos/' + filename);
 
                         await fileService.imageResizeSave(size, buffer, filepath)
@@ -68,7 +68,7 @@ const create = async (req, res, next) => {
         res.status(200).json({ data });
     } catch (error) {
         // remove photos
-        if (req.files.length) {
+        if (req.files) {
             for (let i = 0; i < req.files.length; i++) {
                 const file = req.files[i];
                 const ext = file.originalname.split('.').pop();
