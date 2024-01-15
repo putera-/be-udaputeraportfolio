@@ -146,7 +146,7 @@ const create = async (data, photos) => {
     return formatData(project);
 };
 
-const update = async (id, data) => {
+const update = async (id, data, newPhotos) => {
     id = validate(isID, id);
     data = validate(projectValidation, data);
 
@@ -167,18 +167,37 @@ const update = async (id, data) => {
     // data photos
     // create empty data if null
     if (!data.photos) data.photos = [];
+
+    // collect data photos to update
     const photosUpdate = data.photos.map(p => ({
         where: { id: p.id },
         data: { index: p.index }
     }));
+
     const keepedIds = data.photos.map(p => p.id);
+    const keepedIndexes = data.photos.map(p => p.index);
+
+    // get taken index
+    const indexes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    // get available index
+    const availableIndexes = indexes.filter(i => !keepedIndexes.includes(i));
+
+    // update new photo indexes
+    newPhotos = newPhotos.map(p => {
+        p.index = availableIndexes[0];
+        availableIndexes.shift();
+        return p;
+    });
+
+    // remove photos from project data
     delete data.photos;
 
-    // const photos_update = {}
+    // get current photos before update
     const currentPhotos = await prismaClient.photo.findMany({
         where: { projectId: id }
     });
 
+    // update, then delete, then create
     const project = await prismaClient.project.update({
         where: { id },
         data: {
@@ -189,8 +208,9 @@ const update = async (id, data) => {
                     id: {
                         notIn: keepedIds
                     }
-                }
-            },
+                },
+                create: newPhotos
+            }
         },
         include: {
             ProjectSkills: true,
