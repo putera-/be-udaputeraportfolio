@@ -114,12 +114,19 @@ const create = async (data, photos) => {
     const skills = data.skills;
     delete data.skills;
 
-    const project = await prismaClient.project.create({ data });
+    const project = await prismaClient.project.create({
+        data: {
+            ...data,
+            photos: {
+                create: photos
+            }
+        }
+    });
 
     // update skills relation
     await addSkills(project.id, skills);
 
-    await addPhotos(project.id, photos);
+    // await addPhotos(project.id, photos);
 
     return formatData(project);
 };
@@ -190,32 +197,28 @@ const addSkills = async (projectId, skills) => {
     });
 
     if (skills.length) {
-        const projectSkills = [];
-        for (const skill of skills) {
-            projectSkills.push({
-                projectId: projectId,
-                skillId: skill
-            });
-        }
-        if (projectSkills.length) {
-            await prismaClient.projectSkills.createMany({
-                data: projectSkills
-            });
+        const data = skills.map(skillId => ({
+            skillId,
+            projectId
+        }));
+
+        if (data.length) {
+            await prismaClient.projectSkills.createMany({ data });
         }
     }
 }
 
-const addPhotos = async (projectId, photos) => {
-    if (photos.length) {
-        for (const photo of photos) {
-            photo.projectId = projectId
-        }
+// const addPhotos = async (projectId, photos) => {
+//     if (photos.length) {
+//         for (const photo of photos) {
+//             photo.projectId = projectId
+//         }
 
-        await prismaClient.photo.createMany({
-            data: photos
-        });
-    }
-}
+//         await prismaClient.photo.createMany({
+//             data: photos
+//         });
+//     }
+// }
 
 export default {
     getAll,
