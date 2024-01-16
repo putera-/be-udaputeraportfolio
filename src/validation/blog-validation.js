@@ -3,7 +3,11 @@ import { isString, isText } from './all-validation.js';
 
 const blogValidation = Joi.object({
     title: isString,
-    content: isText.required()
+    content: isText.required(),
+    photos: Joi.array().items(Joi.object({
+        id: Joi.number(),
+        index: Joi.number()
+    })).label('Photos')
 });
 
 const blogFilters = Joi.object({

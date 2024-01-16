@@ -151,9 +151,10 @@ const update = async (id, data, newPhotos) => {
     data.startDate = dateService.toLocaleDate(data.startDate);
     if (data.endDate) data.endDate = dateService.toLocaleDate(data.endDate);
 
+    // also get current photos before update
     const findProject = await prismaClient.project.findUnique({
         where: { id },
-        select: { id: true }
+        include: { photos: true }
     });
 
     if (!findProject) throw new ResponseError(404, 'Project not found!');
@@ -190,11 +191,6 @@ const update = async (id, data, newPhotos) => {
     // remove photos from project data
     delete data.photos;
 
-    // get current photos before update
-    const currentPhotos = await prismaClient.photo.findMany({
-        where: { projectId: id }
-    });
-
     // update, then delete, then create
     const project = await prismaClient.project.update({
         where: { id },
@@ -221,7 +217,7 @@ const update = async (id, data, newPhotos) => {
     });
 
     // collect unused photo
-    const photo_to_delete = currentPhotos.filter(p => !keepedIds.includes(p.id));
+    const photo_to_delete = findProject.photos.filter(p => !keepedIds.includes(p.id));
 
     // deleted unused photo files
     removePhotos(photo_to_delete);

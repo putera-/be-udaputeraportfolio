@@ -49,10 +49,9 @@ apiRouter.put('/project/:id', uploadImage.array('new_photos', 10), projectContro
 apiRouter.delete('/project/:id', projectController.remove);
 
 // BLOG
-apiRouter.post('/blog', blogController.create);
-apiRouter.route('/blog/:id')
-    .put(blogController.update)
-    .delete(blogController.remove);
+apiRouter.post('/blog', uploadImage.array('photos', 10), blogController.create);
+apiRouter.put('/blog/:id', uploadImage.array('new_photos', 10), blogController.update);
+apiRouter.delete('/blog/:id', blogController.remove);
 
 apiRouter.get('/access_log', logController.getAccessLog);
 apiRouter.get('/error_log', logController.getErrorLog);
