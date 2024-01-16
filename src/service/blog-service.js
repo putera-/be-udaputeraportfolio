@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { prismaClient } from '../application/database.js';
 import { ResponseError } from '../error/response-error.js';
 import { isID } from '../validation/all-validation.js';
@@ -46,6 +47,10 @@ const getAll = async (filters) => {
     if (dbFilters.length) params2.where = dbFilters;
     const totalBlogs = await prismaClient.blog.count(params2);
 
+    for (let blog of blogs) {
+        blog = formatData(blog);
+    }
+
     return {
         data: blogs,
         page,
@@ -70,12 +75,12 @@ const get = async (id) => {
 
     if (!blog) throw new ResponseError(404, 'Blog not found!');
 
-    return blog;
+    return formatData(blog);
 };
 const create = async (request, photos) => {
     const data = validate(blogValidation, request);
 
-    return prismaClient.blog.create({
+    const blog = await prismaClient.blog.create({
         data: {
             ...data,
             photos: {
@@ -88,6 +93,8 @@ const create = async (request, photos) => {
             }
         }
     });
+
+    return formatData(blog);
 };
 
 const update = async (id, data, newPhotos) => {
@@ -157,7 +164,7 @@ const update = async (id, data, newPhotos) => {
     // deleted unused photo files
     removePhotos(photo_to_delete);
 
-    return blog;
+    return formatData(blog);
 };
 
 const remove = async (id) => {
@@ -184,6 +191,11 @@ const removePhotos = (photos) => {
         fileService.removeFile(photo.path_md);
         fileService.removeFile(photo.path_sm);
     }
+};
+
+const formatData = (blog) => {
+    blog.readDate = moment(blog.createdAt).format('D MMM YYYY');
+    return blog;
 };
 
 export default {
