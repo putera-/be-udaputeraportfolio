@@ -141,8 +141,6 @@ const create = async (data, photos) => {
     // update skills relation
     await addSkills(project.id, skills);
 
-    // await addPhotos(project.id, photos);
-
     return formatData(project);
 };
 
@@ -226,11 +224,7 @@ const update = async (id, data, newPhotos) => {
     const photo_to_delete = currentPhotos.filter(p => !keepedIds.includes(p.id));
 
     // deleted unused photo files
-    for (const ph of photo_to_delete) {
-        fileService.removeFile(ph.path);
-        fileService.removeFile(ph.path_md);
-        fileService.removeFile(ph.path_sm);
-    }
+    removePhotos(photo_to_delete);
 
     // update skills relation
     await addSkills(id, skills)
@@ -243,10 +237,13 @@ const remove = async (id) => {
 
     const project = await prismaClient.project.findUnique({
         where: { id },
-        select: { id: true }
+        include: { photos: true }
     });
 
     if (!project) throw new ResponseError(404, 'Project not found!');
+
+    // remove photo files
+    removePhotos(project.photos)
 
     return prismaClient.project.delete({
         where: { id }
@@ -286,17 +283,13 @@ const addSkills = async (projectId, skills) => {
     }
 }
 
-// const addPhotos = async (projectId, photos) => {
-//     if (photos.length) {
-//         for (const photo of photos) {
-//             photo.projectId = projectId
-//         }
-
-//         await prismaClient.photo.createMany({
-//             data: photos
-//         });
-//     }
-// }
+const removePhotos = (photos) => {
+    for (const photo of photos) {
+        fileService.removeFile(photo.path);
+        fileService.removeFile(photo.path_md);
+        fileService.removeFile(photo.path_sm);
+    }
+};
 
 export default {
     getAll,
