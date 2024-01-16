@@ -37,7 +37,7 @@ const getAll = async (filters) => {
     const params = {
         take: perPage,
         skip: skip
-    }
+    };
     if (dbFilters.length) params.where = dbFilters;
 
     const projects = await prismaClient.project.findMany({
@@ -56,7 +56,7 @@ const getAll = async (filters) => {
         }
     });
 
-    const params2 = {}
+    const params2 = {};
     if (dbFilters.length) params2.where = dbFilters;
     const totalProjects = await prismaClient.project.count(params2);
 
@@ -159,7 +159,7 @@ const update = async (id, data, newPhotos) => {
     if (!findProject) throw new ResponseError(404, 'Project not found!');
 
     // remove skills array
-    const skills = data.skills
+    const skills = data.skills;
     delete data.skills;
 
     // data photos
@@ -227,7 +227,7 @@ const update = async (id, data, newPhotos) => {
     removePhotos(photo_to_delete);
 
     // update skills relation
-    await addSkills(id, skills)
+    await addSkills(id, skills);
 
     return formatData(project);
 };
@@ -243,7 +243,7 @@ const remove = async (id) => {
     if (!project) throw new ResponseError(404, 'Project not found!');
 
     // remove photo files
-    removePhotos(project.photos)
+    removePhotos(project.photos);
 
     return prismaClient.project.delete({
         where: { id }
@@ -281,7 +281,7 @@ const addSkills = async (projectId, skills) => {
             await prismaClient.projectSkills.createMany({ data });
         }
     }
-}
+};
 
 const removePhotos = (photos) => {
     for (const photo of photos) {

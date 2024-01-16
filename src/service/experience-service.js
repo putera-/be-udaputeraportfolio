@@ -36,12 +36,12 @@ const getAll = async (filters) => {
         orderBy: [{
             startDate: 'desc'
         }]
-    }
+    };
     if (dbFilters.length) params.where = dbFilters;
 
     const experiences = await prismaClient.experience.findMany(params);
 
-    const params2 = {}
+    const params2 = {};
     if (dbFilters.length) params2.where = dbFilters;
     const totalExperiences = await prismaClient.experience.count(params2);
 

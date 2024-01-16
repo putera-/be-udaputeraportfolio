@@ -17,7 +17,7 @@ const get = async (req, res, next) => {
 
 const update = async (req, res, next) => {
     // let fileName = '';
-    let ext = req.file ? req.file.originalname.split('.').pop() : '';
+    const ext = req.file ? req.file.originalname.split('.').pop() : '';
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
 
     try {
@@ -32,7 +32,7 @@ const update = async (req, res, next) => {
                     const filename = `${uniqueSuffix}_${key}.${ext}`;
                     const filepath = path.join('./uploads/avatar/' + filename);
 
-                    await fileService.imageResizeSave(size, avatarBuffer, filepath)
+                    await fileService.imageResizeSave(size, avatarBuffer, filepath);
                 })
             );
 
@@ -61,7 +61,7 @@ const getPortFolio = async (req, res, next) => {
         const filters = {
             page: 1,
             perPage: 4
-        }
+        };
 
         const profile = await profileService.get();
         const skills = await skillService.getByCategory(req);
@@ -77,11 +77,11 @@ const getPortFolio = async (req, res, next) => {
                 experiences,
                 projects
             }
-        })
+        });
     } catch (error) {
         next(error);
     }
-}
+};
 
 export default {
     get,

@@ -12,7 +12,6 @@ const getAll = async (req, res, next) => {
         };
 
         const data = await projectService.getAll(filters);
-
         res.status(200).json(data);
     } catch (error) {
         next(error);
@@ -21,8 +20,7 @@ const getAll = async (req, res, next) => {
 
 const get = async (req, res, next) => {
     try {
-        const id = req.params.id;
-        const data = await projectService.get(id);
+        const data = await projectService.get(req.params.id);
 
         res.status(200).json({ data });
     } catch (error) {
@@ -38,7 +36,6 @@ const create = async (req, res, next) => {
         const photos = req.files ? await fileService.savePhotos(req.files, uniqueSuffix) : [];
 
         const data = await projectService.create(req.body, photos);
-
         res.status(200).json({ data });
     } catch (error) {
         // remove photos
@@ -60,7 +57,7 @@ const update = async (req, res, next) => {
 
         res.status(200).json({ data });
     } catch (error) {
-        if (req.files) fileService.removePhotos(req.files, uniqueSuffix)
+        if (req.files) fileService.removePhotos(req.files, uniqueSuffix);
         next(error);
     }
 };

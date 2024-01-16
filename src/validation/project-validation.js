@@ -15,7 +15,7 @@ const projectValidation = Joi.object({
     photos: Joi.array().items(Joi.object({
         id: Joi.number(),
         index: Joi.number()
-    })).label("Photos")
+    })).label('Photos')
 });
 
 

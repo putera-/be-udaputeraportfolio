@@ -24,8 +24,8 @@ const getByCategory = () => {
         orderBy: {
             title: 'asc'
         }
-    })
-}
+    });
+};
 
 const get = async (id) => {
     id = validate(isID, id);

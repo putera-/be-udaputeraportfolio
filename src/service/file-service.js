@@ -33,7 +33,7 @@ const imageResizeSave = async (size, buffer, filepath) => {
 
     // Save the resized image to disk
     fs.writeFile(filepath, resizedBuffer);
-}
+};
 
 const savePhotos = async (files, uniqueSuffix) => {
     const photos = [];
@@ -50,7 +50,7 @@ const savePhotos = async (files, uniqueSuffix) => {
                 const filename = `${uniqueSuffix}${i}_${key}.${ext}`;
                 const filepath = path.join('./uploads/photos/' + filename);
 
-                await imageResizeSave(size, buffer, filepath)
+                await imageResizeSave(size, buffer, filepath);
             })
         );
 
@@ -62,7 +62,7 @@ const savePhotos = async (files, uniqueSuffix) => {
         });
     }
     return photos;
-}
+};
 
 const removePhotos = (files, uniqueSuffix) => {
     for (let i = 0; i < files.length; i++) {
@@ -73,7 +73,7 @@ const removePhotos = (files, uniqueSuffix) => {
         removeFile(`/uploads/photos/${uniqueSuffix}${i}_md.${ext}`);
         removeFile(`/uploads/photos/${uniqueSuffix}${i}_sm.${ext}`);
     }
-}
+};
 
 export default {
     createPath,
