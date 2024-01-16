@@ -5,6 +5,7 @@ import educationService from '../service/education-service.js';
 import projectService from '../service/project-service.js';
 import experienceService from '../service/experience-service.js';
 import path from 'path';
+import blogService from '../service/blog-service.js';
 
 const get = async (req, res, next) => {
     try {
@@ -68,6 +69,7 @@ const getPortFolio = async (req, res, next) => {
         const educations = await educationService.getAll(filters);
         const { data: experiences } = await experienceService.getAll(filters);
         const { data: projects } = await projectService.getAll(filters);
+        const { data: blogs } = await blogService.getAll(filters);
 
         return res.status(200).json({
             data: {
@@ -75,7 +77,8 @@ const getPortFolio = async (req, res, next) => {
                 skills,
                 educations,
                 experiences,
-                projects
+                projects,
+                blogs
             }
         });
     } catch (error) {
