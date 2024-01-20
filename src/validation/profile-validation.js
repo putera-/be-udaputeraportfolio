@@ -15,7 +15,6 @@ const profileValidate = Joi.object({
     avatar: Joi.string(),
     avatar_md: Joi.string(),
     avatar_sm: Joi.string(),
-    avatar: Joi.string(),
     bio: isText,
     web: isURL,
     github: isURL,
