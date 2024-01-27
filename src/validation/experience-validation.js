@@ -6,7 +6,7 @@ const experienceValidation = Joi.object({
     title: Joi.string().min(3).max(100).trim().required(),
     description: Joi.string().min(3).trim().required(),
     startDate: Joi.date().max('now').required(),
-    endDate: Joi.date().min(Joi.ref('startDate')).max('now')
+    endDate: Joi.date().min(Joi.ref('startDate')).max('now').allow(null, "")
 });
 
 export {

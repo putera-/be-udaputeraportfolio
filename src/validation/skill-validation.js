@@ -5,7 +5,7 @@ const skillCategoryValidation = Joi.string().min(3).max(100).trim().uppercase().
 
 const skillValidation = Joi.object({
     title: isString,
-    svg: Joi.string().trim(),
+    svg: Joi.string().trim().allow(null, ""),
     category: skillCategoryValidation
 });
 

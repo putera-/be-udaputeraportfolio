@@ -12,18 +12,18 @@ const profileValidate = Joi.object({
     address: isText,
     city: isString,
     country: isString,
-    avatar: Joi.string(),
-    avatar_md: Joi.string(),
-    avatar_sm: Joi.string(),
-    bio: isText,
-    web: isURL,
-    github: isURL,
-    gitlab: isURL,
-    linkedin: isURL,
-    instagram: isURL,
-    facebook: isURL,
-    twitter: isURL,
-    discord: isURL
+    avatar: Joi.string().allow(null, ""),
+    avatar_md: Joi.string().allow(null, ""),
+    avatar_sm: Joi.string().allow(null, ""),
+    bio: isText.allow(null, ""),
+    web: isURL.allow(null, ""),
+    github: isURL.allow(null, ""),
+    gitlab: isURL.allow(null, ""),
+    linkedin: isURL.allow(null, ""),
+    instagram: isURL.allow(null, ""),
+    facebook: isURL.allow(null, ""),
+    twitter: isURL.allow(null, ""),
+    discord: isURL.allow(null, "")
 });
 
 export {
