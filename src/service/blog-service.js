@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { prismaClient } from '../application/database.js';
 import { ResponseError } from '../error/response-error.js';
 import { isID } from '../validation/all-validation.js';
@@ -194,7 +194,10 @@ const removePhotos = (photos) => {
 };
 
 const formatData = (blog) => {
-    blog.readDate = moment(blog.createdAt).format('D MMM YYYY');
+    // TODO buang readDate
+    blog.readDate = dayjs(blog.createdAt).format('D MMM YYYY');
+    blog.readDateTime = dayjs(blog.createdAt).format('DD MMMM YYYY HH:mm:ss');
+    blog.shortDateTime = dayjs(blog.createdAt).format('D MMM YYYY HH:mm');
     return blog;
 };
 
