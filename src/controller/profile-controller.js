@@ -6,6 +6,7 @@ import projectService from '../service/project-service.js';
 import experienceService from '../service/experience-service.js';
 import path from 'path';
 import blogService from '../service/blog-service.js';
+import dayjs from 'dayjs';
 
 const get = async (req, res, next) => {
     try {
@@ -70,6 +71,15 @@ const getPortFolio = async (req, res, next) => {
         const { data: experiences } = await experienceService.getAll(filters);
         const { data: projects } = await projectService.getAll(filters);
         const { data: blogs } = await blogService.getAll(filters);
+
+        // calculate projects
+        profile.count_project = projects.length;
+
+        // calculate year & month of experience
+        const firstProject = projects.findLast(p => true);
+        const firsProjectDate = dayjs(firstProject.startDate);
+        profile.year_of_experience = dayjs().diff(firsProjectDate, "year");
+        profile.month_of_experience = dayjs().diff(firsProjectDate, "month");
 
         return res.status(200).json({
             data: {
