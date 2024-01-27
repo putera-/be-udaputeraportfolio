@@ -139,7 +139,7 @@ const create = async (data, photos) => {
     });
 
     // update skills relation
-    await addSkills(project.id, skills);
+    if (skills) await addSkills(project.id, skills);
 
     return formatData(project);
 };
@@ -223,7 +223,7 @@ const update = async (id, data, newPhotos) => {
     removePhotos(photo_to_delete);
 
     // update skills relation
-    await addSkills(id, skills);
+    if (skills) await addSkills(id, skills);
 
     return formatData(project);
 };
