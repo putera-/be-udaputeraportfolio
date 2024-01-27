@@ -48,7 +48,7 @@ const getAll = async (filters) => {
     const totalBlogs = await prismaClient.blog.count(params2);
 
     for (let blog of blogs) {
-        blog = formatData(blog);
+        formatData(blog);
     }
 
     return {
@@ -75,7 +75,9 @@ const get = async (id) => {
 
     if (!blog) throw new ResponseError(404, 'Blog not found!');
 
-    return formatData(blog);
+    formatData(blog);
+
+    return blog;
 };
 const create = async (request, photos) => {
     const data = validate(blogValidation, request);
@@ -94,7 +96,8 @@ const create = async (request, photos) => {
         }
     });
 
-    return formatData(blog);
+    formatData(blog);
+    return blog;
 };
 
 const update = async (id, data, newPhotos) => {
@@ -164,7 +167,8 @@ const update = async (id, data, newPhotos) => {
     // deleted unused photo files
     removePhotos(photo_to_delete);
 
-    return formatData(blog);
+    formatData(blog);
+    return blog;
 };
 
 const remove = async (id) => {
@@ -194,11 +198,8 @@ const removePhotos = (photos) => {
 };
 
 const formatData = (blog) => {
-    // TODO buang readDate
-    blog.readDate = dayjs(blog.createdAt).format('D MMM YYYY');
     blog.readDateTime = dayjs(blog.createdAt).format('DD MMMM YYYY HH:mm:ss');
     blog.shortDateTime = dayjs(blog.createdAt).format('D MMM YYYY HH:mm');
-    return blog;
 };
 
 export default {
