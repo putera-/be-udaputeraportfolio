@@ -112,10 +112,12 @@ const remove = async (id) => {
 
 const formatData = (experience) => {
     experience.startDate = moment(experience.startDate).format('YYYY-MM-DD');
-    experience.readStartDate = moment(experience.startDate).format('D MMM YYYY');
+    experience.readStartDate = moment(experience.startDate).format('MMM YYYY');
     if (experience.endDate) {
         experience.endDate = moment(experience.endDate).format('YYYY-MM-DD');
-        experience.readEndDate = moment(experience.endDate).format('D MMM YYYY');
+        experience.readEndDate = moment(experience.endDate).format('MMM YYYY');
+    } else {
+        experience.readEndDate = 'Present'
     }
 
     return experience;
