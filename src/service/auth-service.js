@@ -116,8 +116,10 @@ const set_cookie = (res, token) => {
 const get_user_by_token = (req) => {
     const token = req.cookies.token;
     if (token) {
-        const { email } = jwt.verify(token, jwtSecret);
-        return email;
+        try {
+            const { email } = jwt.verify(token, jwtSecret);
+            return email;
+        } catch (error) { }
     }
 
     return '-';
