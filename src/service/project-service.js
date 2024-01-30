@@ -253,6 +253,8 @@ const formatData = (project) => {
     if (project.endDate) {
         project.endDate = moment(project.endDate).format('YYYY-MM-DD');
         project.readEndDate = moment(project.endDate).format('D MMM YYYY');
+    } else {
+        project.readEndDate = 'Present';
     }
 
     // status
