@@ -11,7 +11,7 @@ import dayjs from 'dayjs';
 const get = async (req, res, next) => {
     try {
         const data = await profileService.get();
-        res.status(200).json({ data });
+        res.status(200).json(data);
     } catch (error) {
         next(error);
     }
@@ -45,7 +45,7 @@ const update = async (req, res, next) => {
 
         const data = await profileService.update(req.body);
 
-        res.status(200).json({ data });
+        res.status(200).json(data);
     } catch (error) {
         // trye remove avatar if failed
         if (req.file) {
@@ -82,14 +82,12 @@ const getPortFolio = async (req, res, next) => {
         profile.month_of_experience = dayjs().diff(firsProjectDate, "month");
 
         return res.status(200).json({
-            data: {
-                profile,
-                skills,
-                educations,
-                experiences,
-                projects,
-                blogs
-            }
+            profile,
+            skills,
+            educations,
+            experiences,
+            projects,
+            blogs
         });
     } catch (error) {
         next(error);

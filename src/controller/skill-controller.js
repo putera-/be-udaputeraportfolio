@@ -3,7 +3,7 @@ import skillService from '../service/skill-service.js';
 const getAll = async (req, res, next) => {
     try {
         const data = await skillService.getAll(req);
-        res.status(200).json({ data });
+        res.status(200).json(data);
     } catch (error) {
         next(error);
     }
@@ -12,7 +12,7 @@ const getAll = async (req, res, next) => {
 const get = async (req, res, next) => {
     try {
         const data = await skillService.get(req.params.id);
-        res.status(200).json({ data });
+        res.status(200).json(data);
     } catch (error) {
         next(error);
     }
