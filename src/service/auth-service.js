@@ -109,7 +109,10 @@ const set_cookie = (res, token) => {
     // expire 1 day
     res.cookie('token', token, {
         httpOnly: true,
-        maxAge: maxAge * 1000
+        maxAge: maxAge * 1000,
+        sameSite: 'None',
+        secure: true,
+        domain: process.env.COOKIE_DOMAIN
     });
 };
 
