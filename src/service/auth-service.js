@@ -99,7 +99,7 @@ const save_token = async (email, token) => {
         select: {
             name: true,
             email: true,
-            token: true
+            // token: true
         }
     });
 };
