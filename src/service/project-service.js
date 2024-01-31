@@ -46,7 +46,7 @@ const getAll = async (filters) => {
             photos: {
                 orderBy: { index: 'asc' }
             },
-            ProjectSkills: {
+            skills: {
                 include: {
                     skill: {
                         select: { title: true }
@@ -79,46 +79,31 @@ const get = async (id) => {
     const project = await prismaClient.project.findUnique({
         where: { id },
         include: {
-            ProjectSkills: true,
             photos: {
                 orderBy: {
                     index: 'asc'
                 }
-            }
+            },
+            skills: {
+                include: {
+                    skill: true
+                }
+            },
         }
     });
-
-    if (!project) throw new ResponseError(404, 'Project not found!');
-    const skills = project.ProjectSkills.map(s => s.skillId);
-    const skillCats = await prismaClient.skillCategory.findMany({
-        where: {
-            skills: {
-                some: {
-                    id: { in: skills }
-                }
-            }
-        },
-        include: {
-            skills: {
-                where: {
-                    id: { in: skills }
-                }
-            }
-        }
-    });
-    project.skills = skillCats;
 
     return formatData(project);
 };
 
 const create = async (data, photos) => {
     data = validate(projectValidation, data);
+    console.log(data);
 
     data.startDate = dateService.toLocaleDate(data.startDate);
     if (data.endDate) data.endDate = dateService.toLocaleDate(data.endDate);
 
     // remove skills array
-    const skills = data.skills;
+    const skills = data.skills.map(s => { return { skillId: s } });
     delete data.skills;
 
     const project = await prismaClient.project.create({
@@ -126,20 +111,26 @@ const create = async (data, photos) => {
             ...data,
             photos: {
                 create: photos
+            },
+            skills: {
+                createMany: {
+                    data: skills
+                }
             }
         },
         include: {
-            ProjectSkills: true,
             photos: {
                 orderBy: {
                     index: 'asc'
                 }
-            }
+            },
+            skills: {
+                include: {
+                    skill: true
+                }
+            },
         }
     });
-
-    // update skills relation
-    if (skills) await addSkills(project.id, skills);
 
     return formatData(project);
 };
@@ -160,7 +151,7 @@ const update = async (id, data, newPhotos) => {
     if (!findProject) throw new ResponseError(404, 'Project not found!');
 
     // remove skills array
-    const skills = data.skills;
+    const skills = data.skills.map(s => { return { skillId: s } });
     delete data.skills;
 
     // data photos
@@ -204,10 +195,16 @@ const update = async (id, data, newPhotos) => {
                     }
                 },
                 create: newPhotos
+            },
+            skills: {
+                deleteMany: {},
+                createMany: {
+                    data: skills
+                }
             }
         },
         include: {
-            ProjectSkills: true,
+            skills: true,
             photos: {
                 orderBy: {
                     index: 'asc'
@@ -221,9 +218,6 @@ const update = async (id, data, newPhotos) => {
 
     // deleted unused photo files
     removePhotos(photo_to_delete);
-
-    // update skills relation
-    if (skills) await addSkills(id, skills);
 
     return formatData(project);
 };
@@ -260,25 +254,10 @@ const formatData = (project) => {
     // status
     project.status = project.status.replace('_', ' ');
 
+    // skills
+    project.skills = project.skills.map(ps => ps.skill);
+
     return project;
-};
-
-const addSkills = async (projectId, skills) => {
-    // remove current projectSkills
-    await prismaClient.projectSkills.deleteMany({
-        where: { projectId }
-    });
-
-    if (skills.length) {
-        const data = skills.map(skillId => ({
-            skillId,
-            projectId
-        }));
-
-        if (data.length) {
-            await prismaClient.projectSkills.createMany({ data });
-        }
-    }
 };
 
 const removePhotos = (photos) => {
