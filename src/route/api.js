@@ -20,7 +20,7 @@ apiRouter.delete('/logout', authController.logout);
 // USER
 apiRouter.route('/user')
     .get(userController.get)
-    .patch(userController.update);
+    .put(userController.update);
 
 // PROFILE
 apiRouter.put('/profile', uploadImage.single('avatar'), profileController.update);
