@@ -23,7 +23,7 @@ const get = async (req, res, next) => {
         const id = req.params.id;
         const data = await experienceService.get(id);
 
-        res.status(200).json({ data });
+        res.status(200).json(data);
     } catch (error) {
         next(error);
     }

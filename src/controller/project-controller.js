@@ -22,7 +22,7 @@ const get = async (req, res, next) => {
     try {
         const data = await projectService.get(req.params.id);
 
-        res.status(200).json({ data });
+        res.status(200).json(data);
     } catch (error) {
         next(error);
     }
@@ -36,7 +36,7 @@ const create = async (req, res, next) => {
         const photos = req.files ? await fileService.savePhotos(req.files, uniqueSuffix) : [];
 
         const data = await projectService.create(req.body, photos);
-        res.status(200).json({ data });
+        res.status(200).json(data);
     } catch (error) {
         // remove photos
         if (req.files) fileService.removePhotos(req.files, uniqueSuffix);
@@ -55,7 +55,7 @@ const update = async (req, res, next) => {
         const id = req.params.id;
         const data = await projectService.update(id, req.body, photos);
 
-        res.status(200).json({ data });
+        res.status(200).json(data);
     } catch (error) {
         if (req.files) fileService.removePhotos(req.files, uniqueSuffix);
         next(error);

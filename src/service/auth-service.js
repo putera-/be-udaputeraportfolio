@@ -99,7 +99,7 @@ const save_token = async (email, token) => {
         select: {
             name: true,
             email: true,
-            token: true
+            // token: true
         }
     });
 };
@@ -107,10 +107,21 @@ const save_token = async (email, token) => {
 const set_cookie = (res, token) => {
     // save token to cookie
     // expire 1 day
-    res.cookie('token', token, {
+    let cookieConfig = {
         httpOnly: true,
-        maxAge: maxAge * 1000
-    });
+        maxAge: maxAge * 1000,
+    }
+
+    if (process.env.NODE_ENV != "development") {
+        cookieConfig = {
+            ...cookieConfig,
+            sameSite: 'None',
+            secure: true,
+            domain: process.env.COOKIE_DOMAIN
+        }
+    }
+
+    res.cookie('token', token, cookieConfig);
 };
 
 const get_user_by_token = (req) => {
