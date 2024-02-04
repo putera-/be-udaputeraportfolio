@@ -4,19 +4,6 @@ import { profileValidate } from '../validation/profile-validation.js';
 import dayjs from 'dayjs';
 import fileService from './file-service.js';
 
-const _select = {
-    firstname: true,
-    lastname: true,
-    email: true,
-    bio: true,
-    github: true,
-    gitlab: true,
-    linkedin: true,
-    instagram: true,
-    facebook: true,
-    twitter: true,
-};
-
 const get = async () => {
     let profile = await prismaClient.profile.findFirst();
     if (!profile) {
@@ -33,7 +20,7 @@ const get = async () => {
         };
     }
 
-    profile = formatData(profile);
+    formatData(profile);
 
     return profile;
 };
@@ -72,7 +59,7 @@ const create_or_update_profile = async (data) => {
         });
     }
 
-    profile = formatData(profile);
+    formatData(profile);
 
     return profile;
 };
@@ -81,8 +68,6 @@ const formatData = (profile) => {
     profile.dob = dayjs(profile.dob).format('YYYY-MM-DD');
     profile.readDob = dayjs(profile.dob).format('D MMM YYYY');
     profile.whatsapp = profile.phone.replace(' ', '').replace('+', '').replaceAll('-', '');
-
-    return profile;
 };
 
 export default {

@@ -48,7 +48,7 @@ const getAll = async (filters) => {
 
     // forma data
     for (let experience of experiences) {
-        experience = formatData(experience);
+        formatData(experience);
     }
 
     return {
@@ -69,14 +69,17 @@ const get = async (id) => {
 
     if (!experience) throw new ResponseError(404, 'Experience not found!');
 
-    return formatData(experience);
+    formatData(experience);
+    return experience;
 };
 
 const create = async (data) => {
     data = validate(experienceValidation, data);
 
     const experience = await prismaClient.experience.create({ data });
-    return formatData(experience);
+
+    formatData(experience);
+    return experience;
 };
 
 const update = async (id, data) => {
@@ -95,7 +98,8 @@ const update = async (id, data) => {
         data: data
     });
 
-    return formatData(updatedData);
+    formatData(updatedData)
+    return updatedData;
 };
 
 const remove = async (id) => {
@@ -120,8 +124,6 @@ const formatData = (experience) => {
     } else {
         experience.readEndDate = 'Present'
     }
-
-    return experience;
 };
 
 export default {

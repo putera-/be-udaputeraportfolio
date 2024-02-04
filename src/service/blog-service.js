@@ -76,7 +76,6 @@ const get = async (id) => {
     if (!blog) throw new ResponseError(404, 'Blog not found!');
 
     formatData(blog);
-
     return blog;
 };
 const create = async (request, photos) => {

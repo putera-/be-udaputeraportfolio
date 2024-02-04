@@ -5,11 +5,17 @@ import { educationValidation } from '../validation/education-validation.js';
 import { validate } from '../validation/validation.js';
 
 const getAll = async () => {
-    return prismaClient.education.findMany({
+    const data = await prismaClient.education.findMany({
         orderBy: [{
             startYear: 'desc'
         }]
     });
+
+    for (const education of data) {
+        formatData(education)
+    }
+
+    return data;
 };
 
 const get = async (id) => {
@@ -60,6 +66,10 @@ const remove = async (id) => {
 
     return prismaClient.education.delete({ where: { id } });
 };
+
+const formatData = (data) => {
+    data.endYear = data.endYear || 'Present';
+}
 
 export default {
     getAll,
