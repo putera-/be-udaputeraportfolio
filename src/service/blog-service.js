@@ -32,7 +32,7 @@ const getAll = async (filters) => {
         take: limit,
         skip: skip
     };
-    if (dbFilters.length) params.where = dbFilters;
+    if (dbFilters.length) params.where = { OR: dbFilters };
 
     const blogs = await prismaClient.blog.findMany({
         ...params,
@@ -44,7 +44,7 @@ const getAll = async (filters) => {
     });
 
     const params2 = {};
-    if (dbFilters.length) params2.where = dbFilters;
+    if (dbFilters.length) params2.where = { OR: dbFilters };
     const totalBlogs = await prismaClient.blog.count(params2);
 
     for (let blog of blogs) {
