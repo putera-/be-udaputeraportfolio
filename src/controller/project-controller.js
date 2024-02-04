@@ -8,7 +8,7 @@ const getAll = async (req, res, next) => {
             description: req.query.search,
             company: req.query.search,
             page: req.query.page || 1,
-            perPage: req.query.perpage || 10
+            limit: req.query.limit || 10
         };
 
         const data = await projectService.getAll(filters);

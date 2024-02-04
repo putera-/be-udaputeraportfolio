@@ -10,12 +10,11 @@ const experienceValidation = Joi.object({
 });
 
 const experienceFilters = Joi.object({
-    title: Joi.string().trim().lowercase().allow(null),
-    description: Joi.string().trim().lowercase().allow(null),
-    company: Joi.string().trim().lowercase().allow(null),
-    description: Joi.string().trim().lowercase().allow(null),
-    page: Joi.number().positive().required(),
-    limit: Joi.number().positive().required()
+    title: Joi.string().trim().lowercase().allow(null, "").label("Title"),
+    description: Joi.string().trim().lowercase().allow(null, "").label("Description"),
+    company: Joi.string().trim().lowercase().allow(null, "").label("Company"),
+    page: Joi.number().positive().required().label("Page"),
+    limit: Joi.number().positive().required().label("Limit")
 }).when(
     Joi.object({
         title: Joi.valid(null)
