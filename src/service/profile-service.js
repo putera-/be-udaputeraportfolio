@@ -1,7 +1,7 @@
 import { prismaClient } from '../application/database.js';
 import { validate } from '../validation/validation.js';
 import { profileValidate } from '../validation/profile-validation.js';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import fileService from './file-service.js';
 
 const _select = {
@@ -78,8 +78,8 @@ const create_or_update_profile = async (data) => {
 };
 
 const formatData = (profile) => {
-    profile.dob = moment(profile.dob).format('YYYY-MM-DD');
-    profile.readDob = moment(profile.dob).format('D MMM YYYY');
+    profile.dob = dayjs(profile.dob).format('YYYY-MM-DD');
+    profile.readDob = dayjs(profile.dob).format('D MMM YYYY');
     profile.whatsapp = profile.phone.replace(' ', '').replace('+', '').replaceAll('-', '');
 
     return profile;

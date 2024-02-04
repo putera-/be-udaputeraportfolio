@@ -1,7 +1,7 @@
 import supertest from 'supertest';
 import { app } from '../application/app.js';
 import { doLogin, doLogout } from './test-util.js';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 describe('/project path', () => {
     const page = 'Project';
@@ -10,11 +10,11 @@ describe('/project path', () => {
     let id;
 
     const date = new Date();
-    const startDate = moment(date).subtract(7, 'days').format('YYYY-MM-DD');
-    const endDate = moment(date).subtract(1, 'days').format('YYYY-MM-DD');
-    const updatestartDate = moment(date).subtract(1, 'days').format('YYYY-MM-DD');
+    const startDate = dayjs(date).subtract(7, 'day').format('YYYY-MM-DD');
+    const endDate = dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
+    const updatestartDate = dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
 
-    const nextDate = moment(date).add(1, 'days').format('YYYY-MM-DD');
+    const nextDate = dayjs(date).add(1, 'day').format('YYYY-MM-DD');
 
     beforeEach(async () => {
         authCookie = await doLogin();

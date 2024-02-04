@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { prismaClient } from '../application/database.js';
 import { ResponseError } from '../error/response-error.js';
 import { isID } from '../validation/all-validation.js';
@@ -115,11 +115,11 @@ const remove = async (id) => {
 };
 
 const formatData = (experience) => {
-    experience.startDate = moment(experience.startDate).format('YYYY-MM-DD');
-    experience.readStartDate = moment(experience.startDate).format('MMM YYYY');
+    experience.startDate = dayjs(experience.startDate).format('YYYY-MM-DD');
+    experience.readStartDate = dayjs(experience.startDate).format('D MMM YYYY');
     if (experience.endDate) {
-        experience.endDate = moment(experience.endDate).format('YYYY-MM-DD');
-        experience.readEndDate = moment(experience.endDate).format('MMM YYYY');
+        experience.endDate = dayjs(experience.endDate).format('YYYY-MM-DD');
+        experience.readEndDate = dayjs(experience.endDate).format('D MMM YYYY');
     } else {
         experience.readEndDate = 'Present'
     }

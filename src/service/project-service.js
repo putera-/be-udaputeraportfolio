@@ -1,9 +1,8 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { prismaClient } from '../application/database.js';
 import { isID } from '../validation/all-validation.js';
 import { projectFilters, projectValidation } from '../validation/project-validation.js';
 import { validate } from '../validation/validation.js';
-import dateService from './date-service.js';
 import { ResponseError } from '../error/response-error.js';
 import fileService from './file-service.js';
 
@@ -53,6 +52,9 @@ const getAll = async (filters) => {
                     }
                 }
             }
+        },
+        orderBy: {
+            startDate: 'desc'
         }
     });
 
@@ -114,9 +116,6 @@ const get = async (id) => {
 const create = async (data, photos) => {
     data = validate(projectValidation, data);
 
-    data.startDate = dateService.toLocaleDate(data.startDate);
-    if (data.endDate) data.endDate = dateService.toLocaleDate(data.endDate);
-
     // remove skills array
     const skills = data.skills;
     delete data.skills;
@@ -147,9 +146,6 @@ const create = async (data, photos) => {
 const update = async (id, data, newPhotos) => {
     id = validate(isID, id);
     data = validate(projectValidation, data);
-
-    data.startDate = dateService.toLocaleDate(data.startDate);
-    if (data.endDate) data.endDate = dateService.toLocaleDate(data.endDate);
 
     // also get current photos before update
     const findProject = await prismaClient.project.findUnique({
@@ -248,11 +244,11 @@ const remove = async (id) => {
 
 const formatData = (project) => {
     // format date
-    project.startDate = moment(project.startDate).format('YYYY-MM-DD');
-    project.readStartDate = moment(project.startDate).format('D MMM YYYY');
+    project.startDate = dayjs(project.startDate).format('YYYY-MM-DD');
+    project.readStartDate = dayjs(project.startDate).format('D MMM YYYY');
     if (project.endDate) {
-        project.endDate = moment(project.endDate).format('YYYY-MM-DD');
-        project.readEndDate = moment(project.endDate).format('D MMM YYYY');
+        project.endDate = dayjs(project.endDate).format('YYYY-MM-DD');
+        project.readEndDate = dayjs(project.endDate).format('D MMM YYYY');
     } else {
         project.readEndDate = 'Present';
     }
