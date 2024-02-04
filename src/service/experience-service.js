@@ -2,10 +2,11 @@ import dayjs from 'dayjs';
 import { prismaClient } from '../application/database.js';
 import { ResponseError } from '../error/response-error.js';
 import { isID } from '../validation/all-validation.js';
-import { experienceValidation } from '../validation/experience-validation.js';
+import { experienceFilters, experienceValidation } from '../validation/experience-validation.js';
 import { validate } from '../validation/validation.js';
 
 const getAll = async (filters) => {
+    filters = validate(experienceFilters, filters);
     // filters
     const dbFilters = [];
     if (filters.title) {
@@ -24,14 +25,14 @@ const getAll = async (filters) => {
         });
     }
 
-    // skip based on page & perPage
-    // (page - 1) * perPage
+    // skip based on page & limit
+    // (page - 1) * limit
     const page = filters.page;
-    const perPage = filters.perPage;
-    const skip = (page - 1) * perPage;
+    const limit = filters.limit;
+    const skip = (page - 1) * limit;
 
     const params = {
-        take: perPage,
+        take: limit,
         skip: skip,
         orderBy: [{
             startDate: 'desc'
@@ -59,7 +60,7 @@ const getAll = async (filters) => {
         page,
         total: experiences.length,
         total_data: totalExperiences,
-        total_page: Math.ceil(totalExperiences / perPage)
+        total_page: Math.ceil(totalExperiences / limit)
     };
 };
 

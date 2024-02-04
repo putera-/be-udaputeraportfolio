@@ -9,6 +9,43 @@ const experienceValidation = Joi.object({
     endDate: Joi.date().min(Joi.ref('startDate')).max('now').allow(null, "")
 });
 
+const experienceFilters = Joi.object({
+    title: Joi.string().trim().lowercase().allow(null),
+    description: Joi.string().trim().lowercase().allow(null),
+    company: Joi.string().trim().lowercase().allow(null),
+    description: Joi.string().trim().lowercase().allow(null),
+    page: Joi.number().positive().required(),
+    limit: Joi.number().positive().required()
+}).when(
+    Joi.object({
+        title: Joi.valid(null)
+    }).unknown(),
+    {
+        then: Joi.object({
+            title: Joi.strip()
+        })
+    }
+).when(
+    Joi.object({
+        description: Joi.valid(null)
+    }).unknown(),
+    {
+        then: Joi.object({
+            description: Joi.strip()
+        })
+    }
+).when(
+    Joi.object({
+        company: Joi.valid(null)
+    }).unknown(),
+    {
+        then: Joi.object({
+            company: Joi.strip()
+        })
+    }
+);
+
 export {
-    experienceValidation
+    experienceValidation,
+    experienceFilters
 };
