@@ -14,7 +14,7 @@ const blogFilters = Joi.object({
     title: Joi.string().trim().lowercase().allow(null),
     content: Joi.string().trim().lowercase().allow(null),
     page: Joi.number().positive().required(),
-    perPage: Joi.number().positive().required()
+    limit: Joi.number().positive().required()
 }).when(
     Joi.object({
         title: Joi.valid(null)

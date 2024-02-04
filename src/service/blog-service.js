@@ -22,14 +22,14 @@ const getAll = async (filters) => {
         });
     }
 
-    // skip based on page & perPage
-    // (page - 1) * perPage
+    // skip based on page & limit
+    // (page - 1) * limit
     const page = filters.page;
-    const perPage = filters.perPage;
-    const skip = (page - 1) * perPage;
+    const limit = filters.limit;
+    const skip = (page - 1) * limit;
 
     const params = {
-        take: perPage,
+        take: limit,
         skip: skip
     };
     if (dbFilters.length) params.where = dbFilters;
@@ -56,7 +56,7 @@ const getAll = async (filters) => {
         page,
         total: blogs.length,
         total_data: totalBlogs,
-        total_page: Math.ceil(totalBlogs / perPage)
+        total_page: Math.ceil(totalBlogs / limit)
     };
 };
 const get = async (id) => {
