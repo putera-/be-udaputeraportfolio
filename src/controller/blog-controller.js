@@ -7,7 +7,7 @@ const getAll = async (req, res, next) => {
             title: req.query.search,
             content: req.query.search,
             page: req.query.page || 1,
-            perPage: req.query.perpage || 10
+            limit: req.query.limit || 10
         };
 
         const data = await blogService.getAll(filters);

@@ -11,10 +11,10 @@ const blogValidation = Joi.object({
 });
 
 const blogFilters = Joi.object({
-    title: Joi.string().trim().lowercase().allow(null),
-    content: Joi.string().trim().lowercase().allow(null),
-    page: Joi.number().positive().required(),
-    perPage: Joi.number().positive().required()
+    title: Joi.string().trim().lowercase().allow(null, "").label("Title"),
+    content: Joi.string().trim().lowercase().allow(null, "").label("Content"),
+    page: Joi.number().positive().required().label("Page"),
+    limit: Joi.number().positive().required().label("Limit")
 }).when(
     Joi.object({
         title: Joi.valid(null)

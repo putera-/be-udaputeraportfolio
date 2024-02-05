@@ -1,9 +1,8 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { prismaClient } from '../application/database.js';
 import { isID } from '../validation/all-validation.js';
 import { projectFilters, projectValidation } from '../validation/project-validation.js';
 import { validate } from '../validation/validation.js';
-import dateService from './date-service.js';
 import { ResponseError } from '../error/response-error.js';
 import fileService from './file-service.js';
 
@@ -28,14 +27,14 @@ const getAll = async (filters) => {
         });
     }
 
-    // skip based on page & perPage
-    // (page - 1) * perPage
+    // skip based on page & limit
+    // (page - 1) * limit
     const page = filters.page;
-    const perPage = filters.perPage;
-    const skip = (page - 1) * perPage;
+    const limit = filters.limit;
+    const skip = (page - 1) * limit;
 
     const params = {
-        take: perPage,
+        take: limit,
         skip: skip
     };
     if (dbFilters.length) params.where = dbFilters;
@@ -53,6 +52,9 @@ const getAll = async (filters) => {
                     }
                 }
             }
+        },
+        orderBy: {
+            startDate: 'desc'
         }
     });
 
@@ -61,7 +63,7 @@ const getAll = async (filters) => {
     const totalProjects = await prismaClient.project.count(params2);
 
     for (let project of projects) {
-        project = formatData(project);
+        formatData(project);
     }
 
     return {
@@ -69,7 +71,7 @@ const getAll = async (filters) => {
         page,
         total: projects.length,
         total_data: totalProjects,
-        total_page: Math.ceil(totalProjects / perPage)
+        total_page: Math.ceil(totalProjects / limit)
     };
 };
 
@@ -92,15 +94,15 @@ const get = async (id) => {
         }
     });
 
-    return formatData(project);
+    if (!project) throw new ResponseError(404, 'Project not found!');
+
+    formatData(project);
+    return project;
 };
 
 const create = async (data, photos) => {
     data = validate(projectValidation, data);
     console.log(data);
-
-    data.startDate = dateService.toLocaleDate(data.startDate);
-    if (data.endDate) data.endDate = dateService.toLocaleDate(data.endDate);
 
     // remove skills array
     const skills = data.skills.map(s => { return { skillId: s } });
@@ -132,15 +134,16 @@ const create = async (data, photos) => {
         }
     });
 
-    return formatData(project);
+    // update skills relation
+    if (skills) await addSkills(project.id, skills);
+
+    formatData(project);
+    return project;
 };
 
 const update = async (id, data, newPhotos) => {
     id = validate(isID, id);
     data = validate(projectValidation, data);
-
-    data.startDate = dateService.toLocaleDate(data.startDate);
-    if (data.endDate) data.endDate = dateService.toLocaleDate(data.endDate);
 
     // also get current photos before update
     const findProject = await prismaClient.project.findUnique({
@@ -219,7 +222,11 @@ const update = async (id, data, newPhotos) => {
     // deleted unused photo files
     removePhotos(photo_to_delete);
 
-    return formatData(project);
+    // update skills relation
+    if (skills) await addSkills(id, skills);
+
+    formatData(project);
+    return project;
 };
 
 const remove = async (id) => {
@@ -242,11 +249,11 @@ const remove = async (id) => {
 
 const formatData = (project) => {
     // format date
-    project.startDate = moment(project.startDate).format('YYYY-MM-DD');
-    project.readStartDate = moment(project.startDate).format('D MMM YYYY');
+    project.startDate = dayjs(project.startDate).format('YYYY-MM-DD');
+    project.readStartDate = dayjs(project.startDate).format('D MMM YYYY');
     if (project.endDate) {
-        project.endDate = moment(project.endDate).format('YYYY-MM-DD');
-        project.readEndDate = moment(project.endDate).format('D MMM YYYY');
+        project.endDate = dayjs(project.endDate).format('YYYY-MM-DD');
+        project.readEndDate = dayjs(project.endDate).format('D MMM YYYY');
     } else {
         project.readEndDate = 'Present';
     }

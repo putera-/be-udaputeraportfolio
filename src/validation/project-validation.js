@@ -20,11 +20,11 @@ const projectValidation = Joi.object({
 
 
 const projectFilters = Joi.object({
-    title: Joi.string().trim().lowercase().allow(null).label("Project Title"),
-    description: Joi.string().trim().lowercase().allow(null).label("Description"),
-    company: Joi.string().trim().lowercase().allow(null).label("Company"),
+    title: Joi.string().trim().lowercase().allow(null, "").label("Project Title"),
+    description: Joi.string().trim().lowercase().allow(null, "").label("Description"),
+    company: Joi.string().trim().lowercase().allow(null, "").label("Company"),
     page: Joi.number().positive().required().label("Page"),
-    perPage: Joi.number().positive().required().label("Per Page")
+    limit: Joi.number().positive().required().label("Limit")
 }).when(
     Joi.object({
         title: Joi.valid(null)

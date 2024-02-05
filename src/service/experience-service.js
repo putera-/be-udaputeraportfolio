@@ -1,11 +1,12 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { prismaClient } from '../application/database.js';
 import { ResponseError } from '../error/response-error.js';
 import { isID } from '../validation/all-validation.js';
-import { experienceValidation } from '../validation/experience-validation.js';
+import { experienceFilters, experienceValidation } from '../validation/experience-validation.js';
 import { validate } from '../validation/validation.js';
 
 const getAll = async (filters) => {
+    filters = validate(experienceFilters, filters);
     // filters
     const dbFilters = [];
     if (filters.title) {
@@ -24,30 +25,30 @@ const getAll = async (filters) => {
         });
     }
 
-    // skip based on page & perPage
-    // (page - 1) * perPage
+    // skip based on page & limit
+    // (page - 1) * limit
     const page = filters.page;
-    const perPage = filters.perPage;
-    const skip = (page - 1) * perPage;
+    const limit = filters.limit;
+    const skip = (page - 1) * limit;
 
     const params = {
-        take: perPage,
+        take: limit,
         skip: skip,
-        orderBy: [{
+        orderBy: {
             startDate: 'desc'
-        }]
+        }
     };
-    if (dbFilters.length) params.where = dbFilters;
+    if (dbFilters.length) params.where = { OR: dbFilters };
 
     const experiences = await prismaClient.experience.findMany(params);
 
     const params2 = {};
-    if (dbFilters.length) params2.where = dbFilters;
+    if (Object.keys(dbFilters).length) params2.where = { OR: dbFilters };
     const totalExperiences = await prismaClient.experience.count(params2);
 
     // forma data
     for (let experience of experiences) {
-        experience = formatData(experience);
+        formatData(experience);
     }
 
     return {
@@ -55,7 +56,7 @@ const getAll = async (filters) => {
         page,
         total: experiences.length,
         total_data: totalExperiences,
-        total_page: Math.ceil(totalExperiences / perPage)
+        total_page: Math.ceil(totalExperiences / limit)
     };
 };
 
@@ -68,14 +69,17 @@ const get = async (id) => {
 
     if (!experience) throw new ResponseError(404, 'Experience not found!');
 
-    return formatData(experience);
+    formatData(experience);
+    return experience;
 };
 
 const create = async (data) => {
     data = validate(experienceValidation, data);
 
     const experience = await prismaClient.experience.create({ data });
-    return formatData(experience);
+
+    formatData(experience);
+    return experience;
 };
 
 const update = async (id, data) => {
@@ -94,7 +98,8 @@ const update = async (id, data) => {
         data: data
     });
 
-    return formatData(updatedData);
+    formatData(updatedData)
+    return updatedData;
 };
 
 const remove = async (id) => {
@@ -111,16 +116,14 @@ const remove = async (id) => {
 };
 
 const formatData = (experience) => {
-    experience.startDate = moment(experience.startDate).format('YYYY-MM-DD');
-    experience.readStartDate = moment(experience.startDate).format('MMM YYYY');
+    experience.startDate = dayjs(experience.startDate).format('YYYY-MM-DD');
+    experience.readStartDate = dayjs(experience.startDate).format('D MMM YYYY');
     if (experience.endDate) {
-        experience.endDate = moment(experience.endDate).format('YYYY-MM-DD');
-        experience.readEndDate = moment(experience.endDate).format('MMM YYYY');
+        experience.endDate = dayjs(experience.endDate).format('YYYY-MM-DD');
+        experience.readEndDate = dayjs(experience.endDate).format('D MMM YYYY');
     } else {
         experience.readEndDate = 'Present'
     }
-
-    return experience;
 };
 
 export default {

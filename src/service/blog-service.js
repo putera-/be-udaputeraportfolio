@@ -22,17 +22,17 @@ const getAll = async (filters) => {
         });
     }
 
-    // skip based on page & perPage
-    // (page - 1) * perPage
+    // skip based on page & limit
+    // (page - 1) * limit
     const page = filters.page;
-    const perPage = filters.perPage;
-    const skip = (page - 1) * perPage;
+    const limit = filters.limit;
+    const skip = (page - 1) * limit;
 
     const params = {
-        take: perPage,
+        take: limit,
         skip: skip
     };
-    if (dbFilters.length) params.where = dbFilters;
+    if (dbFilters.length) params.where = { OR: dbFilters };
 
     const blogs = await prismaClient.blog.findMany({
         ...params,
@@ -44,7 +44,7 @@ const getAll = async (filters) => {
     });
 
     const params2 = {};
-    if (dbFilters.length) params2.where = dbFilters;
+    if (dbFilters.length) params2.where = { OR: dbFilters };
     const totalBlogs = await prismaClient.blog.count(params2);
 
     for (let blog of blogs) {
@@ -56,7 +56,7 @@ const getAll = async (filters) => {
         page,
         total: blogs.length,
         total_data: totalBlogs,
-        total_page: Math.ceil(totalBlogs / perPage)
+        total_page: Math.ceil(totalBlogs / limit)
     };
 };
 const get = async (id) => {
@@ -76,7 +76,6 @@ const get = async (id) => {
     if (!blog) throw new ResponseError(404, 'Blog not found!');
 
     formatData(blog);
-
     return blog;
 };
 const create = async (request, photos) => {

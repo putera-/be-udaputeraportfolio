@@ -62,7 +62,7 @@ const getPortFolio = async (req, res, next) => {
         // limit 4 data
         const filters = {
             page: 1,
-            perPage: 4
+            limit: 4
         };
 
         const profile = await profileService.get();
