@@ -76,10 +76,16 @@ const getPortFolio = async (req, res, next) => {
         profile.count_project = projects.length;
 
         // calculate year & month of experience
-        const firstProject = projects.findLast(p => true);
-        const firsProjectDate = dayjs(firstProject.startDate);
-        profile.year_of_experience = dayjs().diff(firsProjectDate, "year");
-        profile.month_of_experience = dayjs().diff(firsProjectDate, "month");
+        if (projects.length) {
+            const firstProject = projects.findLast(p => true);
+            const firsProjectDate = dayjs(firstProject.startDate);
+            profile.year_of_experience = dayjs().diff(firsProjectDate, "year");
+            profile.month_of_experience = dayjs().diff(firsProjectDate, "month");
+        } else {
+            // default
+            profile.year_of_experience = 0;
+            profile.month_of_experience = 0;
+        }
 
         return res.status(200).json({
             profile,
