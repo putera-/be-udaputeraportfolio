@@ -1,6 +1,6 @@
 import { prismaClient } from '../application/database.js';
 import { validate } from '../validation/validation.js';
-import { profileValidate } from '../validation/profile-validation.js';
+import { profileCreateValidation, profileUpdateValidation } from '../validation/profile-validation.js';
 import dayjs from 'dayjs';
 import fileService from './file-service.js';
 
@@ -26,43 +26,47 @@ const get = async () => {
 };
 
 const update = async (data) => {
-    data = validate(profileValidate, data);
-
-    const result = await create_or_update_profile(data);
-
-    return result;
-};
-
-const create_or_update_profile = async (data) => {
     let profile = await prismaClient.profile.findFirst();
 
-    if (profile) {
-        const { avatar: prevAvatar, avatar_md: prevAvatar_md, avatar_sm: prevAvatar_sm } = profile;
-
-        profile = await prismaClient.profile.update({
-            where: { email: profile.email },
-            data
-        });
-
-        // check avatar change
-        if (prevAvatar && data.avatar) {
-            if (prevAvatar != data.avatar) {
-                // remove prevAvatar
-                fileService.removeFile(prevAvatar);
-                fileService.removeFile(prevAvatar_md);
-                fileService.removeFile(prevAvatar_sm);
-            }
-        }
+    if (!profile) {
+        profile = await createProfile(data);
     } else {
-        profile = await prismaClient.profile.create({
-            data
-        });
+        profile = await updateProfile(profile, data);
     }
 
     formatData(profile);
 
     return profile;
 };
+
+const createProfile = data => {
+    data = validate(profileCreateValidation, data);
+
+    return prismaClient.profile.create({ data });
+};
+
+const updateProfile = async (oldProfile, data) => {
+    data = validate(profileUpdateValidation, data);
+
+    const { avatar: prevAvatar, avatar_md: prevAvatar_md, avatar_sm: prevAvatar_sm } = oldProfile;
+
+    const profile = await prismaClient.profile.update({
+        where: { email: oldProfile.email },
+        data
+    });
+
+    // check avatar change
+    if (prevAvatar && data.avatar) {
+        if (prevAvatar != data.avatar) {
+            // remove prevAvatar
+            fileService.removeFile(prevAvatar);
+            fileService.removeFile(prevAvatar_md);
+            fileService.removeFile(prevAvatar_sm);
+        }
+    }
+
+    return profile
+}
 
 const formatData = (profile) => {
     profile.dob = dayjs(profile.dob).format('YYYY-MM-DD');
