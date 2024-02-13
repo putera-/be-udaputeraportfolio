@@ -108,7 +108,7 @@ const set_cookie = (res, token) => {
     // save token to cookie
     // expire 1 day
     let cookieConfig = {
-        httpOnly: true,
+        // httpOnly: true, // disable to be accessible in javascript client
         maxAge: maxAge * 1000,
     }
 
