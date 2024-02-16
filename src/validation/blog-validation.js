@@ -2,7 +2,7 @@ import Joi from 'joi';
 import { isString, isText } from './all-validation.js';
 
 const blogValidation = Joi.object({
-    title: isString,
+    title: isString.required(),
     content: isText.required(),
     photos: Joi.array().items(Joi.object({
         id: Joi.number(),

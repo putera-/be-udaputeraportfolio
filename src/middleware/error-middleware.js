@@ -10,7 +10,7 @@ const errorMiddleware = async (err, req, res, next) => {
     logger.error(err);
     if (err instanceof ResponseError) {
         res.status(err.status).json({
-            errors: err.message
+            message: err.message
         }).end();
     } else if (err instanceof Joi.ValidationError) {
         res.status(400).json({
