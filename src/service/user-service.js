@@ -28,11 +28,18 @@ const update = async (email, request, res) => {
     // const { name, email, password } = validate(updateUserValidation, request);
     const data = validate(updateUserValidation, request);
 
-    await prismaClient.user.findFirstOrThrow();
+    const currentData = await prismaClient.user.findFirstOrThrow();
 
     // const data = { name, email };
     if (data.password) {
+        // data.old_password
         data.password = await bcrypt.hash(data.password, 10);
+        const isPasswordValid = await bcrypt.compare(data.old_password, currentData.password);
+        if (!isPasswordValid) {
+            throw new ResponseError(400, 'Old Password is invalid');
+        }
+
+        delete data.old_password;
         delete data.password_confirm;
     }
 

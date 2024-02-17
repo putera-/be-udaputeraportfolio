@@ -4,6 +4,7 @@ import { isPassword, isString, isEmail } from './all-validation.js';
 const updateUserValidation = Joi.object({
     name: isString.label("Name"),
     email: isEmail.label("Email"),
+    old_password: isPassword.label("Old Password"),
     password: isPassword.label("Password"),
     password_confirm: isPassword
         .valid(Joi.ref('password'))
