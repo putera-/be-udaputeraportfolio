@@ -22,12 +22,12 @@ const login = async (request, res) => {
     });
 
     if (!user) {
-        throw new ResponseError(401, 'Invalid Credential');
+        throw new ResponseError(400, 'Invalid Credential');
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-        throw new ResponseError(401, 'Invalid Credential');
+        throw new ResponseError(400, 'Invalid Credential');
     }
 
     // creat token
