@@ -15,7 +15,7 @@ const update = async (req, res, next) => {
     try {
         // got email from middleware
         const email = req.user.email;
-        const data = await userService.update(email, req.body);
+        const data = await userService.update(email, req.body, res);
 
         res.status(200).json(data);
     } catch (error) {

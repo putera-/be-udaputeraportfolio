@@ -1,8 +1,9 @@
 import Joi from 'joi';
-import { isPassword, isString } from './all-validation.js';
+import { isPassword, isString, isEmail } from './all-validation.js';
 
 const updateUserValidation = Joi.object({
     name: isString.required().label("Name"),
+    email: isEmail.required().label("Email"),
     password: isPassword.required().label("Password"),
     password_confirm: isPassword.required()
         .valid(Joi.ref('password'))

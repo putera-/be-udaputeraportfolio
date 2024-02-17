@@ -3,6 +3,7 @@ import { ResponseError } from '../error/response-error.js';
 import { isEmail } from '../validation/all-validation.js';
 import { updateUserValidation } from '../validation/user-validation.js';
 import { validate } from '../validation/validation.js';
+import authService from '../service/auth-service.js';
 import bcrypt from 'bcrypt';
 
 const get = async (email) => {
@@ -23,30 +24,32 @@ const get = async (email) => {
     return user;
 };
 
-const update = async (email, request) => {
-    const { name, password } = validate(updateUserValidation, request);
+const update = async (oldemail, request, res) => {
+    const { name, email, password } = validate(updateUserValidation, request);
 
-    const countUser = await prismaClient.user.count({
-        where: { email }
-    });
+    await prismaClient.user.findFirstOrThrow();
 
-    if (!countUser) {
-        throw new ResponseError(404, 'User nor found');
-    }
-
-    const data = { name };
+    const data = { name, email };
     if (password) {
         data.password = await bcrypt.hash(password, 10);
     }
 
-    return prismaClient.user.update({
-        where: { email },
+    const updatedUser = await prismaClient.user.update({
+        where: { email: oldemail },
         data,
         select: {
             name: true,
             email: true
         }
     });
+
+    // creat token
+    const token = authService.create_token(email);
+
+    // save token to cookie
+    authService.set_cookie(res, token);
+
+    return updatedUser;
 };
 
 export default {
