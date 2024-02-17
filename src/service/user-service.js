@@ -24,18 +24,20 @@ const get = async (email) => {
     return user;
 };
 
-const update = async (oldemail, request, res) => {
-    const { name, email, password } = validate(updateUserValidation, request);
+const update = async (email, request, res) => {
+    // const { name, email, password } = validate(updateUserValidation, request);
+    const data = validate(updateUserValidation, request);
 
     await prismaClient.user.findFirstOrThrow();
 
-    const data = { name, email };
-    if (password) {
-        data.password = await bcrypt.hash(password, 10);
+    // const data = { name, email };
+    if (data.password) {
+        data.password = await bcrypt.hash(data.password, 10);
+        delete data.password_confirm;
     }
 
     const updatedUser = await prismaClient.user.update({
-        where: { email: oldemail },
+        where: { email: email },
         data,
         select: {
             name: true,
@@ -43,11 +45,14 @@ const update = async (oldemail, request, res) => {
         }
     });
 
-    // creat token
-    const token = authService.create_token(email);
+    if (data.email) {
+        // creat token
+        const token = authService.create_token(data.email);
 
-    // save token to cookie
-    authService.set_cookie(res, token);
+        // save token to cookie
+        authService.set_cookie(res, token);
+    }
+
 
     return updatedUser;
 };
