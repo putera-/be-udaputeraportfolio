@@ -53,6 +53,7 @@ apiRouter.post('/blog', uploadImage.array('photos', 10), blogController.create);
 apiRouter.put('/blog/:id', uploadImage.array('new_photos', 10), blogController.update);
 apiRouter.delete('/blog/:id', blogController.remove);
 
+// LOG
 apiRouter.get('/access_log', logController.getAccessLog);
 apiRouter.get('/error_log', logController.getErrorLog);
 

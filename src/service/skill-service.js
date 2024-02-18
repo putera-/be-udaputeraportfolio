@@ -7,9 +7,21 @@ import { validate } from '../validation/validation.js';
 const getAll = async (req) => {
     const category = validate(istruthy, req.query.category);
 
-    return prismaClient.skill.findMany({
-        include: { category }
+    const skills = await prismaClient.skill.findMany({
+        include: {
+            category,
+            _count: {
+                select: { projects: true }
+            }
+        }
     });
+
+    for (const skill of skills) {
+        skill.projects_count = skill._count.projects;
+        delete skill._count;
+    }
+
+    return skills;
 };
 
 const getByCategory = () => {
@@ -135,11 +147,16 @@ const removeSkillCategory = async (id) => {
     return;
 };
 
+const getCategories = () => {
+    return prismaClient.skillCategory.findMany();
+}
+
 export default {
     getAll,
     getByCategory,
     get,
     create,
     update,
-    remove
+    remove,
+    getCategories
 };

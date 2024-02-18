@@ -47,10 +47,20 @@ const remove = async (req, res, next) => {
     }
 };
 
+const getCategories = async (req, res, next) => {
+    try {
+        const data = await skillService.getCategories()
+        res.status(200).json(data);
+    } catch (error) {
+        next(error);
+    }
+}
+
 export default {
     getAll,
     get,
     create,
     update,
-    remove
+    remove,
+    getCategories
 };
