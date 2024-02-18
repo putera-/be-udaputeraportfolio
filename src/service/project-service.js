@@ -259,7 +259,7 @@ const formatData = (project) => {
     }
 
     // status
-    project.status = project.status.replace('_', ' ');
+    project.read_status = project.status.replace('_', ' ');
 
     // skills
     project.skills = project.skills.map(ps => ps.skill);
