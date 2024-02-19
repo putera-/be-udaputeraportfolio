@@ -31,7 +31,7 @@ publicRouter.get('/projects', projectController.getAll);
 publicRouter.get('/project/:id', projectController.get);
 
 // SKILL
-publicRouter.get('/skill_categories', skillController.getCategories);
+publicRouter.get('/skill_by_categories', skillController.getByCategory);
 publicRouter.get('/skills', skillController.getAll);
 publicRouter.get('/skill/:id', skillController.get);
 

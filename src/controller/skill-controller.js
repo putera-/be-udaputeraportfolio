@@ -47,9 +47,9 @@ const remove = async (req, res, next) => {
     }
 };
 
-const getCategories = async (req, res, next) => {
+const getByCategory = async (req, res, next) => {
     try {
-        const data = await skillService.getCategories()
+        const data = await skillService.getByCategory()
         res.status(200).json(data);
     } catch (error) {
         next(error);
@@ -62,5 +62,5 @@ export default {
     create,
     update,
     remove,
-    getCategories
+    getByCategory
 };

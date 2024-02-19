@@ -147,10 +147,6 @@ const removeSkillCategory = async (id) => {
     return;
 };
 
-const getCategories = () => {
-    return prismaClient.skillCategory.findMany();
-}
-
 export default {
     getAll,
     getByCategory,
@@ -158,5 +154,4 @@ export default {
     create,
     update,
     remove,
-    getCategories
 };
