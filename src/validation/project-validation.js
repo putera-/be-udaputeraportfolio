@@ -8,7 +8,7 @@ const projectValidation = Joi.object({
     github: isURL.allow(null, "").label("Github"),
     gitlab: isURL.allow(null, "").label("Gitlab"),
     startDate: Joi.date().max('now').required().label("Start Date"),
-    endDate: Joi.date().min(Joi.ref('startDate')).max('now').allow(null, "").label("End Date"),
+    endDate: Joi.date().min(Joi.ref('startDate')).max('now').allow(null).label("End Date"),
     status: Joi.string().uppercase().valid('ON_PROGRESS', 'COMPLETE', 'MAINTENANCE').label("Status"),
     company: Joi.string().min(3).max(100).trim().allow(null, "").label("Company"),
     skills: Joi.array().items(Joi.number().positive()).unique().label('Skills').label("Skills"),

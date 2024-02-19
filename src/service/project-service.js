@@ -88,7 +88,9 @@ const get = async (id) => {
             },
             skills: {
                 include: {
-                    skill: true
+                    skill: {
+                        include: { category: true }
+                    }
                 }
             },
         }
@@ -134,15 +136,16 @@ const create = async (data, photos) => {
         }
     });
 
-    // update skills relation
-    if (skills) await addSkills(project.id, skills);
-
     formatData(project);
     return project;
 };
 
 const update = async (id, data, newPhotos) => {
     id = validate(isID, id);
+
+    // fix endDate, formData can not send null
+    if (data.endDate == undefined) data.endDate = null;
+
     data = validate(projectValidation, data);
 
     // also get current photos before update
@@ -154,8 +157,11 @@ const update = async (id, data, newPhotos) => {
     if (!findProject) throw new ResponseError(404, 'Project not found!');
 
     // remove skills array
-    const skills = data.skills.map(s => { return { skillId: s } });
-    delete data.skills;
+    let skills = []
+    if (data.skills) {
+        skills = data.skills.map(s => { return { skillId: s } });
+        delete data.skills;
+    }
 
     // data photos
     // create empty data if null
@@ -207,7 +213,13 @@ const update = async (id, data, newPhotos) => {
             }
         },
         include: {
-            skills: true,
+            skills: {
+                include: {
+                    skill: {
+                        include: { category: true }
+                    }
+                }
+            },
             photos: {
                 orderBy: {
                     index: 'asc'
@@ -221,9 +233,6 @@ const update = async (id, data, newPhotos) => {
 
     // deleted unused photo files
     removePhotos(photo_to_delete);
-
-    // update skills relation
-    if (skills) await addSkills(id, skills);
 
     formatData(project);
     return project;
@@ -263,7 +272,22 @@ const formatData = (project) => {
 
     // skills
     project.skills = project.skills.map(ps => ps.skill);
+    project.skills_count = project.skills.length;
 
+
+    const skill_categories = [];
+    for (const skill of project.skills) {
+        const category = { ...skill.category };
+
+        const index = skill_categories.findIndex(c => c.id == category.id);
+        if (index >= 0) {
+            skill_categories[index].skills.push(skill);
+        } else {
+            category.skills = [skill];
+            skill_categories.push(category);
+        }
+    }
+    project.skill_category = skill_categories
     return project;
 };
 
