@@ -1,14 +1,16 @@
 import Joi from 'joi';
+import dayjs from 'dayjs';
 import { isString, isText, isURL } from './all-validation.js';
 
+const tomorrow = dayjs().add(1, 'day').format('YYYY-MM-DD');
 const projectValidation = Joi.object({
     title: isString.label("Project Title"),
     description: isText.required().label("Description"),
     url: isURL.allow(null, "").label("URL"),
     github: isURL.allow(null, "").label("Github"),
     gitlab: isURL.allow(null, "").label("Gitlab"),
-    startDate: Joi.date().max('now').required().label("Start Date"),
-    endDate: Joi.date().min(Joi.ref('startDate')).max('now').allow(null).label("End Date"),
+    startDate: Joi.date().max(tomorrow).required().label("Start Date"),
+    endDate: Joi.date().min(Joi.ref('startDate')).max(tomorrow).allow(null).label("End Date"),
     status: Joi.string().uppercase().valid('ON_PROGRESS', 'COMPLETE', 'MAINTENANCE').label("Status"),
     company: Joi.string().min(3).max(100).trim().allow(null, "").label("Company"),
     skills: Joi.array().items(Joi.number().positive()).unique().label('Skills').label("Skills"),
