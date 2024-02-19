@@ -36,6 +36,7 @@ const getAll = async (filters) => {
 
     const blogs = await prismaClient.blog.findMany({
         ...params,
+        orderBy: { createdAt: 'desc' },
         include: {
             photos: {
                 orderBy: { index: 'asc' }

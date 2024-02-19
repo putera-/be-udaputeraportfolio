@@ -8,6 +8,7 @@ const getAll = async (req) => {
     const category = validate(istruthy, req.query.category);
 
     const skills = await prismaClient.skill.findMany({
+        orderBy: { title: 'asc' },
         include: {
             category,
             _count: {
