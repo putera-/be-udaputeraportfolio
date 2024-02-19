@@ -14,7 +14,7 @@ const errorMiddleware = async (err, req, res, next) => {
         }).end();
     } else if (err instanceof Joi.ValidationError) {
         res.status(400).json({
-            errors: err.message
+            message: err.message
         }).end();
     } else {
         res.status(500).json({

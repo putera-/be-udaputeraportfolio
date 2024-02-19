@@ -103,12 +103,19 @@ const get = async (id) => {
 };
 
 const create = async (data, photos) => {
+    // fix endDate, formData can not send null
+    if (data.endDate == undefined) data.endDate = null;
+
     data = validate(projectValidation, data);
     console.log(data);
 
     // remove skills array
-    const skills = data.skills.map(s => { return { skillId: s } });
-    delete data.skills;
+    let skills = [];
+    if (data.skills) {
+        skills = data.skills.map(s => { return { skillId: s } });
+        delete data.skills;
+    }
+
 
     const project = await prismaClient.project.create({
         data: {
@@ -123,16 +130,18 @@ const create = async (data, photos) => {
             }
         },
         include: {
+            skills: {
+                include: {
+                    skill: {
+                        include: { category: true }
+                    }
+                }
+            },
             photos: {
                 orderBy: {
                     index: 'asc'
                 }
-            },
-            skills: {
-                include: {
-                    skill: true
-                }
-            },
+            }
         }
     });
 
@@ -157,7 +166,7 @@ const update = async (id, data, newPhotos) => {
     if (!findProject) throw new ResponseError(404, 'Project not found!');
 
     // remove skills array
-    let skills = []
+    let skills = [];
     if (data.skills) {
         skills = data.skills.map(s => { return { skillId: s } });
         delete data.skills;
