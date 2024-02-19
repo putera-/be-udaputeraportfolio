@@ -277,14 +277,16 @@ const formatData = (project) => {
 
     const skill_categories = [];
     for (const skill of project.skills) {
-        const category = { ...skill.category };
+        if (skill.category != undefined) {
+            const category = { ...skill.category };
 
-        const index = skill_categories.findIndex(c => c.id == category.id);
-        if (index >= 0) {
-            skill_categories[index].skills.push(skill);
-        } else {
-            category.skills = [skill];
-            skill_categories.push(category);
+            const index = skill_categories.findIndex(c => c.id == category.id);
+            if (index >= 0) {
+                skill_categories[index].skills.push(skill);
+            } else {
+                category.skills = [skill];
+                skill_categories.push(category);
+            }
         }
     }
     project.skill_category = skill_categories
