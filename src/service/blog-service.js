@@ -198,6 +198,7 @@ const removePhotos = (photos) => {
 };
 
 const formatData = (blog) => {
+    blog.readDate = dayjs(blog.createdAt).format('DD MMMM YYYY');
     blog.readDateTime = dayjs(blog.createdAt).format('DD MMMM YYYY HH:mm:ss');
     blog.shortDateTime = dayjs(blog.createdAt).format('D MMM YYYY HH:mm');
 };
