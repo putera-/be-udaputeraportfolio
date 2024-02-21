@@ -1,5 +1,7 @@
 import fs from 'fs';
 import path from 'path';
+import { prismaClient } from '../application/database.js';
+import dayjs from 'dayjs';
 
 const accessLogFile = path.join('./log/access.log');
 const errorLogFile = path.join('./log/error.log');
@@ -22,7 +24,23 @@ const getErrorLog = () => {
     return logEntries.reverse();
 };
 
+const getWebAccessLog = async () => {
+    const logs = await prismaClient.accessLog.findMany({
+        orderBy: {
+            timestamp: 'desc'
+        }
+    });
+
+    for (const log of logs) {
+        log.readDate = dayjs(log.timestamp).format('D MMMM YYYY')
+        log.readTime = dayjs(log.timestamp).format('HH:ss')
+    }
+
+    return logs;
+};
+
 export default {
     getAccessLog,
-    getErrorLog
+    getErrorLog,
+    getWebAccessLog
 };
