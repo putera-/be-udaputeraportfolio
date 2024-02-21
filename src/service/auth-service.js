@@ -1,10 +1,12 @@
 import { prismaClient } from '../application/database.js';
 import { ResponseError } from '../error/response-error.js';
+import { accessLogValidation } from '../validation/accesslog-validation.js';
 import { isEmail } from '../validation/all-validation.js';
 import { authValidation } from '../validation/auth-validation.js';
 import { validate } from '../validation/validation.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import axios from 'axios';
 
 const jwtSecret = process.env.JWT_SECRET;
 const maxAge = 24 * 60 * 60;
@@ -136,11 +138,26 @@ const get_user_by_token = (req) => {
     return '-';
 };
 
+const accessLog = async (data) => {
+    data = validate(accessLogValidation, data);
+    const ip = data.ip;
+
+    const { data: user } = await axios.get('http://ip-api.com/json/' + ip);
+
+    data.country = user.country;
+    data.countryCode = user.countryCode;
+    data.city = user.city;
+    data.lat = user.lat;
+    data.lon = user.lon;
+
+    return prismaClient.accessLog.create({ data })
+}
 export default {
     login,
     logout,
     set_cookie,
     verify_token,
     create_token,
-    get_user_by_token
+    get_user_by_token,
+    accessLog
 };

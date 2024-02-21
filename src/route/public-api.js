@@ -16,6 +16,9 @@ fileService.createPath('./uploads');
 fileService.createPath('./uploads/avatar');
 fileService.createPath('./uploads/photos');
 
+// accesslog
+publicRouter.post('/access-log', authController.accessLog);
+
 publicRouter.use('/uploads', express.static('./uploads'));
 publicRouter.use('/uploads', isFileExist);
 

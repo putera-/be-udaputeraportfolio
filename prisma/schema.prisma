@@ -169,3 +169,29 @@ model Log {
 
   @@map("sys_logs")
 }
+
+model AccessLog {
+  id          Int      @id @default(autoincrement())
+  session     String   @db.VarChar(50)
+  ip          String   @db.VarChar(50)
+  path        String   @db.VarChar(100)
+  user_agent  String   @db.VarChar(255)
+  country     String?  @db.VarChar(100)
+  countryCode String?  @db.VarChar(10)
+  city        String?  @db.VarChar(100)
+  lat         Float?
+  lon         Float?
+  isMobile    Boolean
+  isDesktop   Boolean
+  isWindows   Boolean
+  isMacOS     Boolean
+  isAndroid   Boolean
+  isIos       Boolean
+  isFirefox   Boolean
+  isEdge      Boolean
+  isChrome    Boolean
+  isSafari    Boolean
+  timestamp   DateTime @default(now())
+
+  @@map("access_log")
+}
