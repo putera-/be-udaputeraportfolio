@@ -62,7 +62,7 @@ const getAll = async (filters) => {
     if (dbFilters.length) params2.where = dbFilters;
     const totalProjects = await prismaClient.project.count(params2);
 
-    for (let project of projects) {
+    for (const project of projects) {
         formatData(project);
     }
 
@@ -112,7 +112,7 @@ const create = async (data, photos) => {
     // remove skills array
     let skills = [];
     if (data.skills) {
-        skills = data.skills.map(s => { return { skillId: s } });
+        skills = data.skills.map(s => { return { skillId: s }; });
         delete data.skills;
     }
 
@@ -168,7 +168,7 @@ const update = async (id, data, newPhotos) => {
     // remove skills array
     let skills = [];
     if (data.skills) {
-        skills = data.skills.map(s => { return { skillId: s } });
+        skills = data.skills.map(s => { return { skillId: s }; });
         delete data.skills;
     }
 
@@ -298,7 +298,7 @@ const formatData = (project) => {
             }
         }
     }
-    project.skill_category = skill_categories
+    project.skill_category = skill_categories;
     return project;
 };
 

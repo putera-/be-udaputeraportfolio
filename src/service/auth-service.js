@@ -112,15 +112,15 @@ const set_cookie = (res, token) => {
     let cookieConfig = {
         // httpOnly: true, // disable to be accessible in javascript client
         maxAge: maxAge * 1000,
-    }
+    };
 
-    if (process.env.NODE_ENV != "development") {
+    if (process.env.NODE_ENV != 'development') {
         cookieConfig = {
             ...cookieConfig,
             sameSite: 'None',
             secure: true,
             domain: process.env.COOKIE_DOMAIN
-        }
+        };
     }
 
     res.cookie('token', token, cookieConfig);
@@ -150,8 +150,8 @@ const accessLog = async (data) => {
     data.lat = user.lat;
     data.lon = user.lon;
 
-    return prismaClient.accessLog.create({ data })
-}
+    return prismaClient.accessLog.create({ data });
+};
 export default {
     login,
     logout,
