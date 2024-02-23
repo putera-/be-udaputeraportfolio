@@ -36,28 +36,17 @@ const getWebAccessLog = async () => {
     });
 
     for (const session of log_sessions) {
-        const logs = await prismaClient.accessLog.findMany({
-            where: {
-                session: session.session
-            },
+        const lastLog = await prismaClient.accessLog.findFirst({
             orderBy: {
                 timestamp: 'desc'
             }
         });
 
-        for (const log of logs) {
-            log.readDate = dayjs(log.timestamp).format('D MMMM YYYY');
-            log.readTime = dayjs(log.timestamp).format('HH:mm');
-        }
-
-        session.logs = logs;
-
-
         // ip & location
-        session.ip = logs.length ? logs[0].ip : '';
-        session.city = logs.length ? logs[0].city : '';
-        session.country = logs.length ? logs[0].country : '';
-        session.countryCode = logs.length ? logs[0].countryCode : '';
+        session.ip = lastLog.ip || '';
+        session.city = lastLog.city || '';
+        session.country = lastLog.country || '';
+        session.countryCode = lastLog.countryCode || '';
 
         // timestamp
         session.timestamp = session._max.timestamp;
@@ -72,8 +61,27 @@ const getWebAccessLog = async () => {
     return log_sessions;
 };
 
+const getWebAccessLogBySession = async (session) => {
+    const logs = await prismaClient.accessLog.findMany({
+        where: {
+            session: session
+        },
+        orderBy: {
+            timestamp: 'desc'
+        }
+    });
+
+    for (const log of logs) {
+        log.readDate = dayjs(log.timestamp).format('D MMMM YYYY');
+        log.readTime = dayjs(log.timestamp).format('HH:mm');
+    }
+
+    return logs;
+};
+
 export default {
     getAccessLog,
     getErrorLog,
-    getWebAccessLog
+    getWebAccessLog,
+    getWebAccessLogBySession
 };

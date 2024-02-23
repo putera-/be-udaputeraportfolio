@@ -55,6 +55,7 @@ apiRouter.delete('/blog/:id', blogController.remove);
 
 // LOG
 apiRouter.get('/web_access_log', logController.getWebAccessLog);
+apiRouter.get('/web_access_log/:session', logController.getWebAccessLogBySession);
 apiRouter.get('/access_log', logController.getAccessLog);
 apiRouter.get('/error_log', logController.getErrorLog);
 

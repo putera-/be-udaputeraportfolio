@@ -9,6 +9,16 @@ const getWebAccessLog = async (req, res, next) => {
     }
 };
 
+const getWebAccessLogBySession = async (req, res, next) => {
+    try {
+        const data = await logService.getWebAccessLogBySession(req.params.session);
+
+        res.status(200).json(data);
+    } catch (error) {
+        next(error);
+    }
+};
+
 const getAccessLog = (req, res, next) => {
     try {
         const data = logService.getAccessLog();
@@ -29,6 +39,7 @@ const getErrorLog = (req, res, next) => {
 
 export default {
     getWebAccessLog,
+    getWebAccessLogBySession,
     getAccessLog,
     getErrorLog
 };
