@@ -8,6 +8,7 @@ import blogController from '../controller/blog-controller.js';
 import fileService from '../service/file-service.js';
 import { isFileExist } from '../middleware/file-middleware.js';
 import experienceController from '../controller/experience-controller.js';
+import userController from '../controller/user-controller.js';
 
 const publicRouter = new express.Router();
 
@@ -24,6 +25,10 @@ publicRouter.use('/uploads', isFileExist);
 
 // AUTH
 publicRouter.post('/login', authController.login);
+
+// USER
+publicRouter.get('/is_user_exist', userController.is_user_exist);
+publicRouter.post('/create_user', userController.create_user);
 
 // PROFILE
 publicRouter.get('/portfolio', profileController.getPortFolio);

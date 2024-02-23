@@ -1,10 +1,30 @@
 import { prismaClient } from '../application/database.js';
 import { ResponseError } from '../error/response-error.js';
 import { isEmail } from '../validation/all-validation.js';
-import { updateUserValidation } from '../validation/user-validation.js';
+import { createUserValidation, updateUserValidation } from '../validation/user-validation.js';
 import { validate } from '../validation/validation.js';
 import authService from '../service/auth-service.js';
 import bcrypt from 'bcrypt';
+
+
+const create_user = async (data) => {
+    const currentUser = await prismaClient.user.findFirst();
+
+    if (currentUser) throw new ResponseError(404, 'User is already exist');
+
+    data = validate(createUserValidation, data);
+    data.password = await bcrypt.hash(data.password, 10);
+
+    delete data.password_confirm;
+
+    return prismaClient.user.create({ data });
+}
+
+const is_user_exist = async (data) => {
+    const currentUser = await prismaClient.user.findFirst();
+
+    return currentUser ? true : false;
+}
 
 const get = async (email) => {
     email = validate(isEmail, email);
@@ -65,6 +85,8 @@ const update = async (email, request, res) => {
 };
 
 export default {
+    is_user_exist,
+    create_user,
     get,
     update
 };
