@@ -12,7 +12,7 @@ const getAll = async () => {
     });
 
     for (const education of data) {
-        formatData(education)
+        formatData(education);
     }
 
     return data;
@@ -69,7 +69,7 @@ const remove = async (id) => {
 
 const formatData = (data) => {
     data.endYear = data.endYear || 'Present';
-}
+};
 
 export default {
     getAll,

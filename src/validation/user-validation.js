@@ -1,21 +1,31 @@
 import Joi from 'joi';
 import { isPassword, isString, isEmail } from './all-validation.js';
 
-const updateUserValidation = Joi.object({
-    name: isString.label("Name"),
-    email: isEmail.label("Email"),
-    old_password: isPassword.label("Old Password"),
-    password: isPassword.label("Password"),
-    password_confirm: isPassword
+const userValidation = {
+    name: isString.required().label('Name'),
+    email: isEmail.required().label('Email'),
+    password: isPassword.required().label('Password'),
+    password_confirm: isPassword.required()
         .valid(Joi.ref('password'))
-        .label("Password Confirm")
+        .label('Password Confirm')
         .options({
             messages: {
                 'any.only': '{{#label}} is not match'
             }
         })
+}
+
+
+const createUserValidation = Joi.object({
+    ...userValidation
+});
+
+const updateUserValidation = Joi.object({
+    ...userValidation,
+    old_password: isPassword.required().label('Old Password')
 });
 
 export {
+    createUserValidation,
     updateUserValidation
 };

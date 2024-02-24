@@ -47,7 +47,7 @@ const getAll = async (filters) => {
     const totalExperiences = await prismaClient.experience.count(params2);
 
     // forma data
-    for (let experience of experiences) {
+    for (const experience of experiences) {
         formatData(experience);
     }
 
@@ -98,7 +98,7 @@ const update = async (id, data) => {
         data: data
     });
 
-    formatData(updatedData)
+    formatData(updatedData);
     return updatedData;
 };
 
@@ -122,7 +122,7 @@ const formatData = (experience) => {
         experience.endDate = dayjs(experience.endDate).format('YYYY-MM-DD');
         experience.readEndDate = dayjs(experience.endDate).format('D MMM YYYY');
     } else {
-        experience.readEndDate = 'Present'
+        experience.readEndDate = 'Present';
     }
 };
 

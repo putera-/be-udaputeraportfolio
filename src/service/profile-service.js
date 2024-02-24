@@ -65,8 +65,8 @@ const updateProfile = async (oldProfile, data) => {
         }
     }
 
-    return profile
-}
+    return profile;
+};
 
 const formatData = (profile) => {
     profile.dob = dayjs(profile.dob).format('YYYY-MM-DD');

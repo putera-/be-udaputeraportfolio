@@ -79,8 +79,8 @@ const getPortFolio = async (req, res, next) => {
         if (projects.length) {
             const firstProject = projects.findLast(p => true);
             const firsProjectDate = dayjs(firstProject.startDate);
-            profile.year_of_experience = dayjs().diff(firsProjectDate, "year");
-            profile.month_of_experience = dayjs().diff(firsProjectDate, "month");
+            profile.year_of_experience = dayjs().diff(firsProjectDate, 'year');
+            profile.month_of_experience = dayjs().diff(firsProjectDate, 'month');
         } else {
             // default
             profile.year_of_experience = 0;
