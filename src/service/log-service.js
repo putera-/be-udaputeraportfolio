@@ -20,8 +20,13 @@ const getErrorLog = () => {
     const logEntries = logFileContent
         .split('\n')
         .filter((line) => line.trim() !== '')
-        .map((line) => JSON.parse(line));
-    return logEntries.reverse();
+        .map((line) => JSON.parse(line))
+        .reverse();
+    for (const log of logEntries) {
+        log.readDate = dayjs(log.date).format('D MMMM YYYY');
+        log.readTime = dayjs(log.date).format('HH:mm:ss');
+    }
+    return logEntries;
 };
 
 const getWebAccessLog = async () => {
