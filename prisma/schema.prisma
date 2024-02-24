@@ -50,7 +50,7 @@ model Profile {
 }
 
 model SkillCategory {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   title     String   @unique @db.VarChar(100)
   skills    Skill[]
   createdAt DateTime @default(now())
@@ -60,11 +60,11 @@ model SkillCategory {
 }
 
 model Skill {
-  id         Int             @id @default(autoincrement())
+  id         String          @id @default(uuid())
   title      String          @db.VarChar(100)
   svg        String?         @db.Text
-  categoryId Int             @db.Int
   category   SkillCategory   @relation(fields: [categoryId], references: [id])
+  categoryId String
   createdAt  DateTime        @default(now())
   updatedAt  DateTime        @default(now()) @updatedAt
   projects   ProjectSkills[]
@@ -73,7 +73,7 @@ model Skill {
 }
 
 model Education {
-  id              Int      @id @default(autoincrement())
+  id              String   @id @default(uuid())
   institutionName String   @db.VarChar(100)
   startYear       Int      @db.Year
   endYear         Int?     @db.Year
@@ -86,7 +86,7 @@ model Education {
 }
 
 model Experience {
-  id          Int       @id @default(autoincrement())
+  id          String    @id @default(uuid())
   company     String    @db.VarChar(100)
   location    String    @db.VarChar(100)
   title       String    @db.VarChar(100)
@@ -100,7 +100,7 @@ model Experience {
 }
 
 model Project {
-  id          Int             @id @default(autoincrement())
+  id          String          @id @default(uuid())
   title       String          @db.VarChar(100)
   description String          @db.Text
   url         String?         @db.VarChar(100)
@@ -126,31 +126,31 @@ enum ProjectStatus {
 }
 
 model Photo {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   path      String   @db.VarChar(255)
   path_md   String   @db.VarChar(255)
   path_sm   String   @db.VarChar(255)
   index     Int      @default(0) @db.Int
   Project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  projectId Int?
+  projectId String?
   Blog      Blog?    @relation(fields: [blogId], references: [id], onDelete: Cascade)
-  blogId    Int?
+  blogId    String?
 
   @@map("photo")
 }
 
 model ProjectSkills {
-  projectId Int
   project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  skillId   Int
+  projectId String
   skill     Skill   @relation(fields: [skillId], references: [id])
+  skillId   String
 
   @@id([projectId, skillId])
   @@map("project_skills")
 }
 
 model Blog {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   title     String   @db.VarChar(255)
   content   String   @db.Text
   photos    Photo[]
@@ -161,7 +161,7 @@ model Blog {
 }
 
 model Log {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   level     String   @db.VarChar(16)
   message   String   @db.Text
   meta      String   @db.Text
@@ -171,7 +171,7 @@ model Log {
 }
 
 model AccessLog {
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(uuid())
   session     String   @db.VarChar(50)
   ip          String   @db.VarChar(50)
   path        String   @db.VarChar(100)

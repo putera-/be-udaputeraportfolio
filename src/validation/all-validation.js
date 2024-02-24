@@ -1,7 +1,7 @@
 import Joi from 'joi';
 
 const istruthy = Joi.boolean().truthy();
-const isID = Joi.number().positive();
+const isID = Joi.string().trim();
 const isEmail = Joi.string().email().max(100).trim();
 const isPassword = Joi.string().min(6).max(100).trim();
 const isString = Joi.string().min(3).max(100).trim();
