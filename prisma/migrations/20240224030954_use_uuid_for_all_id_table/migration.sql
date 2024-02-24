@@ -9,7 +9,6 @@
   - The primary key for the `project_skills` table will be changed. If it partially fails, the table could be left without primary key constraint.
   - The primary key for the `skill` table will be changed. If it partially fails, the table could be left without primary key constraint.
   - The primary key for the `skill_category` table will be changed. If it partially fails, the table could be left without primary key constraint.
-  - The primary key for the `sys_logs` table will be changed. If it partially fails, the table could be left without primary key constraint.
 
 */
 -- DropForeignKey
@@ -64,11 +63,6 @@ ALTER TABLE `skill` DROP PRIMARY KEY,
 
 -- AlterTable
 ALTER TABLE `skill_category` DROP PRIMARY KEY,
-    MODIFY `id` VARCHAR(191) NOT NULL,
-    ADD PRIMARY KEY (`id`);
-
--- AlterTable
-ALTER TABLE `sys_logs` DROP PRIMARY KEY,
     MODIFY `id` VARCHAR(191) NOT NULL,
     ADD PRIMARY KEY (`id`);
 

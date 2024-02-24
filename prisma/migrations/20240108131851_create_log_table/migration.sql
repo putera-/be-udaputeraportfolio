@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE `sys_logs` (
+CREATE TABLE `error_log` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `level` VARCHAR(16) NOT NULL,
     `message` TEXT NOT NULL,
