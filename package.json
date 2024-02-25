@@ -5,10 +5,11 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "build": "node src/main.js",
+    "start": "node src/main.js",
     "dev": "nodemon src/main.js",
     "migrate-create": "npx prisma migrate dev --create-only",
-    "migrate": "npx prisma migrate dev",
+    "migrate-dev": "npx prisma migrate dev",
+    "migrate-deploy": "npx prisma migrate deploy",
     "test": "jest -i --coverage"
   },
   "jest": {

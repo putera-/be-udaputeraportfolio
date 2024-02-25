@@ -24,4 +24,4 @@ COPY . .
 EXPOSE ${PORT}
 
 # Command to run your application
-CMD npx prisma db push && npm run build
+CMD npm run migrate-deploy && npm run start
