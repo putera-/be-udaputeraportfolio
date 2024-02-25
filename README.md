@@ -1,7 +1,3 @@
-# Nuxt 3 Minimal Starter
-
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
-
 ## Setup
 
 Make sure to install the dependencies:
@@ -80,4 +76,17 @@ yarn dev
 
 # bun
 bun run dev
+```
+
+## Docker
+
+```bash
+# network
+docker network create --driver bridge be-uda-portfolio
+# mysql database container
+docker container create --name db_uda_portfolio --network be-uda-portfolio -e MYSQL_ROOT_PASSWORD=my-secret-pw mysql:8.0.3
+# image
+docker build -t be:1.0.1 . --progress=plain --no-cache
+# be container
+docker container create --name be --network be-uda-portfolio -p 5000:5000 be:1.0.1
 ```
