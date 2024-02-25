@@ -1,10 +1,11 @@
 # Use a base image with Node.js installed
 FROM node:21-alpine
 
-ENV NODE_ENV="development"
+ENV NODE_ENV="production"
 ENV PORT=5000
 ENV COOKIE_DOMAIN="localhost"
 ENV JWT_SECRET="5H4MH4"
+ENV APP_WEB_URL="https://udaputera.com"
 
 # PRISMA
 ENV DATABASE_URL="mysql://root:my-secret-pw@db_uda_portfolio:3306/portfolio_uda"
