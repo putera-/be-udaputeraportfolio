@@ -260,8 +260,7 @@ EXPOSE 5000/udp # set to udp protocl
 # ENV
 # env & default value that will use in the app
 ENV PORT=5000
-
-to custom it, when create container, add --env PORT=5001
+# to custom it, when create container, add --env PORT=5001
 
 # VOLUME
 VOLUME /path
