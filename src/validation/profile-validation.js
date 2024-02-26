@@ -26,9 +26,9 @@ const profileCreateValidation = Joi.object({
     email: isEmail.required().label('Email'),
     phone: isText.regex(phoneRegex).required().label('Phone Number'),
     dob: Joi.date().required().label('Date of birth'),
-    address: isText.required().label('Address'),
-    city: isString.required().label('City'),
-    country: isString.required().label('Country'),
+    address: isText.default('-').label('Address'),
+    city: isString.default('-').label('City'),
+    country: isString.default('-').label('Country'),
     ...profileValidate,
 });
 
