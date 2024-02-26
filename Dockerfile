@@ -3,8 +3,8 @@ FROM node:21-alpine
 
 ENV NODE_ENV="production"
 ENV PORT=5000
-ENV COOKIE_DOMAIN="localhost"
 ENV JWT_SECRET="5H4MH4"
+ENV COOKIE_DOMAIN="https://udaputera.com"
 ENV APP_WEB_URL="https://udaputera.com"
 
 # PRISMA
