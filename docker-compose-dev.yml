@@ -1,0 +1,12 @@
+version: "3.8"
+# services / containers
+services:
+  # express app
+  express-uda-portfolio:
+    environment:
+      # for prisma
+      DATABASE_URL: mysql://root:t5bVP6wM2Nt2iv@mysql_uda_portfolio:3306/portfolio_uda
+  # mysql database
+  mysql_uda_portfolio:
+    environment:
+      MYSQL_ROOT_PASSWORD: t5bVP6wM2Nt2iv

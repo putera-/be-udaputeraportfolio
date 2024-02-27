@@ -1,0 +1,57 @@
+version: "3.8"
+# services / containers
+services:
+  # express app
+  express-uda-portfolio:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: express-uda-portfolio
+    image: express-uda-portfolio:1.0.0
+    restart: always
+    ports:
+      - 5000:5000
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      JWT_SECRET: 5H4MH4
+      COOKIE_DOMAIN: udaputera.com
+      APP_WEB_URL: https://udaputera.com
+      # for prisma
+      DATABASE_URL: mysql://root:my-secret-pw@mysql_uda_portfolio:3306/portfolio_uda
+    volumes:
+      - express-uda-portfolio-log:/app/log
+      - express-uda-portfolio-uploads:/app/uploads
+    networks:
+      - app-uda-portfolio
+    depends_on:
+      - mysql_uda_portfolio
+
+  # mysql database
+  mysql_uda_portfolio:
+    container_name: mysql_uda_portfolio
+    image: mysql:8.3.0
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: my-secret-pw
+      MYSQL_DATABASE: portfolio_uda
+    volumes:
+      - mysql_uda_portfolio:/var/lib/mysql
+    networks:
+      - app-uda-portfolio
+
+# volumes
+volumes:
+  express-uda-portfolio-log:
+    name: express-uda-portfolio-log
+  express-uda-portfolio-uploads:
+    name: express-uda-portfolio-uploads
+  mysql_uda_portfolio:
+    name: mysql_uda_portfolio
+
+# networks
+networks:
+  app-uda-portfolio:
+    name: app-uda-portfolio
+    driver: bridge

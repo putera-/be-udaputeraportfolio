@@ -3,3 +3,4 @@ log
 coverage
 uploads
 .env
+docker-compose-prod.yml
