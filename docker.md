@@ -68,6 +68,9 @@ docker container rm contoh
 
 # multiple remove docker "make sure it's not running" : [name1] [name2]
 docker container rm contoh1 contoh2
+
+#rename docker rename [oldname] [newname]
+docker rename old_container_name new_container_name
 ```
 
 # CONTAINER LOG
@@ -264,7 +267,7 @@ ENV PORT=5000
 
 # VOLUME
 VOLUME /path
-VOLUME /path1, /path2
+VOLUME /path1 /path2
 
 # WORKDIR
 # to select path/working_area where the app will be run
