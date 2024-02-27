@@ -23,6 +23,7 @@ RUN npm install
 COPY . .
 
 EXPOSE ${PORT}
+VOLUME /log /uploads
 
 # Command to run your application
 CMD npx prisma generate && npm run migrate-deploy && npm run start

@@ -1,5 +1,6 @@
 coverage/
 log/
+uploads/
 node_modules/
 package-lock.json
 .netlify
