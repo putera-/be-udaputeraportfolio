@@ -1,4 +1,6 @@
-# DOCKER IMAGE
+# DOCKER
+
+## DOCKER IMAGE
 
 ```bash
 # -t tagname
@@ -17,16 +19,16 @@ docker image ls
 docker image rm namaimage:tag
 ```
 
-# DOCKER IMAGE REGISTRY
+## DOCKER IMAGE REGISTRY
 
 ```bash
 # get docker iamge from registry : [nama:tag]
 docker image pull nama:tag
 ```
 
-# DOCKER CONTAINER
+## DOCKER CONTAINER
 
-# create container
+#### create container
 
 ```bash
 # create container : --name [nama] [image:tag]
@@ -45,7 +47,7 @@ docker container create --name contohnginx --publish 8080:80 nginx:latest
 
 ```
 
-# START STOP REMOVE container
+#### START STOP REMOVE container
 
 ```bash
 # see all container
@@ -73,7 +75,7 @@ docker container rm contoh1 contoh2
 docker rename old_container_name new_container_name
 ```
 
-# CONTAINER LOG
+#### CONTAINER LOG
 
 ```bash
 # [id/nama container]
@@ -84,7 +86,7 @@ docker container logs containerName
 docker container logs containerID -f
 ```
 
-# CONTAINER EXEC
+#### CONTAINER EXEC
 
 ```bash
 # -i -> interactive
@@ -94,7 +96,7 @@ docker container exec -i -t containerID /bin/bash
 docker container exec -i -t containerNAME /bin/bash
 ```
 
-# CONTAINER ENV
+#### CONTAINER ENV
 
 ```bash
 # create mongo container, env key check masing2 image di dokumentasi
@@ -104,7 +106,7 @@ docker container create --name contohmongo --publish 27017:27017
 mongo:latest
 ```
 
-# CONTAINER STATS
+#### CONTAINER STATS
 
 ```bash
 # untuk melihat detail dari penggunaan resource dari container
@@ -117,7 +119,7 @@ docker container create --name contohnginx --publish 8080:80
 nginx:latest
 ```
 
-# MOUNT
+#### MOUNT
 
 ```bash
 # type: bind / volume
@@ -135,7 +137,7 @@ docker container create --name contohmongo
 mongo:latest
 ```
 
-# VOLUME
+## VOLUME
 
 ```bash
 # secara default, container disimpan didalam volume
@@ -156,7 +158,7 @@ docker container create --name contohmongo
 mongo:latest
 ```
 
-# NETWORK
+## NETWORK
 
 ```bash
 # driver none|bridge|host
@@ -177,7 +179,7 @@ docker network connect contohnetwork namacontainer
 docker network disconnect contohnetwork namacontainer
 ```
 
-# INSPECT
+## INSPECT
 
 ```bash
 docker image inspect namaimage
@@ -186,7 +188,7 @@ docker volume inspect namavolume
 docker network inspect namanetwork
 ```
 
-# PRUNE
+## PRUNE
 
 ```bash
 # to remove unsuse image, container, volume & network
@@ -201,7 +203,7 @@ docker system prune
 
 # DOCKERFILE
 
-# BUILD
+## BUILD
 
 ```bash
 # create docker image from Dockerfile
@@ -276,10 +278,148 @@ WORKDIR /app
 WORKDIR /home/app
 ```
 
-# DOCKERIGNORE
+## DOCKERIGNORE
 
+```sh
+# file name
+# like git ignore
 .dockerignore
+```
 
-like git ignore
+# DOCKER COMPOSE
 
-docker container create --name db --network webweb -e MYSQL_ROOT_PASSWORD=my-secret-pw -e MYSQL_USER=uda -e MYSQL_PASSWORD=my-secret-pw -p 3306:3306 mysql:8.0.3
+```sh
+# Docker compose use YAML syntax
+
+# create image -> if using buid from Dockerfile
+docker compose build
+
+docker compose create
+# create container
+docker compose create
+
+# start container
+docker compose start
+
+# melihat container
+docker compose ps
+
+# stop container
+docker compose stop
+
+# remove all container, network, will not remove volume or image
+docker compose down
+# volume will not be remove, do manual remove
+docker volume rm nama_volume
+# image will not be remove, do manual remove
+docker image rm nama_image
+
+```
+
+## DOCKER COMPOSE - PROJECT
+
+```sh
+# view running project
+docker compose ls
+```
+
+## DOCKER COMPOSE - EXAMPLE
+
+```yaml
+# yaml verison
+version: "3.8"
+
+# list of services / containers
+services:
+  # nginx server
+  nginx-server:
+    image: nginx:latest
+    container_name: nginx-server
+    #no, always, on-failure, unless-stopped
+    # unless-stopped -> will stop if manually stop
+    restart: always
+    ports:
+      - 5010:5000
+    environment:
+      PORT: 5000
+    volumes:
+      # bind with short syntax
+      # make sure path in host is already exist
+      - ./data-bind:/data
+      - type: bind
+        source: ./data-bind
+        target: /data
+        read-only: false
+      - /log
+    networks:
+      - test-network
+    # the container will start after depends on
+    depends_on:
+      # name of service / container
+      - mysql-database
+    # RESOURCE LIMIT
+    deploy:
+      resources:
+        # minimal
+        reservation:
+          cpus: 0.25
+          memory: 50M
+        # maximal
+        limits:
+          cpus: 0.5
+          memory: 100M
+
+  # mysql database
+  mysql-database:
+    container_name: mysql-database
+    image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always #no, always, on-failure, unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: my-secret-pw
+      MYSQL_DATABASE: myadmin
+    volume:
+      # volume using created volume
+      - myql-volume:/var/lib/mysql
+    networks:
+      - test-network
+
+  # service / container from Dockerfile
+  myApp:
+    container_name: myApp
+    build:
+      context: . #currentPath
+      dockerfile: Dockerfile #name of Dockerfile
+    image: myApp:1.0.0 #name of the image
+
+volumes:
+  myql-volume:
+    # use same name as volume key
+    nam: myql-volume
+# optional
+# if not define, docker compose will auto create the network with name [path]_default
+networks:
+  test-network:
+    name: test-network
+    driver: bridge
+```
+
+## DOCKER COMPOSE EXTEND
+
+```sh
+# /docker-compose.yml -> default configuration
+# /dev.yml -> config for dev
+# /prod.yml -> config for prod
+docker compose -f docker-compose.yml -f dev.yml build
+docker compose -f docker-compose.yml -f dev.yml create
+docker compose -f docker-compose.yml -f dev.yml start
+```
+
+## MONITOR DOCKER EVENTS
+
+```sh
+# to see docker event in realtime
+docker event
+# to specific container
+docker event --filter 'container=container_name'
+```
