@@ -27,7 +27,7 @@ const removeFile = async (file) => {
 };
 
 const imageResizeSave = async (size, buffer, filepath) => {
-    const resizedBuffer = await sharp(buffer)
+    const resizedBuffer = await sharp(buffer, { animated: true })
         .resize(size)
         .toBuffer();
 
