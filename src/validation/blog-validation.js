@@ -5,7 +5,7 @@ const blogValidation = Joi.object({
     title: isString.required(),
     content: isText.required(),
     photos: Joi.array().items(Joi.object({
-        id: Joi.number(),
+        id: Joi.string(),
         index: Joi.number()
     })).label('Photos')
 });

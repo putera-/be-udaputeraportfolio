@@ -21,9 +21,11 @@ const storage = multer.diskStorage({
 
 const multerMemory = multer.memoryStorage();
 
+const accept_image = ['image/jpg', 'image/jpeg', 'image/png', 'image/webp', 'image/gif']
+
 const imageFilter = (req, file, cb) => {
     // Check if the file is an image (you can customize this check)
-    if (file.mimetype.startsWith('image/')) {
+    if (accept_image.includes(file.mimetype.toLowerCase())) {
         cb(null, true);
     } else {
         cb(new Error('Only images are allowed!'), false);

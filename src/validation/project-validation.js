@@ -15,7 +15,7 @@ const projectValidation = Joi.object({
     company: Joi.string().min(3).max(100).trim().allow(null, '').label('Company'),
     skills: Joi.array().items(Joi.number().positive()).unique().label('Skills').label('Skills'),
     photos: Joi.array().items(Joi.object({
-        id: Joi.number(),
+        id: Joi.string(),
         index: Joi.number()
     })).label('Photos')
 });
