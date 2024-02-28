@@ -1,7 +1,10 @@
 import fs from 'fs';
 import path from 'path';
-import { prismaClient } from '../application/database.js';
 import dayjs from 'dayjs';
+import axios from 'axios';
+import { prismaClient } from '../application/database.js';
+import { accessLogValidation } from '../validation/accesslog-validation.js';
+import { validate } from '../validation/validation.js';
 
 const accessLogFile = path.join('./log/access.log');
 const errorLogFile = path.join('./log/error.log');
@@ -87,9 +90,25 @@ const getWebAccessLogBySession = async (session) => {
     return logs;
 };
 
+const createWebAccessLog = async (data) => {
+    data = validate(accessLogValidation, data);
+    const ip = data.ip;
+
+    const { data: user } = await axios.get('http://ip-api.com/json/' + ip);
+
+    data.country = user.country;
+    data.countryCode = user.countryCode;
+    data.city = user.city;
+    data.lat = user.lat;
+    data.lon = user.lon;
+
+    return prismaClient.accessLog.create({ data });
+};
+
 export default {
     getAccessLog,
     getErrorLog,
     getWebAccessLog,
-    getWebAccessLogBySession
+    getWebAccessLogBySession,
+    createWebAccessLog
 };

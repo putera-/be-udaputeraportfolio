@@ -19,6 +19,5 @@ export const accessLogValidation = Joi.object({
     isFirefox: Joi.boolean().required(),
     isEdge: Joi.boolean().required(),
     isChrome: Joi.boolean().required(),
-    isSafari: Joi.boolean().required(),
-    timestamp: Joi.date(),
+    isSafari: Joi.boolean().required()
 });

@@ -9,6 +9,7 @@ import fileService from '../service/file-service.js';
 import { isFileExist } from '../middleware/file-middleware.js';
 import experienceController from '../controller/experience-controller.js';
 import userController from '../controller/user-controller.js';
+import logController from '../controller/log-controller.js';
 
 const publicRouter = new express.Router();
 
@@ -18,7 +19,7 @@ fileService.createPath('./uploads/avatar');
 fileService.createPath('./uploads/photos');
 
 // accesslog
-publicRouter.post('/access-log', authController.accessLog);
+publicRouter.post('/access-log', logController.createWebAccessLog);
 
 publicRouter.use('/uploads', express.static('./uploads'));
 publicRouter.use('/uploads', isFileExist);

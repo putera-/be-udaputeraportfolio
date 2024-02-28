@@ -37,9 +37,20 @@ const getErrorLog = (req, res, next) => {
     }
 };
 
+const createWebAccessLog = async (req, res, next) => {
+    try {
+        const data = await logService.createWebAccessLog(req.body);
+
+        res.sendStatus(200);
+    } catch (error) {
+        next(error);
+    }
+};
+
 export default {
     getWebAccessLog,
     getWebAccessLogBySession,
     getAccessLog,
-    getErrorLog
+    getErrorLog,
+    createWebAccessLog
 };
