@@ -58,8 +58,6 @@ const getWebAccessLog = async () => {
 
         // timestamp
         session.timestamp = session._max.timestamp;
-        session.readDate = dayjs(session.timestamp).format('D MMMM YYYY');
-        session.readTime = dayjs(session.timestamp).format('HH:mm');
         session.count = session._count._all;
 
         delete session._count;
@@ -81,11 +79,6 @@ const getWebAccessLogBySession = async (session) => {
             timestamp: 'desc'
         }
     });
-
-    for (const log of logs) {
-        log.readDate = dayjs(log.timestamp).format('D MMMM YYYY');
-        log.readTime = dayjs(log.timestamp).format('HH:mm');
-    }
 
     return logs;
 };
