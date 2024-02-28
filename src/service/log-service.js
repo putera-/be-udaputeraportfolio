@@ -64,7 +64,7 @@ const getWebAccessLog = async () => {
     }
 
     // sort
-    log_sessions.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+    log_sessions.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
     return log_sessions;
 };
