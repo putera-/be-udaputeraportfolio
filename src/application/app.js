@@ -14,7 +14,6 @@ app.use(cookieParser());
 
 // cors
 if (process.env.NODE_ENV == 'development') {
-    console.log('set cors development');
     app.use(cors({
         origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3003'],
         credentials: true
