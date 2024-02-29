@@ -104,10 +104,9 @@ const get = async (id) => {
 
 const create = async (data, photos) => {
     // fix endDate, formData can not send null
-    if (data.endDate == undefined) data.endDate = null;
+    if (!data.endDate) data.endDate = null;
 
     data = validate(projectValidation, data);
-    console.log(data);
 
     // remove skills array
     let skills = [];
@@ -153,7 +152,7 @@ const update = async (id, data, newPhotos) => {
     id = validate(isID, id);
 
     // fix endDate, formData can not send null
-    if (data.endDate == undefined) data.endDate = null;
+    if (!data.endDate) data.endDate = null;
 
     data = validate(projectValidation, data);
 
