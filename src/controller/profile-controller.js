@@ -68,7 +68,10 @@ const getPortFolio = async (req, res, next) => {
         const profile = await profileService.get();
         const skills = await skillService.getByCategory(req);
         const educations = await educationService.getAll(filters);
-        const { data: experiences } = await experienceService.getAll(filters);
+        const { data: experiences } = await experienceService.getAll({
+            page: 1,
+            limit: 100
+        });
         const { data: projects } = await projectService.getAll(filters);
         const { data: blogs } = await blogService.getAll(filters);
 
