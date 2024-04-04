@@ -18,7 +18,7 @@ services:
       COOKIE_DOMAIN: udaputera.com
       APP_WEB_URL: https://udaputera.com
       # for prisma
-      DATABASE_URL: mysql://root:my-secret-pw@mysql_uda_portfolio:3306/portfolio_uda
+      DATABASE_URL: mysql://root:.qFmfGBSd36DwiA@mysql_uda_portfolio:3306/portfolio_uda
     volumes:
       - express-uda-portfolio-log:/app/log
       - express-uda-portfolio-uploads:/app/uploads
@@ -34,7 +34,7 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: my-secret-pw
+      MYSQL_ROOT_PASSWORD: .qFmfGBSd36DwiA
       MYSQL_DATABASE: portfolio_uda
     volumes:
       - mysql_uda_portfolio:/var/lib/mysql
