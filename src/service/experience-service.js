@@ -117,10 +117,10 @@ const remove = async (id) => {
 
 const formatData = (experience) => {
     experience.startDate = dayjs(experience.startDate).format('YYYY-MM-DD');
-    experience.readStartDate = dayjs(experience.startDate).format('D MMM YYYY');
+    experience.readStartDate = dayjs(experience.startDate).format('MMMM YYYY');
     if (experience.endDate) {
         experience.endDate = dayjs(experience.endDate).format('YYYY-MM-DD');
-        experience.readEndDate = dayjs(experience.endDate).format('D MMM YYYY');
+        experience.readEndDate = dayjs(experience.endDate).format('MMMM YYYY');
     } else {
         experience.readEndDate = 'Present';
     }
