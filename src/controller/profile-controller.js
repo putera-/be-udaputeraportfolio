@@ -75,12 +75,13 @@ const getPortFolio = async (req, res, next) => {
         const { data: projects } = await projectService.getAll(filters);
         const { data: blogs } = await blogService.getAll(filters);
 
+        const firstProject = await projectService.getFirstProject();
+
         // calculate projects
         profile.count_project = projects.length;
 
         // calculate year & month of experience
         if (projects.length) {
-            const firstProject = projects.findLast(p => true);
             const firsProjectDate = dayjs(firstProject.startDate);
             profile.year_of_experience = dayjs().diff(firsProjectDate, 'year');
             profile.month_of_experience = dayjs().diff(firsProjectDate, 'month');

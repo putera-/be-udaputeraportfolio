@@ -102,6 +102,14 @@ const get = async (id) => {
     return project;
 };
 
+const getFirstProject = async () => {
+    return await prismaClient.project.findFirst({
+        orderBy: {
+            startDate: 'asc'
+        }
+    })
+}
+
 const create = async (data, photos) => {
     // fix endDate, formData can not send null
     if (!data.endDate) data.endDate = null;
@@ -312,6 +320,7 @@ const removePhotos = (photos) => {
 export default {
     getAll,
     get,
+    getFirstProject,
     create,
     update,
     remove
