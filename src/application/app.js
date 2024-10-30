@@ -20,7 +20,7 @@ if (process.env.NODE_ENV == 'development') {
     }));
 } else if (process.env.NODE_ENV == 'production') {
     app.use(cors({
-        origin: [process.env.APP_WEB_URL],
+        origin: [process.env.APP_WEB_URL, 'http://localhost:3003'],
         credentials: true
     }));
 }
